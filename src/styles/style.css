@@ -1,106 +1,24 @@
-/* Estilos básicos globales */
+/* Estilos Globales */
+
+/* Colores principales */
+:root {
+  --negro: #000000; /* Negro */
+  --dorado: #d4af37; /* Dorado */
+  --blanco: #ffffff; /* Blanco */
+  --gris-claro: #ffffff; /* Gris suave para fondos */
+  --gris-dark: #333333; /* Gris oscuro para textos */
+}
+
+/* Reset de estilos básicos */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4; /* Fondo claro para contraste */
-  color: #333; /* Color de texto por defecto */
-}
-
-h1, h2, h3 {
-  color: #1d3557; /* Un color oscuro para los encabezados */
-}
-
-/* Header y Footer */
-header, footer {
-  background-color: #000000; /* Negro para el header y footer */
-  color: #ffffff; /* Blanco para el texto en header y footer */
-  padding: 20px 0;
-  text-align: center;
-}
-
-footer {
-  margin-top: 20px;
-}
-
-/* Carrusel básico */
-.carousel {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 20px;
-  background-color: #f1faee; /* Fondo suave para carrusel */
-}
-
-.carousel button {
-  padding: 10px 20px;
-  background-color: #d4af37; /* Dorado para los botones */
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.carousel button:hover {
-  background-color: #1d3557; /* Negro para hover */
-}
-
-/* Propiedades individuales */
-.property-card {
-  background-color: #ffffff; /* Fondo blanco para las tarjetas */
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.property-card img {
-  max-width: 100%;
-  border-radius: 8px;
-}
-
-.property-card h3 {
-  margin-top: 10px;
-  font-size: 18px;
-  color: #1d3557; /* Color oscuro para el texto */
-}
-
-.property-card .price {
-  font-size: 20px;
-  font-weight: bold;
-  color: #d4af37; /* Dorado para el precio */
-}
-
-/* Formularios */
-form {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  background-color: #ffffff; /* Fondo blanco para los formularios */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-
-input, button {
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  background-color: #d4af37; /* Dorado para el botón */
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #1d3557; /* Negro para hover */
+/* HTML y Body */
+html, body {
+  font-family: Arial, sans-serif; /* Fuente básica */
+  color: var(--gris-dark); /* Color de texto general */
+  background-color: var(--gris-claro); /* Fondo gris claro */
 }
