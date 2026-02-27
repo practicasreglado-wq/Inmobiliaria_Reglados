@@ -7,18 +7,18 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
+  background-color: #f4f4f4; /* Fondo claro para contraste */
+  color: #333; /* Color de texto por defecto */
 }
 
 h1, h2, h3 {
-  color: #1d3557;
+  color: #1d3557; /* Un color oscuro para los encabezados */
 }
 
 /* Header y Footer */
 header, footer {
-  background-color: #1d3557;
-  color: white;
+  background-color: #000000; /* Negro para el header y footer */
+  color: #ffffff; /* Blanco para el texto en header y footer */
   padding: 20px 0;
   text-align: center;
 }
@@ -33,12 +33,12 @@ footer {
   justify-content: space-around;
   align-items: center;
   padding: 20px;
-  background-color: #f1faee;
+  background-color: #f1faee; /* Fondo suave para carrusel */
 }
 
 .carousel button {
   padding: 10px 20px;
-  background-color: #457b9d;
+  background-color: #d4af37; /* Dorado para los botones */
   border: none;
   color: white;
   cursor: pointer;
@@ -46,12 +46,12 @@ footer {
 }
 
 .carousel button:hover {
-  background-color: #1d3557;
+  background-color: #1d3557; /* Negro para hover */
 }
 
 /* Propiedades individuales */
 .property-card {
-  background-color: white;
+  background-color: #ffffff; /* Fondo blanco para las tarjetas */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -69,13 +69,13 @@ footer {
 .property-card h3 {
   margin-top: 10px;
   font-size: 18px;
-  color: #1d3557;
+  color: #1d3557; /* Color oscuro para el texto */
 }
 
 .property-card .price {
   font-size: 20px;
   font-weight: bold;
-  color: #e63946;
+  color: #d4af37; /* Dorado para el precio */
 }
 
 /* Formularios */
@@ -83,7 +83,7 @@ form {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background-color: #fff;
+  background-color: #ffffff; /* Fondo blanco para los formularios */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
@@ -96,11 +96,11 @@ input, button {
 }
 
 button {
-  background-color: #457b9d;
+  background-color: #d4af37; /* Dorado para el botón */
   color: white;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #1d3557;
+  background-color: #1d3557; /* Negro para hover */
 }
