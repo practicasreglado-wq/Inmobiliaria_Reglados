@@ -1,9 +1,7 @@
 <template>
   <div>
-    <Header />
     <h2>Bienvenido al Dashboard</h2>
     <Carousel />
-    <Footer />
   </div>
 </template>
 
