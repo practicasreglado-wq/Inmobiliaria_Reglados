@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Datos de la Empresa</h2>
+    <h2>Datos de la Empresa Hola soy Testing_Preview</h2>
     <p>Información sobre la empresa inmobiliaria.</p>
     <Carousel />
   </div>
