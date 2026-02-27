@@ -16,17 +16,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.carousel button {
-  background-color: #457b9d;
-  color: white;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.carousel button:hover {
-  background-color: #1d3557;
-}
-</style>

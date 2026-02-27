@@ -1,106 +1,24 @@
-/* Estilos básicos globales */
+/* Estilos Globales */
+
+/* Colores principales */
+:root {
+  --negro: #000000; /* Negro */
+  --dorado: #d4af37; /* Dorado */
+  --blanco: #ffffff; /* Blanco */
+  --gris-claro: #ffffff; /* Gris suave para fondos */
+  --gris-dark: #333333; /* Gris oscuro para textos */
+}
+
+/* Reset de estilos básicos */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
-}
-
-h1, h2, h3 {
-  color: #1d3557;
-}
-
-/* Header y Footer */
-header, footer {
-  background-color: #1d3557;
-  color: white;
-  padding: 20px 0;
-  text-align: center;
-}
-
-footer {
-  margin-top: 20px;
-}
-
-/* Carrusel básico */
-.carousel {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 20px;
-  background-color: #f1faee;
-}
-
-.carousel button {
-  padding: 10px 20px;
-  background-color: #457b9d;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.carousel button:hover {
-  background-color: #1d3557;
-}
-
-/* Propiedades individuales */
-.property-card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.property-card img {
-  max-width: 100%;
-  border-radius: 8px;
-}
-
-.property-card h3 {
-  margin-top: 10px;
-  font-size: 18px;
-  color: #1d3557;
-}
-
-.property-card .price {
-  font-size: 20px;
-  font-weight: bold;
-  color: #e63946;
-}
-
-/* Formularios */
-form {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-
-input, button {
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  background-color: #457b9d;
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #1d3557;
+/* HTML y Body */
+html, body {
+  font-family: Arial, sans-serif; /* Fuente básica */
+  color: var(--gris-dark); /* Color de texto general */
+  background-color: var(--gris-claro); /* Fondo gris claro */
 }
