@@ -1,21 +1,4 @@
 /* Estilos Globales */
-
-/* Colores principales */
-:root {
-  --negro: #000000; /* Negro */
-  --dorado: #d4af37; /* Dorado */
-  --blanco: #ffffff; /* Blanco */
-  --gris-claro: #ffffff; /* Gris suave para fondos */
-  --gris-dark: #333333; /* Gris oscuro para textos */
-}
-
-/* Reset de estilos básicos */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 /* HTML y Body */
 html, body {
   font-family: Arial, sans-serif; /* Fuente básica */
