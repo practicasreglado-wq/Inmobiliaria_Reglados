@@ -1,0 +1,21 @@
+<template>
+  <div>
+    <h2>Bienvenido al Dashboard</h2>
+    <Carousel />
+  </div>
+</template>
+
+<script>
+import Header from '../components/Header.vue';
+import Footer from '../components/Footer.vue';
+import Carousel from '../components/Carousel.vue';
+
+export default {
+  name: "Dashboard",
+  components: {
+    Header,
+    Footer,
+    Carousel
+  }
+};
+</script>
