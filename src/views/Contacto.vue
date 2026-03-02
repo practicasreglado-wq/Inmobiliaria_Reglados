@@ -10,11 +10,6 @@
       <p>
         Obtén acceso a listados premium y recomendaciones personalizadas.
       </p>
-
-      <div class="login-link">
-        ¿Ya tienes una cuenta?
-        <span @click="$router.push('/login')">Login</span>
-      </div>
     </div>
 
     <!-- Tarjeta derecha -->
@@ -44,8 +39,12 @@
         </div>
       </div>
     </div>
-
+    <div class="login-link">
+        ¿Ya tienes una cuenta?
+        <span @click="$router.push('/login')">Login</span>
+      </div>
   </div>
+    
 </template>
 
 <script>
@@ -65,7 +64,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 100px;
+  padding: 0 100px 0 80px;
   gap: 60px;
 }
 
@@ -88,10 +87,11 @@ export default {
 .contacto-texto {
   color: white;
   max-width: 500px;
+  transform: translateY(-70px);
 }
 
 .contacto-texto h1 {
-  font-size: 3rem;
+  font-size: 4rem;
   margin-bottom: 20px;
 }
 
@@ -100,12 +100,19 @@ export default {
 }
 
 .contacto-texto p {
-  font-size: 1.2rem;
+  font-size: 2rem;
   margin-bottom: 30px;
 }
 
 .login-link {
-  font-size: 1rem;
+  position: absolute;
+  bottom: 30px;
+  left: 230px;
+  color: white;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  z-index: 2;
+  text-align: center;
 }
 
 .login-link span {
@@ -122,7 +129,7 @@ export default {
 /* ----------- TARJETA DERECHA ----------- */
 
 .contacto-card {
-  width: 420px;
+  width: 600px;
   background: rgba(255, 255, 255, 0.95);
   padding: 40px;
   border-radius: 20px;
@@ -131,7 +138,7 @@ export default {
 
 h2 {
   margin-bottom: 25px;
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   color: #111;
 }
 
@@ -147,7 +154,7 @@ input, textarea {
   padding: 10px;
   border: 2px solid var(--azul-principal);
   border-radius: 6px;
-  font-size: 0.95rem;
+  font-size: 1rem;
   outline: none;
 }
 
@@ -158,6 +165,8 @@ textarea {
 
 /* Botón */
 .enviar-btn {
+  width: 33%;
+  font-size: 1em;
   background-color: var(--azul-principal);
   color: white;
   padding: 8px 25px;
@@ -181,7 +190,7 @@ textarea {
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .dot {
