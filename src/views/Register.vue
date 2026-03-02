@@ -39,17 +39,39 @@ export default {
   },
 
   methods: {
-    register() {
-      console.log(
-        this.nombre,
-        this.apellido,
-        this.email,
-        this.telefono,
-        this.username,
-        this.password
-      );
+  async register() {
+
+    try {
+      const response = await fetch("http://localhost/inmobiliaria/backend/register.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          nombre: this.nombre,
+          apellidos: this.apellido,
+          email: this.email,
+          telefono: this.telefono,
+          nombre_usuario: this.username,
+          password: this.password
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert("Usuario registrado correctamente");
+        this.$router.push("/login");
+      } else {
+        alert(data.message);
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Error al conectar con el servidor");
     }
   }
+}
 };
 </script>
 <style scoped>

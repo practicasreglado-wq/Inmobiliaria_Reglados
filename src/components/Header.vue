@@ -23,11 +23,11 @@
 
         <!-- Si está logueado -->
         <li v-if="user">
-          <router-link to="/dashboard">Dashboard</router-link>
+          <router-link to="/dashboard">Búsqueda por catálogo</router-link>
         </li>
 
         <li v-if="user" class="bienvenido">
-          Bienvenido {{ user.nombre }}
+          Bienvenido/a {{ user.nombre }}
         </li>
 
         <li v-if="user">
@@ -41,32 +41,33 @@
 </template>
 
 <script>
+import { useUserStore } from "../stores/user";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+
 export default {
   name: "Header",
 
-  data() {
-    return {
-      user: null
-    };
-  },
+  setup() {
+    const userStore = useUserStore();
+    const router = useRouter();
 
-  mounted() {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      this.user = JSON.parse(userData);
-    }
-  },
+    // 🔥 Esto mantiene la reactividad
+    const { user } = storeToRefs(userStore);
 
-  methods: {
-    async logout() {
+    const logout = async () => {
       await fetch("http://localhost/inmobiliaria/backend/logout.php", {
         credentials: "include"
       });
 
-      localStorage.removeItem("user");
-      this.$router.push("/");
-      window.location.reload();
-    }
+      userStore.logout();
+      router.push("/");
+    };
+
+    return {
+      user,
+      logout
+    };
   }
 };
 </script>

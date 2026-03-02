@@ -12,29 +12,41 @@ require_once "config/db.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-$email = trim($data["email"] ?? "");
+$identifier = trim($data["identifier"] ?? "");
 $password = trim($data["password"] ?? "");
 
-if (!$email || !$password) {
-    echo json_encode(["success" => false, "message" => "Campos obligatorios"]);
+if (!$identifier || !$password) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Campos obligatorios"
+    ]);
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT id, nombre, email, password FROM usuarios WHERE email = :email");
-$stmt->execute(["email" => $email]);
+$stmt = $pdo->prepare("
+    SELECT id, nombre, email, nombre_usuario, password
+    FROM usuarios
+    WHERE email = :identifier OR nombre_usuario = :identifier
+    LIMIT 1
+");
+
+$stmt->execute(["identifier" => $identifier]);
 
 $usuario = $stmt->fetch();
 
 if (!$usuario || !password_verify($password, $usuario["password"])) {
-    echo json_encode(["success" => false, "message" => "Credenciales incorrectas"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Credenciales incorrectas"
+    ]);
     exit;
 }
 
-/*  CREAR SESIÓN */
 $_SESSION["user"] = [
     "id" => $usuario["id"],
     "nombre" => $usuario["nombre"],
-    "email" => $usuario["email"]
+    "email" => $usuario["email"],
+    "nombre_usuario" => $usuario["nombre_usuario"]
 ];
 
 echo json_encode([

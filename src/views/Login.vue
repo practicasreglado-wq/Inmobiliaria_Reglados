@@ -17,6 +17,9 @@
 </template>
 
 <script>
+import { useUserStore } from "../stores/user";
+import { useRouter } from "vue-router";
+
 export default {
   name: "Login",
 
@@ -28,39 +31,39 @@ export default {
     };
   },
 
+  setup() {
+    const userStore = useUserStore();
+    const router = useRouter();
+
+    return { userStore, router };
+  },
+
   methods: {
     async login() {
       this.error = "";
 
       try {
         const response = await fetch("http://localhost/inmobiliaria/backend/login.php", {
-        method: "POST",
-        credentials: "include",   // 🔥 IMPORTANTE
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          identifier: this.identifier,
-          password: this.password
-        })
-      });
-
-        if (!response.ok) {
-          throw new Error("Error servidor");
-        }
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            identifier: this.identifier,
+            password: this.password
+          })
+        });
 
         const data = await response.json();
 
         if (data.success) {
-          localStorage.setItem("user", JSON.stringify(data.user));
-          this.$router.push("/dashboard");
+          this.userStore.setUser(data.user);   // 🔥 ESTA LÍNEA ES CLAVE
+          this.router.push("/dashboard");
         } else {
           this.error = data.message;
         }
 
       } catch (err) {
-        console.error(err);
-        this.error = "No se pudo conectar con el servidor";
+        this.error = "Error de conexión";
       }
     }
   }
