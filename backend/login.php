@@ -1,6 +1,9 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
+session_start();
+
+header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -17,32 +20,24 @@ if (!$email || !$password) {
     exit;
 }
 
-try {
+$stmt = $pdo->prepare("SELECT id, nombre, email, password FROM usuarios WHERE email = :email");
+$stmt->execute(["email" => $email]);
 
-    $stmt = $pdo->prepare("SELECT id, nombre, email, password FROM usuarios WHERE email = :email");
-    $stmt->execute(["email" => $email]);
+$usuario = $stmt->fetch();
 
-    $usuario = $stmt->fetch();
-
-    if (!$usuario) {
-        echo json_encode(["success" => false, "message" => "Usuario no existe"]);
-        exit;
-    }
-
-    if (!password_verify($password, $usuario["password"])) {
-        echo json_encode(["success" => false, "message" => "Contraseña incorrecta"]);
-        exit;
-    }
-
-    echo json_encode([
-        "success" => true,
-        "user" => [
-            "id" => $usuario["id"],
-            "nombre" => $usuario["nombre"],
-            "email" => $usuario["email"]
-        ]
-    ]);
-
-} catch (PDOException $e) {
-    echo json_encode(["success" => false, "message" => "Error servidor"]);
+if (!$usuario || !password_verify($password, $usuario["password"])) {
+    echo json_encode(["success" => false, "message" => "Credenciales incorrectas"]);
+    exit;
 }
+
+/*  CREAR SESIÓN */
+$_SESSION["user"] = [
+    "id" => $usuario["id"],
+    "nombre" => $usuario["nombre"],
+    "email" => $usuario["email"]
+];
+
+echo json_encode([
+    "success" => true,
+    "user" => $_SESSION["user"]
+]);

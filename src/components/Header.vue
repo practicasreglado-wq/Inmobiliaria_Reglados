@@ -5,7 +5,6 @@
     </div>
 
     <nav>
-<<<<<<< Updated upstream
       <ul>
         <li>
           <router-link to="/">Inicio</router-link>
@@ -35,15 +34,6 @@
           </button>
         </li>
       </ul>
-=======
-      <router-link to="/">Inicio</router-link>
-      <router-link to="/about-us">Sobre Nosotros</router-link>
-      <router-link to="/properties">Contacto</router-link>
-      <!-- Botón Login -->
-      <router-link to="/login" class="login-btn">
-        Login
-      </router-link>
->>>>>>> Stashed changes
     </nav>
   </header>
 </template>
@@ -60,17 +50,20 @@ export default {
 
   mounted() {
     const userData = localStorage.getItem("user");
-
     if (userData) {
       this.user = JSON.parse(userData);
     }
   },
 
   methods: {
-    logout() {
+    async logout() {
+      await fetch("http://localhost/inmobiliaria/backend/logout.php", {
+        credentials: "include"
+      });
+
       localStorage.removeItem("user");
-      this.user = null;
       this.$router.push("/");
+      window.location.reload();
     }
   }
 };

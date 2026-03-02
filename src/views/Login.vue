@@ -26,11 +26,12 @@ export default {
 
   methods: {
     async login() {
-
       this.error = "";
 
-      const response = await fetch("http://localhost/backend/login.php", {
+      try {
+        const response = await fetch("http://localhost/inmobiliaria/backend/login.php", {
         method: "POST",
+        credentials: "include",   // 🔥 IMPORTANTE
         headers: {
           "Content-Type": "application/json"
         },
@@ -40,15 +41,29 @@ export default {
         })
       });
 
-      const data = await response.json();
+        if (!response.ok) {
+          throw new Error("Error servidor");
+        }
 
-      if (data.success) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-        this.$router.push("/dashboard");
-      } else {
-        this.error = data.message;
+        const data = await response.json();
+
+        if (data.success) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+          this.$router.push("/dashboard");
+        } else {
+          this.error = data.message;
+        }
+
+      } catch (err) {
+        console.error(err);
+        this.error = "No se pudo conectar con el servidor";
       }
     }
   }
 };
 </script>
+<style scoped>
+.login {
+  margin-top: 220px;
+}
+</style>
