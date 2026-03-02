@@ -1,7 +1,29 @@
-/* Estilos Globales */
 /* HTML y Body */
+
+/* Colores principales */
+:root {
+  --azul-principal: #1a2545;
+  --azul-secundario: #2563eb;
+  --blanco: #ffffff;
+  --gris-claro: #f1f5f9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 html, body {
-  font-family: Arial, sans-serif; /* Fuente básica */
-  color: var(--gris-dark); /* Color de texto general */
-  background-color: var(--gris-claro); /* Fondo gris claro */
+  padding: 0;
+  margin: 0;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Contenido principal */
+.main-content {
+  flex: 1;
 }

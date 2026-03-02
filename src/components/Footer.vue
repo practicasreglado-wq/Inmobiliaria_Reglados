@@ -1,5 +1,5 @@
 <template>
-  <footer id="contacto">
+  <footer>
     <p>&copy; 2026 Inmobiliaria</p>
     <p>Contacto: info@inmobiliaria.com</p>
     <p>Dirección: Calle Ficticia, 123, Ciudad</p>
@@ -14,9 +14,9 @@ export default {
 
 <style scoped>
 footer {
-  background-color: #000000;
-  color: white;
-  text-align: center;
+  background-color: var(--azul-principal);
+  color: var(--blanco);
+  text-align: start;
   padding: 20px;
 }
 </style>
