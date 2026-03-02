@@ -17,8 +17,6 @@ export default {
     Header,
     Footer
   },
-
-
   mounted() {
     fetch("http://localhost/inmobiliaria/backend/check_session.php", {
       credentials: "include"

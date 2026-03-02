@@ -15,7 +15,6 @@
         <li>
           <router-link to="/contacto">Contacto</router-link>
         </li>
-
         <!-- Si NO está logueado -->
         <li v-if="!user">
           <router-link to="/login">Login</router-link>
