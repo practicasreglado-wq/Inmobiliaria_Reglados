@@ -1,9 +1,11 @@
 <template>
   <header>
     <div class="logo">
-      <h1>RS Inmobiliaria</h1>
+      <h1>RS</h1>
     </div>
+
     <nav>
+<<<<<<< Updated upstream
       <ul>
         <li>
           <router-link to="/">Inicio</router-link>
@@ -33,6 +35,15 @@
           </button>
         </li>
       </ul>
+=======
+      <router-link to="/">Inicio</router-link>
+      <router-link to="/about-us">Sobre Nosotros</router-link>
+      <router-link to="/properties">Contacto</router-link>
+      <!-- Botón Login -->
+      <router-link to="/login" class="login-btn">
+        Login
+      </router-link>
+>>>>>>> Stashed changes
     </nav>
   </header>
 </template>
@@ -66,44 +77,65 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos para el Header */
 header {
-  background-color: #00000037; /* Fondo negro */
-  color: #ffffff; /* Texto blanco */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
+  padding: 20px 60px;
+
+  /* ✨ Cristal real */
+  background: rgba(255, 255, 255, 0);   /* más visible */
+  backdrop-filter: blur(18px);             /* más desenfoque */
+  -webkit-backdrop-filter: blur(18px);
+  box-sizing: border-box;
 }
 
 header .logo h1 {
-  font-size: 2.5rem;
-  color: #d4af37; /* Dorado para el logo */
+  font-size: 2.8rem;
+  font-weight: 700;
   margin: 0;
+  color: var(--negro);
+  letter-spacing: 2px;
 }
 
-nav ul {
-  list-style-type: none;
+/* Nav horizontal */
+nav {
   display: flex;
-  gap: 20px;
+  align-items: center;
+  gap: 40px;
 }
 
+/* Links normales */
 nav a {
   text-decoration: none;
-  color: #ffffff;
-  font-size: 1.2rem;
-  padding: 8px 15px;
-  border-radius: 5px;
-
+  color: var(--negro);
+  font-size: 1.5rem;
+  font-weight: bold;
+  transition: 0.3s ease;
 }
 
 nav a:hover {
-  background-color: #d4af37; /* Fondo dorado al pasar el mouse */
-  color: #000000; /* Cambiar color del texto a negro al pasar el mouse */
+  color: var(--azul-secundario);
+}
+
+/* 👇 Login como botón */
+nav a:last-child {
+  background-color: rgb(39, 56, 103);
+  color: var(--blanco);
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+nav a:last-child:hover {
+  background-color: rgb(69, 129, 198);
+  color: var(--blanco);
 }
 
 .bienvenido {

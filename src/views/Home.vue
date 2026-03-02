@@ -1,9 +1,21 @@
 <template>
-  <section class="home">
-    <div class="content">
-      <h2>Encuentra el inmueble que se adapta a tus necesidades</h2>
-      <p>Registra tu búsqueda, explora nuestras opciones y recibe alertas cuando lleguen nuevas oportunidades</p>
-      <button>Ver Más</button>
+  <section class="hero">
+    <div class="overlay"></div>
+
+    <div class="hero-content">
+      <h1>
+        <span class="highlight">Reglado</span> State
+      </h1>
+
+      <p class="description">
+        Encuentra el inmueble que se adapta a tus necesidades.
+        Registra tu búsqueda, explora nuestras opciones y recibe alertas
+        cuando lleguen nuevas oportunidades.
+      </p>
+
+      <p class="subtext">
+        La forma más fácil de comprar o vender
+      </p>
     </div>
   </section>
 </template>
@@ -15,52 +27,53 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos para la página Home */
-.home {
-  background-image: url('/src/assets/FondoPrueba.png'); /* Asegúrate de usar la ruta correcta de la imagen */
+.hero {
+  position: relative;
+  height: 100vh;
+  background-image: url('/src/assets/img_Home.png');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
-  height: 100vh;
+  background-repeat: no-repeat;
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
+  justify-content: center; /* 👈 centramos horizontalmente */
+  padding-left: 20px; /* 👈 espacio a la izquierda */;
+  padding-right: 33%; /* 👈 espacio a la derecha */
+}
+
+/* Overlay oscuro para que el texto se lea bien */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.018);
+}
+
+/* Contenido encima del overlay */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 90%;           /* 👈 ahora ocupa todo el ancho */
+  max-width: 100%;       /* 👈 eliminamos la limitación */
+  text-align: start;    /* 👈 opcional pero recomendable */
   color: white;
 }
-
-.content {
-  max-width: 800px;
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente para el texto */
-  border-radius: 10px;
-}
-
-h2 {
-  font-size: 3rem;
-  font-weight: bold;
+.hero h1 {
+  font-size: 7rem;
   margin-bottom: 20px;
-  color: #d4af37; /* Dorado para el título */
 }
 
-p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
+.highlight {
+  color: rgb(220, 185, 97);
 }
 
-button {
-  background-color: #d4af37; /* Botón dorado */
-  color: white;
-  padding: 15px 30px;
-  font-size: 1.2rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
+.description {
+  font-size: 2.75rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
 }
 
-button:hover {
-  background-color: #000000; /* Fondo negro al pasar el mouse */
-  color: #d4af37; /* Texto dorado al pasar el mouse */
+.subtext {
+  font-size: 1.5rem;
+  opacity: 0.85;
 }
 </style>

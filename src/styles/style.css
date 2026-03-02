@@ -2,23 +2,28 @@
 
 /* Colores principales */
 :root {
-  --negro: #000000; /* Negro */
-  --dorado: #d4af37; /* Dorado */
-  --blanco: #ffffff; /* Blanco */
-  --gris-claro: #ffffff; /* Gris suave para fondos */
-  --gris-dark: #333333; /* Gris oscuro para textos */
+  --azul-principal: #1a2545;
+  --azul-secundario: #2563eb;
+  --blanco: #ffffff;
+  --gris-claro: #f1f5f9;
 }
 
-/* Reset de estilos básicos */
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
-/* HTML y Body */
 html, body {
-  font-family: Arial, sans-serif; /* Fuente básica */
-  color: var(--gris-dark); /* Color de texto general */
-  background-color: var(--gris-claro); /* Fondo gris claro */
+  padding: 0;
+  margin: 0;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Contenido principal */
+.main-content {
+  flex: 1;
 }
