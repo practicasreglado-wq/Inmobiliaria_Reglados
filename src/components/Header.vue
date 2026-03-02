@@ -9,7 +9,9 @@
         <li>
           <router-link to="/">Inicio</router-link>
         </li>
-
+        <li>
+          <router-link to="/about-us">Sobre Nosotros</router-link>
+        </li>
         <li>
           <router-link to="/contacto">Contacto</router-link>
         </li>
@@ -76,15 +78,12 @@ header {
   left: 0;
   width: 100%;
   z-index: 1000;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 60px;
-
-  /* ✨ Cristal real */
-  background: rgba(255, 255, 255, 0);   /* más visible */
-  backdrop-filter: blur(18px);             /* más desenfoque */
+  background: rgba(255, 255, 255, 0.331);
+  backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   box-sizing: border-box;
 }
@@ -97,19 +96,23 @@ header .logo h1 {
   letter-spacing: 2px;
 }
 
-/* Nav horizontal */
-nav {
+/* 🔥 UL horizontal sin puntos */
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 35px;
 }
 
 /* Links normales */
 nav a {
   text-decoration: none;
   color: var(--negro);
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.1rem;
+  font-weight: 600;
   transition: 0.3s ease;
 }
 
@@ -117,33 +120,32 @@ nav a:hover {
   color: var(--azul-secundario);
 }
 
-/* 👇 Login como botón */
-nav a:last-child {
+/* 🔵 Login como botón */
+nav a[href="/login"] {
   background-color: rgb(39, 56, 103);
   color: var(--blanco);
   padding: 10px 22px;
   border-radius: 8px;
-  font-weight: 600;
 }
 
-nav a:last-child:hover {
+nav a[href="/login"]:hover {
   background-color: rgb(69, 129, 198);
   color: var(--blanco);
 }
 
+/* Bienvenido */
 .bienvenido {
   color: #d4af37;
   font-weight: bold;
-  display: flex;
-  align-items: center;
 }
 
+/* Botón logout */
 .logout-btn {
   background-color: #d4af37;
   color: black;
   border: none;
   padding: 8px 15px;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   transition: 0.3s;
@@ -151,6 +153,5 @@ nav a:last-child:hover {
 
 .logout-btn:hover {
   background-color: white;
-  color: black;
 }
 </style>
