@@ -77,11 +77,12 @@ header {
   top: 0;
   left: 0;
   width: 100%;
+  height: 90px;
   z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 60px;
+  padding: 0 60px;
   background: rgba(255, 255, 255, 0.331);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
