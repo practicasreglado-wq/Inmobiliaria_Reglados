@@ -9,26 +9,46 @@
 </template>
 
 <script>
+import { onMounted } from "vue";
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
+import { useUserStore } from "./stores/user";
 
 export default {
   components: {
     Header,
     Footer
   },
-  mounted() {
-    fetch("http://localhost/inmobiliaria/backend/check_session.php", {
-      credentials: "include"
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.loggedIn) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-      } else {
-        localStorage.removeItem("user");
+
+  setup() {
+    const userStore = useUserStore();
+
+    onMounted(async () => {
+      try {
+        const res = await fetch(
+          "http://localhost/inmobiliaria/backend/check_session.php",
+          { credentials: "include" }
+        );
+
+        const data = await res.json();
+
+        console.log("SESSION DATA:", data);
+
+        if (data.loggedIn && data.user) {
+          userStore.setUser(data.user);
+        } else {
+          userStore.logout();
+        }
+
+      } catch (err) {
+        console.error("Error cargando sesión:", err);
       }
     });
   }
-}
+};
 </script>
+<style>
+  .main-content {
+    padding-top: 140px; /* igual que la altura del header */
+  }
+</style>

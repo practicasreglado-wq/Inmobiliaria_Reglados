@@ -81,18 +81,9 @@ export default {
         console.log("Respuesta backend:", data);
 
         if (data.success) {
-          userStore.setUser(data.user);
-
-          if (data.user.categoria) {
-            userStore.setCategory(data.user.categoria);
-          }
-
-          if (data.user.preferencias) {
-            userStore.setPreferences(data.user.preferencias);
-          }
-
-          router.push("/dashboard");
-        } else {
+        userStore.setUser(data.user);
+        router.push("/profile");
+      } else {
           error.value = data.message;
         }
 
