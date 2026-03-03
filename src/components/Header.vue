@@ -92,7 +92,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 0 60px;
-  background: rgba(255, 255, 255, 0.331);
+  background: rgba(255, 255, 255, 0.447);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   box-sizing: border-box;

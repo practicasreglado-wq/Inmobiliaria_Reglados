@@ -20,7 +20,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 $categoria = $data["categoria"] ?? null;
 $preferencias = $data["preferencias"] ?? null;
 
-if (!$categoria || !$preferencias) {
+if (!$categoria || !isset($preferencias)) {
     echo json_encode(["success" => false, "message" => "Datos incompletos"]);
     exit;
 }

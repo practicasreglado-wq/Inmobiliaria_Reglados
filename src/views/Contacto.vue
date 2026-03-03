@@ -64,20 +64,17 @@
 </template>
 
 <script>
+import { useUserStore } from "../stores/user";
+
 export default {
   name: "Contacto",
 
-  data() {
-    return {
-      user: null
-    };
-  },
+  setup() {
+    const userStore = useUserStore();
 
-  mounted() {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      this.user = JSON.parse(userData);
-    }
+    return {
+      user: userStore.user
+    };
   }
 };
 </script>

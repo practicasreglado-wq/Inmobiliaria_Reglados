@@ -1,7 +1,6 @@
 <template>
   <footer class="footer">
     <div class="footer-container">
-      <!-- Columna 1 -->
       <div class="footer-col brand">
         <h2>INMOBILIARIA · RS</h2>
         <p>
@@ -11,7 +10,6 @@
         </p>
       </div>
 
-      <!-- Columna 2 -->
       <div class="footer-col">
         <h3>ACTIVOS</h3>
         <ul>
@@ -23,18 +21,22 @@
         </ul>
       </div>
 
-      <!-- Columna 3 -->
       <div class="footer-col">
         <h3>EMPRESA</h3>
         <ul>
           <li>Quiénes somos</li>
-          <li>Metodología</li>
-          <li>Equipo</li>
-          <li>Contacto</li>
-        </ul>
+          <li>
+            <router-link to="/metodologia" class="footer-link">Metodología</router-link>
+          </li>
+          <li>
+            <router-link to="/team" class="footer-link">Equipo</router-link>
+          </li>
+          <li>
+            <router-link to="/contacto" class="footer-link">Contacto</router-link>
+          </li>
+ </ul>
       </div>
 
-      <!-- Columna 4 -->
       <div class="footer-col">
         <h3>ACCESO</h3>
         <ul>
@@ -44,10 +46,8 @@
           <li>Aportar activo</li>
         </ul>
       </div>
-
     </div>
 
-    <!-- Parte inferior -->
     <div class="footer-bottom">
       <span>© 2026 RS Real Estate · Todos los derechos reservados</span>
       <span>Aviso legal · Privacidad · Cookies · RGPD</span>
@@ -55,16 +55,10 @@
   </footer>
 </template>
 
-<script>
-export default {
-  name: "Footer"
-};
-</script>
-
 <style scoped>
 .footer {
   background-color: var(--azul-principal);
-  color: var(--blanco);
+  color: white;
   padding: 70px 80px 30px 80px;
 }
 
@@ -109,6 +103,13 @@ export default {
   transition: 0.3s ease;
 }
 
+/* ESTILO ESPECÍFICO PARA LOS ENLACES */
+.footer-link {
+  text-decoration: none;
+  color: inherit; /* Hereda el color blanco del footer */
+  display: block; /* Para que ocupe el espacio del li */
+}
+
 .footer-col li:hover {
   opacity: 1;
 }
@@ -116,7 +117,7 @@ export default {
 .footer-bottom {
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid rgba(255,255,255,0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding-top: 20px;
   font-size: 0.9rem;
   opacity: 0.85;

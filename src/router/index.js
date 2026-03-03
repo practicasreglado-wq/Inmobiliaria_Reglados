@@ -4,9 +4,11 @@ import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Dashboard from '../views/Dashboard.vue';
 import UserProfile from '../views/Profile.vue';
-import AboutUs from '../views/AboutUs.vue';  // Importa la nueva vista
+import AboutUs from '../views/AboutUs.vue';
 import Contacto from "../views/Contacto.vue";
 import Questions from "../views/Questions.vue";
+import Metodologia from "../views/Metodologia.vue";
+import Team from "../views/Team.vue";
 
 const routes = [
   { path: '/', component: Home },
@@ -14,9 +16,11 @@ const routes = [
   { path: '/register', component: Register },
   { path: '/dashboard', component: Dashboard },
   { path: '/profile', component: UserProfile },
-  { path: '/about-us', component: AboutUs },  // Nueva ruta
+  { path: '/about-us', component: AboutUs },
   { path: "/contacto", component: Contacto },
-  { path: "/questions", component: Questions }
+  { path: "/questions", component: Questions },
+  { path: "/metodologia", component: Metodologia },
+  { path: "/team", component: Team }
 ];
 
 const router = createRouter({
