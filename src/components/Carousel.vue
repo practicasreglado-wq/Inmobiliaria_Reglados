@@ -52,8 +52,8 @@ export default {
       isAnimating: false,
       items: [
         { title: "Edificios", image: new URL('@/assets/img_Home.png', import.meta.url).href },
-        { title: "Hoteles", image: new URL('@/assets/img_Home.png', import.meta.url).href },
-        { title: "Parking", image: new URL('@/assets/img_Home.png', import.meta.url).href }
+        { title: "Hoteles", image: new URL('@/assets/hotel.png', import.meta.url).href },
+        { title: "Parking", image: new URL('@/assets/parking.png', import.meta.url).href }
       ]
     };
   },
