@@ -29,17 +29,16 @@ export default {
 <style scoped>
 .hero {
   position: relative;
-  min-height: calc(100vh - 90px);
-  margin-top: 90px;
+  height: 100vh;
   background-image: url('/src/assets/img_Home.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding-left: 20px;
-  padding-right: 33%;
+  justify-content: center; /* 👈 centramos horizontalmente */
+  padding-left: 20px; /* 👈 espacio a la izquierda */;
+  padding-right: 33%; /* 👈 espacio a la derecha */
 }
 
 /* Overlay oscuro para que el texto se lea bien */
