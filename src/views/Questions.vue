@@ -136,34 +136,34 @@ export default {
     });
 
     const submit = async () => {
+        try {
+            const response = await fetch(
+            "http://localhost/inmobiliaria/backend/save_preferences.php",
+            {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                categoria: category,
+                preferencias: form.value
+                })
+            }
+            );
 
-      // Guardar en Pinia
-      userStore.setPreferences(form.value);
+            const data = await response.json();
 
-      try {
-        const response = await fetch(
-          "http://localhost/inmobiliaria/backend/save_preferences.php",
-          {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              categoria: category,
-              preferencias: form.value
-            })
-          }
-        );
+            if (data.success) {
 
-        const data = await response.json();
+            // 🔥 IMPORTANTE: actualizar store DESPUÉS de guardar
+            userStore.setPreferences({ ...form.value });
 
-        if (data.success) {
-          router.push("/dashboard");
+            router.push("/profile");
+            }
+
+        } catch (err) {
+            console.error("Error conexión:", err);
         }
-
-      } catch (err) {
-        console.error("Error conexión:", err);
-      }
-    };
+        };
 
     return { category, form, submit };
   }

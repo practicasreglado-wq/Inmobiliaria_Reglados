@@ -8,8 +8,12 @@ export const useUserStore = defineStore("user", {
   }),
 
   actions: {
-    setUser(user) {
-      this.user = user;
+    setUser(userData) {
+      this.user = userData;
+
+      // 🔥 MUY IMPORTANTE
+      this.selectedCategory = userData.categoria || null;
+      this.preferences = userData.preferencias || null;
     },
 
     setCategory(category) {
