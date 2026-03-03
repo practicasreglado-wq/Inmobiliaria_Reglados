@@ -17,12 +17,12 @@
         </li>
         <!-- Si NO está logueado -->
         <li v-if="!user">
-          <router-link to="/login">Login</router-link>
+          <router-link to="/login" class="btn-login">Login</router-link>
         </li>
 
         <!-- Si está logueado -->
-        <li v-if="user">
-          <router-link to="/dashboard">Búsqueda por catálogo</router-link>
+        <li v-if="user" >
+          <router-link to="/dashboard" >Búsqueda por catálogo</router-link>
         </li>
 
         <li v-if="user" class="bienvenido">
@@ -121,14 +121,14 @@ nav a:hover {
 }
 
 /* 🔵 Login como botón */
-nav a[href="/login"] {
+.btn-login {
   background-color: rgb(39, 56, 103);
   color: var(--blanco);
   padding: 10px 22px;
   border-radius: 8px;
 }
 
-nav a[href="/login"]:hover {
+.btn-login:hover {
   background-color: rgb(69, 129, 198);
   color: var(--blanco);
 }
@@ -156,8 +156,8 @@ nav a[href="/login"]:hover {
 .logout-btn:hover {
   background-color: var(--azul-secundario);
 }
-/* 🔥 Link activo */
-nav a.router-link-exact-active {
+
+nav a.router-link-exact-active:not(.btn-login) {
   color: var(--azul-secundario);
 }
 </style>
