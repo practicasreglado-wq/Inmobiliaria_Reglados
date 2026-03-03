@@ -85,7 +85,8 @@ export default {
 <style scoped>
 .contacto {
   position: relative;
-  min-height: 100vh;
+  min-height: calc(100vh - 90px);
+  margin-top: 90px;
   background-color: var(--gris-claro);
   background-image: url('@/assets/contact_img.jpg');
   background-size: cover;
