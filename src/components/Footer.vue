@@ -32,7 +32,7 @@
           <li>
             <router-link to="/contacto" class="footer-link">Contacto</router-link>
           </li>
-        </ul>
+ </ul>
       </div>
 
       <div class="footer-col">
@@ -115,7 +115,7 @@
 .footer-bottom {
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid rgba(255,255,255,0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding-top: 20px;
   font-size: 0.9rem;
   opacity: 0.85;
