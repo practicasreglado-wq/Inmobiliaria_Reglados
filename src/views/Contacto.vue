@@ -85,7 +85,7 @@ export default {
   min-height: calc(100vh - 90px);
   margin-top: 90px;
   background-color: var(--gris-claro);
-  background-image: url('@/assets/contact_img.jpg');
+  background-image: url('@/assets/fondito.png');
   background-size: cover;
   background-position: center;
   display: flex;

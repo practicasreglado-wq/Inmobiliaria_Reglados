@@ -98,7 +98,7 @@ export default {
   position: relative;
   min-height: 100vh;
 
-  background-image: url('@/assets/contact_img.jpg'); /* cambia la imagen */
+  background-image: url('@/assets/fondito.png'); /* cambia la imagen */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
