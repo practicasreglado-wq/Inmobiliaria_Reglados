@@ -28,7 +28,9 @@
           <li>
             <router-link to="/metodologia" class="footer-link">Metodología</router-link>
           </li>
-          <li>Equipo</li>
+          <li>
+            <router-link to="/team" class="footer-link">Equipo</router-link>
+          </li>
           <li>
             <router-link to="/contacto" class="footer-link">Contacto</router-link>
           </li>
