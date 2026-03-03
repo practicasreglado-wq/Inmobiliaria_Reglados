@@ -147,6 +147,18 @@ nav a:hover {
   font-size: 1.1rem;
 }
 
+.btn-login {
+  background-color: rgb(39, 56, 103);
+  color: var(--blanco);
+  padding: 10px 22px;
+  border-radius: 8px;
+}
+
+.btn-login:hover {
+  background-color: rgb(69, 129, 198);
+  color: var(--blanco);
+}
+
 .logout-btn {
   font-size: 1rem;
   background-color: rgb(39, 56, 103);
