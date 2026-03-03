@@ -29,7 +29,8 @@ export default {
 <style scoped>
 .hero {
   position: relative;
-  height: 100vh;
+  min-height: calc(100vh - 90px);
+  margin-top: 90px;
   background-image: url('/src/assets/img_Home.png');
   background-size: cover;
   background-position: center;
