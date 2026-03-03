@@ -136,14 +136,15 @@ export default {
 <style scoped>
 .carousel {
   text-align: center;
+  padding: 60px 0;
 }
 
 .categories {
   display: flex;
   justify-content: center;
-  gap: 175px;
-  margin-bottom: 40px;
-  font-size: 1.6rem;
+  gap: 220px; /* más separación */
+  margin-bottom: 60px;
+  font-size: 2rem; /* más grande */
   font-weight: 500;
 }
 
@@ -163,7 +164,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 40px;
+  gap: 60px; /* más aire */
 }
 
 /* Flechas */
@@ -172,9 +173,9 @@ export default {
   color: white;
   border: none;
   border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  font-size: 20px;
+  width: 60px;   /* más grande */
+  height: 60px;  /* más grande */
+  font-size: 26px;
   cursor: pointer;
   transition: 0.3s ease;
 }
@@ -185,23 +186,23 @@ export default {
 
 .cards {
   display: flex;
-  gap: 40px;
+  gap: 60px; /* más separación */
   align-items: flex-end;
 }
 
 .card {
-  width: 220px;
-  height: 300px;
+  width: 300px;   /* antes 220px */
+  height: 400px;  /* antes 300px */
   background-size: cover;
   background-position: center;
-  border-radius: 15px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  border-radius: 20px; /* más elegante */
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
   transform: scale(0.95);
 }
 
 .center {
-  transform: scale(1.08) translateY(-15px);
-  box-shadow: 0 20px 35px rgba(0,0,0,0.25);
+  transform: scale(1.12) translateY(-20px);
+  box-shadow: 0 25px 45px rgba(0,0,0,0.25);
 }
 </style>

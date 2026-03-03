@@ -1,11 +1,15 @@
 <template>
   <section class="about">
 
-    <!-- Lado izquierdo (placeholders imágenes) -->
-    <div class="about-images">
-      <div class="img-small"></div>
-      <div class="img-large"></div>
-    </div>
+   <!-- Lado izquierdo (imágenes reales) -->
+<div class="about-images">
+  <div class="img-large">
+    <img src="@/assets/aboutimg2.png" alt="Descripción imagen pequeña">
+  </div>
+  <div class="img-small">
+    <img src="@/assets/aboutimg.jpg" alt="Descripción imagen grande">
+  </div>
+</div>
 
     <!-- Lado derecho (texto) -->
     <div class="about-content">
@@ -35,7 +39,8 @@ export default {
 
 <style scoped>
 .about {
-  min-height: 100vh;
+  min-height: calc(100vh - 90px);
+  margin-top: 90px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,20 +52,32 @@ export default {
 /* ----- IMÁGENES (simuladas) ----- */
 
 .about-images {
+  position: relative;
   display: flex;
+  align-items: flex-start;
   gap: 30px;
 }
 
-.img-small {
-  width: 200px;
-  height: 280px;
-  background-color: #d9d9d9;
+/* Imagen izquierda (más ancha) */
+.img-large {
+  width: 380px;
+  height: 420px;
+  overflow: hidden;
+  margin-top: 120px; /* baja la imagen */
 }
 
-.img-large {
-  width: 200px;
-  height: 350px;
-  background-color: #cfcfcf;
+/* Imagen derecha (más alta y estilizada) */
+.img-small {
+  width: 270px;
+  height: 460px;
+  overflow: hidden;
+}
+
+.about-images img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* ----- CONTENIDO ----- */

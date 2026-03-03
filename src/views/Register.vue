@@ -1,5 +1,6 @@
 <template>
   <div class="register">
+    <div class="overlay"></div>
     <div class="vent-register">
       <h2>Bienvenido</h2>
 
@@ -94,12 +95,25 @@ export default {
 </script>
 <style scoped>
 .register {
+  position: relative;
   min-height: 100vh;
+
+  background-image: url('@/assets/contact_img.jpg'); /* cambia la imagen */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: var(--gris-claro);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.363);
+  z-index: 0;
 }
 
 .register h2 {
@@ -112,6 +126,7 @@ export default {
   padding: 0 40px 25px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1;
 }
 
 /* Tarjeta */

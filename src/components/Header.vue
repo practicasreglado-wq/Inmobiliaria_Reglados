@@ -18,7 +18,7 @@
 
         <!-- Si NO está logueado -->
         <li v-if="!user">
-          <router-link to="/login">Login</router-link>
+          <router-link to="/login" class="btn-login">Login</router-link>
         </li>
 
         <!-- Si está logueado -->
@@ -86,11 +86,12 @@ header {
   top: 0;
   left: 0;
   width: 100%;
+  height: 90px;
   z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 60px;
+  padding: 0 60px;
   background: rgba(255, 255, 255, 0.331);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -143,11 +144,13 @@ nav a:hover {
 .bienvenido {
   color: #d4af37;
   font-weight: bold;
+  font-size: 1.1rem;
 }
 
 .logout-btn {
-  background-color: #d4af37;
-  color: black;
+  font-size: 1rem;
+  background-color: rgb(39, 56, 103);
+  color: white;
   border: none;
   padding: 8px 15px;
   border-radius: 6px;
@@ -157,6 +160,10 @@ nav a:hover {
 }
 
 .logout-btn:hover {
-  background-color: white;
+  background-color: var(--azul-secundario);
+}
+
+nav a.router-link-exact-active:not(.btn-login) {
+  color: var(--azul-secundario);
 }
 </style>
