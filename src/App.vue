@@ -47,8 +47,3 @@ export default {
   }
 };
 </script>
-<style>
-  .main-content {
-    padding-top: 140px; /* igual que la altura del header */
-  }
-</style>
