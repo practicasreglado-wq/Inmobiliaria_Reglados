@@ -16,15 +16,15 @@
 
       <button class="arrow" @click="prev">❮</button>
 
-      <div class="cards">
+      <transition-group name="slide" tag="div" class="cards">
         <div
-          v-for="(item, index) in items"
-          :key="index"
-          class="card"
-          :class="{ center: index === 1 && !isAnimating }"
-          :style="{ backgroundImage: `url(${item.image})` }"
-        ></div>
-      </div>
+        v-for="(item, index) in items"
+        :key="item.title"
+        class="card"
+        :class="{ center: index === 1 && !isAnimating }"
+        :style="{ backgroundImage: `url(${item.image})` }"
+      ></div>
+</transition-group>
 
       <button class="arrow" @click="next">❯</button>
 
@@ -163,5 +163,31 @@ export default {
 .center {
   transform: scale(1.12) translateY(-20px);
   box-shadow: 0 25px 45px rgba(0,0,0,0.25);
+}
+
+/* Animación de movimiento */
+.slide-move {
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+/* Cuando entra */
+.slide-enter-active {
+  transition: all 0.6s ease;
+}
+
+/* Cuando sale */
+.slide-leave-active {
+  transition: all 0.6s ease;
+  position: absolute;
+}
+
+.slide-enter-from {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.slide-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
 }
 </style>
