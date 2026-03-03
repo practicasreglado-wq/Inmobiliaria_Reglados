@@ -28,8 +28,10 @@
           </button>
         </li>
 
-        <li v-if="user" class="bienvenido">
-          Bienvenido/a {{ user.nombre }}
+        <li v-if="user">
+          <router-link to="/profile" class="bienvenido">
+            Bienvenido/a {{ user.nombre }}
+          </router-link>
         </li>
 
         <li v-if="user">
@@ -141,10 +143,17 @@ nav a:hover {
   background-color: var(--azul-secundario);
 }
 
-.bienvenido {
+nav a.bienvenido {
   color: #d4af37;
   font-weight: bold;
   font-size: 1.1rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+nav a.bienvenido:hover {
+  color: var(--azul-secundario);
 }
 
 .btn-login {

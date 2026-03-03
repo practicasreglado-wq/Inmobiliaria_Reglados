@@ -94,3 +94,53 @@ export default {
 };
 
 </script>
+<style scoped>
+  .profile {
+  min-height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
+  display: flex; /* Flexbox para centrar contenido */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  background-color: var(--gris-claro); /* Color de fondo */
+}
+
+.profile-container {
+  text-align: center; /* Alinea el texto al centro */
+  padding: 20px; /* Añadir algo de relleno */
+  background-color: white; /* Fondo blanco para el contenedor */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  width: 100%; /* Para que el contenedor ocupe todo el espacio disponible */
+  max-width: 600px; /* Limitar el ancho máximo */
+}
+
+.category {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.pref-group {
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background-color: #f3f3f3;
+  margin: 5px 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+button {
+  margin-top: 25px;
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: var(--azul-principal);
+  color: white;
+  cursor: pointer;
+}
+</style>
