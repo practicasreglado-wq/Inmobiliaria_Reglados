@@ -15,14 +15,17 @@
         <li>
           <router-link to="/contacto">Contacto</router-link>
         </li>
+
         <!-- Si NO está logueado -->
         <li v-if="!user">
           <router-link to="/login" class="btn-login">Login</router-link>
         </li>
 
         <!-- Si está logueado -->
-        <li v-if="user" >
-          <router-link to="/dashboard" >Búsqueda por catálogo</router-link>
+        <li v-if="user">
+          <button class="catalog-btn" @click="goToCatalog">
+            Búsqueda por catálogo
+          </button>
         </li>
 
         <li v-if="user" class="bienvenido">
@@ -51,7 +54,6 @@ export default {
     const userStore = useUserStore();
     const router = useRouter();
 
-    // 🔥 Esto mantiene la reactividad
     const { user } = storeToRefs(userStore);
 
     const logout = async () => {
@@ -63,9 +65,16 @@ export default {
       router.push("/");
     };
 
+    const goToCatalog = () => {
+      // 🔥 Limpiar categoría para que vuelva a mostrarse el carrusel
+      userStore.setCategory(null);
+      router.push("/dashboard");
+    };
+
     return {
       user,
-      logout
+      logout,
+      goToCatalog
     };
   }
 };
@@ -97,7 +106,6 @@ header .logo h1 {
   letter-spacing: 2px;
 }
 
-/* 🔥 UL horizontal sin puntos */
 nav ul {
   list-style: none;
   margin: 0;
@@ -107,7 +115,6 @@ nav ul {
   gap: 35px;
 }
 
-/* Links normales */
 nav a {
   text-decoration: none;
   color: var(--negro);
@@ -120,7 +127,26 @@ nav a:hover {
   color: var(--azul-secundario);
 }
 
-/* 🔵 Login como botón */
+.catalog-btn {
+  background-color: var(--azul-principal);
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.catalog-btn:hover {
+  background-color: var(--azul-secundario);
+}
+
+.bienvenido {
+  color: #d4af37;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
 .btn-login {
   background-color: rgb(39, 56, 103);
   color: var(--blanco);
@@ -133,14 +159,6 @@ nav a:hover {
   color: var(--blanco);
 }
 
-/* Bienvenido */
-.bienvenido {
-  color: #d4af37;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-/* Botón logout */
 .logout-btn {
   font-size: 1rem;
   background-color: rgb(39, 56, 103);

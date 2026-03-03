@@ -34,42 +34,60 @@
 </template>
 
 <script>
+import { useRouter } from "vue-router";
+import { useUserStore } from "../stores/user";
+import { onMounted } from "vue";
+
 export default {
   name: "Carousel",
+
+  setup() {
+    const router = useRouter();
+    const userStore = useUserStore();
+
+    return { router, userStore };
+  },
 
   data() {
     return {
       isAnimating: false,
       items: [
-        {
-          title: "Edificios",
-          image: new URL('@/assets/img_Home.png', import.meta.url).href
-        },
-        {
-          title: "Hoteles",
-          image: new URL('@/assets/hotel.png', import.meta.url).href
-        },
-        {
-          title: "Parking",
-          image: new URL('@/assets/parking.png', import.meta.url).href
-        }
+        { title: "Edificios", image: new URL('@/assets/img_Home.png', import.meta.url).href },
+        { title: "Hoteles", image: new URL('@/assets/hotel.png', import.meta.url).href },
+        { title: "Parking", image: new URL('@/assets/parking.png', import.meta.url).href }
       ]
     };
+  },
+
+  mounted() {
+    // 🔥 Auto posicionar según categoría guardada
+    const savedCategory = this.userStore.selectedCategory;
+
+    if (!savedCategory) return;
+
+    const index = this.items.findIndex(
+      item => item.title === savedCategory
+    );
+
+    if (index === -1) return;
+
+    // mover esa categoría al centro (posición 1)
+    while (this.items[1].title !== savedCategory) {
+      const first = this.items.shift();
+      this.items.push(first);
+    }
   },
 
   methods: {
     next() {
       if (this.isAnimating) return;
-
       this.isAnimating = true;
 
-      // 1️⃣ quitar efecto centro
       setTimeout(() => {
         const first = this.items.shift();
         this.items.push(first);
       }, 200);
 
-      // 2️⃣ permitir que el nuevo centro se agrande
       setTimeout(() => {
         this.isAnimating = false;
       }, 400);
@@ -77,7 +95,6 @@ export default {
 
     prev() {
       if (this.isAnimating) return;
-
       this.isAnimating = true;
 
       setTimeout(() => {
@@ -88,6 +105,31 @@ export default {
       setTimeout(() => {
         this.isAnimating = false;
       }, 400);
+    },
+
+    async selectCategory(index) {
+      if (index !== 1) return;
+
+      const selected = this.items[1].title;
+
+      // Guardar en Pinia
+      this.userStore.setCategory(selected);
+
+      // 🔥 Actualizar base de datos inmediatamente
+      await fetch(
+        "http://localhost/inmobiliaria/backend/save_preferences.php",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            categoria: selected,
+            preferencias: this.userStore.preferences
+          })
+        }
+      );
+
+      this.router.push("/questions");
     }
   }
 };
