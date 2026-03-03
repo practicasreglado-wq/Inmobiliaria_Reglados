@@ -1,7 +1,6 @@
 <template>
   <footer class="footer">
     <div class="footer-container">
-      <!-- Columna 1 -->
       <div class="footer-col brand">
         <h2>INMOBILIARIA · RS</h2>
         <p>
@@ -11,7 +10,6 @@
         </p>
       </div>
 
-      <!-- Columna 2 -->
       <div class="footer-col">
         <h3>ACTIVOS</h3>
         <ul>
@@ -23,18 +21,16 @@
         </ul>
       </div>
 
-      <!-- Columna 3 -->
       <div class="footer-col">
         <h3>EMPRESA</h3>
         <ul>
           <li>Quiénes somos</li>
           <li>Metodología</li>
-          <li>Equipo</li>
+          <li><router-link to="/team" class="footer-link">Equipo</router-link></li>
           <li>Contacto</li>
         </ul>
       </div>
 
-      <!-- Columna 4 -->
       <div class="footer-col">
         <h3>ACCESO</h3>
         <ul>
@@ -44,10 +40,8 @@
           <li>Aportar activo</li>
         </ul>
       </div>
-
     </div>
 
-    <!-- Parte inferior -->
     <div class="footer-bottom">
       <span>© 2026 RS Real Estate · Todos los derechos reservados</span>
       <span>Aviso legal · Privacidad · Cookies · RGPD</span>
@@ -57,7 +51,7 @@
 
 <script>
 export default {
-  name: "Footer"
+  name: "FooterComponent" // Es mejor usar nombres compuestos
 };
 </script>
 
@@ -102,15 +96,22 @@ export default {
   padding: 0;
 }
 
-.footer-col li {
+/* Estilo común para li y enlaces */
+.footer-col li, 
+.footer-link {
   margin-bottom: 12px;
   opacity: 0.85;
   cursor: pointer;
   transition: 0.3s ease;
+  text-decoration: none; /* Quita el subrayado */
+  color: inherit; /* Hereda el color blanco */
+  display: block; /* Para que el margen funcione bien */
 }
 
-.footer-col li:hover {
+.footer-col li:hover, 
+.footer-link:hover {
   opacity: 1;
+  padding-left: 5px; /* Un pequeño efecto visual opcional */
 }
 
 .footer-bottom {
@@ -120,5 +121,16 @@ export default {
   padding-top: 20px;
   font-size: 0.9rem;
   opacity: 0.85;
+}
+
+/* Responsive básico */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .footer {
+    padding: 40px 20px;
+  }
 }
 </style>

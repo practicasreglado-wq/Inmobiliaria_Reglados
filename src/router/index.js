@@ -7,6 +7,7 @@ import UserProfile from '../views/Profile.vue';
 import AboutUs from '../views/AboutUs.vue';  // Importa la nueva vista
 import Contacto from "../views/Contacto.vue";
 import Questions from "../views/Questions.vue";
+import Team from "../views/Team.vue";
 
 const routes = [
   { path: '/', component: Home },
@@ -16,7 +17,8 @@ const routes = [
   { path: '/profile', component: UserProfile },
   { path: '/about-us', component: AboutUs },  // Nueva ruta
   { path: "/contacto", component: Contacto },
-  { path: "/questions", component: Questions }
+  { path: "/questions", component: Questions },
+  { path: "/team", component: Team }
 ];
 
 const router = createRouter({
