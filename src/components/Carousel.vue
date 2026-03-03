@@ -18,12 +18,13 @@
 
       <transition-group name="slide" tag="div" class="cards">
         <div
-        v-for="(item, index) in items"
-        :key="item.title"
-        class="card"
-        :class="{ center: index === 1 && !isAnimating }"
-        :style="{ backgroundImage: `url(${item.image})` }"
-      ></div>
+          v-for="(item, index) in items"
+          :key="item.title"
+          class="card"
+          :class="{ center: index === 1 && !isAnimating }"
+          :style="{ backgroundImage: `url(${item.image})` }"
+          @click="selectCategory(index)"
+        ></div>
 </transition-group>
 
       <button class="arrow" @click="next">❯</button>
