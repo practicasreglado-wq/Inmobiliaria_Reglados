@@ -10,8 +10,12 @@ require_once "config/db.php";
 $data = json_decode(file_get_contents("php://input"), true);
 
 $nombre = trim($data["nombre"] ?? "");
+$apellido = trim($data["apellidos"] ?? "");
+$telefono = trim($data["telefono"] ?? "");
+$username = trim($data["nombre_usuario"] ?? "");
 $email = trim($data["email"] ?? "");
 $password = trim($data["password"] ?? "");
+
 
 if (!$nombre || !$email || !$password) {
     echo json_encode(["success" => false, "message" => "Campos obligatorios"]);
@@ -32,12 +36,15 @@ try {
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
     $stmt = $pdo->prepare("
-        INSERT INTO usuarios (nombre, email, password)
-        VALUES (:nombre, :email, :password)
+        INSERT INTO usuarios (nombre,apellidos,telefono,nombre_usuario,email, password)
+        VALUES (:nombre, :apellidos, :telefono, :nombre_usuario, :email, :password)
     ");
 
     $stmt->execute([
         "nombre" => $nombre,
+        "apellidos" => $apellido,
+        "telefono" => $telefono,
+        "nombre_usuario" => $username,
         "email" => $email,
         "password" => $passwordHash
     ]);
