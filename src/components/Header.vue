@@ -101,7 +101,6 @@ nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
-
   display: flex;
   align-items: center;
   gap: 35px;
@@ -137,12 +136,14 @@ nav a[href="/login"]:hover {
 .bienvenido {
   color: #d4af37;
   font-weight: bold;
+  font-size: 1.1rem;
 }
 
 /* Botón logout */
 .logout-btn {
-  background-color: #d4af37;
-  color: black;
+  font-size: 1rem;
+  background-color: rgb(39, 56, 103);
+  color: white;
   border: none;
   padding: 8px 15px;
   border-radius: 6px;
@@ -152,6 +153,10 @@ nav a[href="/login"]:hover {
 }
 
 .logout-btn:hover {
-  background-color: white;
+  background-color: var(--azul-secundario);
+}
+/* 🔥 Link activo */
+nav a.router-link-exact-active {
+  color: var(--azul-secundario);
 }
 </style>

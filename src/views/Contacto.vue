@@ -2,15 +2,31 @@
   <div class="contacto">
     <div class="overlay"></div>
     <!-- Lado izquierdo -->
-    <div class="contacto-texto">
-      <h1>
-        <span class="highlight">Crea tu cuenta</span>
-      </h1>
+<div class="contacto-texto">
 
-      <p>
-        Obtén acceso a listados premium y recomendaciones personalizadas.
-      </p>
-    </div>
+  <!-- Si NO está logeado -->
+  <template v-if="!user">
+    <h1>
+      <span class="highlight">Crea tu cuenta</span>
+    </h1>
+
+    <p>
+      Obtén acceso a listados premium y recomendaciones personalizadas.
+    </p>
+  </template>
+
+  <!-- Si está logeado -->
+  <template v-else>
+    <h1>
+      <span class="highlight">Bienvenido {{ user.nombre }}</span>
+    </h1>
+
+    <p>
+      Estamos encantados de tenerte de nuevo. Nuestro equipo responderá tu consulta lo antes posible.
+    </p>
+  </template>
+
+</div>
 
     <!-- Tarjeta derecha -->
     <div class="contacto-card">
@@ -39,7 +55,7 @@
         </div>
       </div>
     </div>
-    <div class="login-link">
+    <div class="login-link" v-if="!user">
         ¿Ya tienes una cuenta?
         <span @click="$router.push('/login')">Login</span>
       </div>
@@ -49,7 +65,20 @@
 
 <script>
 export default {
-  name: "Contacto"
+  name: "Contacto",
+
+  data() {
+    return {
+      user: null
+    };
+  },
+
+  mounted() {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      this.user = JSON.parse(userData);
+    }
+  }
 };
 </script>
 
@@ -58,7 +87,7 @@ export default {
   position: relative;
   min-height: 100vh;
   background-color: var(--gris-claro);
-  /* background-image: url('@/assets/img_Home.png'); */
+  background-image: url('@/assets/contact_img.jpg');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -72,7 +101,7 @@ export default {
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.142);
+  background: rgba(0, 0, 0, 0.363);
   z-index: 0;
 }
 
