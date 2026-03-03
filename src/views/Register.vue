@@ -2,14 +2,13 @@
   <div class="register">
     <div class="vent-register">
       <h2>Bienvenido</h2>
+
       <form @submit.prevent="register">
         <div class="grid">
           <input type="text" v-model="nombre" placeholder="Nombre" required />
           <input type="text" v-model="apellido" placeholder="Apellido" required />
-
           <input type="email" v-model="email" placeholder="Correo electrónico" required />
           <input type="text" v-model="telefono" placeholder="Teléfono" required />
-
           <input type="text" v-model="username" placeholder="Nombre de usuario" required />
           <input type="password" v-model="password" placeholder="Contraseña" required />
         </div>
@@ -18,12 +17,15 @@
           Registrarse
         </button>
       </form>
+
+      <p v-if="error" class="error">{{ error }}</p>
     </div>
-    
   </div>
 </template>
 
 <script>
+import { useUserStore } from "../stores/user";
+
 export default {
   name: "Register",
 
@@ -34,44 +36,60 @@ export default {
       email: "",
       telefono: "",
       username: "",
-      password: ""
+      password: "",
+      error: ""
     };
   },
 
   methods: {
-  async register() {
+    async register() {
+      this.error = "";
 
-    try {
-      const response = await fetch("http://localhost/inmobiliaria/backend/register.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          nombre: this.nombre,
-          apellidos: this.apellido,
-          email: this.email,
-          telefono: this.telefono,
-          nombre_usuario: this.username,
-          password: this.password
-        })
-      });
+      const userStore = useUserStore(); // ✅ esto sí funciona aquí
 
-      const data = await response.json();
+      try {
+        const response = await fetch(
+          "http://localhost/inmobiliaria/backend/register.php",
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              nombre: this.nombre,
+              apellido: this.apellido,
+              email: this.email,
+              telefono: this.telefono,
+              username: this.username,
+              password: this.password
+            })
+          }
+        );
 
-      if (data.success) {
-        alert("Usuario registrado correctamente");
-        this.$router.push("/login");
-      } else {
-        alert(data.message);
+        const text = await response.text();
+        console.log("RESPUESTA CRUDA:", text);
+
+        const data = JSON.parse(text);
+
+        if (data.success) {
+
+          // 🔥 Guardar usuario en Pinia
+          userStore.setUser(data.user);
+
+          // 🔥 Redirigir correctamente
+          this.$router.push("/dashboard");
+
+        } else {
+          this.error = data.message;
+        }
+
+      } catch (err) {
+        console.error("Error real:", err);
+        this.error = "Error de conexión con el servidor";
       }
-
-    } catch (error) {
-      console.error(error);
-      alert("Error al conectar con el servidor");
     }
   }
-}
 };
 </script>
 <style scoped>

@@ -2,18 +2,28 @@ import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    user: JSON.parse(localStorage.getItem("user")) || null
+    user: null,
+    selectedCategory: null,
+    preferences: null
   }),
 
   actions: {
-    setUser(userData) {
-      this.user = userData;
-      localStorage.setItem("user", JSON.stringify(userData));
+    setUser(user) {
+      this.user = user;
+    },
+
+    setCategory(category) {
+      this.selectedCategory = category;
+    },
+
+    setPreferences(preferences) {
+      this.preferences = preferences;
     },
 
     logout() {
       this.user = null;
-      localStorage.removeItem("user");
+      this.selectedCategory = null;
+      this.preferences = null;
     }
   }
 });

@@ -1,71 +1,112 @@
 <template>
   <div class="login">
     <div class="vent-login">
-      <h2>Bienvenido</h2><form @submit.prevent="login">
-      <input type="text" v-model="identifier" placeholder="Email o usuario" required />
-      <input type="password" v-model="password" placeholder="Contraseña" required />
-      <button type="submit" class="login-btn">
-        Iniciar Sesión
-      </button>
-      <button class="register-btn" @click="$router.push('/register')">
-        Registrarme
-      </button>
-    </form>
-    <p v-if="error" class="error">{{ error }}</p>
+      <h2>Bienvenido</h2>
+
+      <form @submit.prevent="login">
+        <input
+          type="text"
+          v-model="identifier"
+          placeholder="Email o usuario"
+          required
+        />
+
+        <input
+          type="password"
+          v-model="password"
+          placeholder="Contraseña"
+          required
+        />
+
+        <button type="submit" class="login-btn">
+          Iniciar Sesión
+        </button>
+
+        <button
+          type="button"
+          class="register-btn"
+          @click="$router.push('/register')"
+        >
+          Registrarme
+        </button>
+      </form>
+
+      <p v-if="error" class="error">{{ error }}</p>
     </div>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
 import { useUserStore } from "../stores/user";
 import { useRouter } from "vue-router";
 
 export default {
   name: "Login",
 
-  data() {
-    return {
-      identifier: "",
-      password: "",
-      error: ""
-    };
-  },
-
   setup() {
+    const identifier = ref("");
+    const password = ref("");
+    const error = ref("");
+
     const userStore = useUserStore();
     const router = useRouter();
 
-    return { userStore, router };
-  },
-
-  methods: {
-    async login() {
-      this.error = "";
+    const login = async () => {
+      error.value = "";
 
       try {
-        const response = await fetch("http://localhost/inmobiliaria/backend/login.php", {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            identifier: this.identifier,
-            password: this.password
-          })
-        });
+        const response = await fetch(
+          "http://localhost/inmobiliaria/backend/login.php",
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              identifier: identifier.value,
+              password: password.value
+            })
+          }
+        );
+
+        if (!response.ok) {
+          error.value = "Error servidor";
+          return;
+        }
 
         const data = await response.json();
+        console.log("Respuesta backend:", data);
 
         if (data.success) {
-          this.userStore.setUser(data.user);   // 🔥 ESTA LÍNEA ES CLAVE
-          this.router.push("/dashboard");
+          userStore.setUser(data.user);
+
+          if (data.user.categoria) {
+            userStore.setCategory(data.user.categoria);
+          }
+
+          if (data.user.preferencias) {
+            userStore.setPreferences(data.user.preferencias);
+          }
+
+          router.push("/dashboard");
         } else {
-          this.error = data.message;
+          error.value = data.message;
         }
 
       } catch (err) {
-        this.error = "Error de conexión";
+        console.error("Error real:", err);
+        error.value = "Error de conexión con el servidor";
       }
-    }
+    };
+
+    return {
+      identifier,
+      password,
+      error,
+      login
+    };
   }
 };
 </script>

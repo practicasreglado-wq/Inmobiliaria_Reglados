@@ -16,15 +16,13 @@ $identifier = trim($data["identifier"] ?? "");
 $password = trim($data["password"] ?? "");
 
 if (!$identifier || !$password) {
-    echo json_encode([
-        "success" => false,
-        "message" => "Campos obligatorios"
-    ]);
+    echo json_encode(["success" => false, "message" => "Campos obligatorios"]);
     exit;
 }
 
 $stmt = $pdo->prepare("
-    SELECT id, nombre, email, nombre_usuario, password
+    SELECT id, nombre, email, nombre_usuario, password,
+           categoria_seleccionada, preferencias
     FROM usuarios
     WHERE email = :identifier OR nombre_usuario = :identifier
     LIMIT 1
@@ -35,10 +33,7 @@ $stmt->execute(["identifier" => $identifier]);
 $usuario = $stmt->fetch();
 
 if (!$usuario || !password_verify($password, $usuario["password"])) {
-    echo json_encode([
-        "success" => false,
-        "message" => "Credenciales incorrectas"
-    ]);
+    echo json_encode(["success" => false, "message" => "Credenciales incorrectas"]);
     exit;
 }
 
@@ -51,5 +46,14 @@ $_SESSION["user"] = [
 
 echo json_encode([
     "success" => true,
-    "user" => $_SESSION["user"]
+    "user" => [
+        "id" => $usuario["id"],
+        "nombre" => $usuario["nombre"],
+        "email" => $usuario["email"],
+        "nombre_usuario" => $usuario["nombre_usuario"],
+        "categoria" => $usuario["categoria_seleccionada"],
+        "preferencias" => $usuario["preferencias"]
+            ? json_decode($usuario["preferencias"], true)
+            : null
+    ]
 ]);

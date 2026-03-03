@@ -15,6 +15,7 @@
         <li>
           <router-link to="/contacto">Contacto</router-link>
         </li>
+
         <!-- Si NO está logueado -->
         <li v-if="!user">
           <router-link to="/login">Login</router-link>
@@ -22,7 +23,9 @@
 
         <!-- Si está logueado -->
         <li v-if="user">
-          <router-link to="/dashboard">Búsqueda por catálogo</router-link>
+          <button class="catalog-btn" @click="goToCatalog">
+            Búsqueda por catálogo
+          </button>
         </li>
 
         <li v-if="user" class="bienvenido">
@@ -51,7 +54,6 @@ export default {
     const userStore = useUserStore();
     const router = useRouter();
 
-    // 🔥 Esto mantiene la reactividad
     const { user } = storeToRefs(userStore);
 
     const logout = async () => {
@@ -63,9 +65,16 @@ export default {
       router.push("/");
     };
 
+    const goToCatalog = () => {
+      // 🔥 Limpiar categoría para que vuelva a mostrarse el carrusel
+      userStore.setCategory(null);
+      router.push("/dashboard");
+    };
+
     return {
       user,
-      logout
+      logout,
+      goToCatalog
     };
   }
 };
@@ -96,18 +105,15 @@ header .logo h1 {
   letter-spacing: 2px;
 }
 
-/* 🔥 UL horizontal sin puntos */
 nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
-
   display: flex;
   align-items: center;
   gap: 35px;
 }
 
-/* Links normales */
 nav a {
   text-decoration: none;
   color: var(--negro);
@@ -120,26 +126,25 @@ nav a:hover {
   color: var(--azul-secundario);
 }
 
-/* 🔵 Login como botón */
-nav a[href="/login"] {
-  background-color: rgb(39, 56, 103);
-  color: var(--blanco);
+.catalog-btn {
+  background-color: var(--azul-principal);
+  color: white;
+  border: none;
   padding: 10px 22px;
   border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
 }
 
-nav a[href="/login"]:hover {
-  background-color: rgb(69, 129, 198);
-  color: var(--blanco);
+.catalog-btn:hover {
+  background-color: var(--azul-secundario);
 }
 
-/* Bienvenido */
 .bienvenido {
   color: #d4af37;
   font-weight: bold;
 }
 
-/* Botón logout */
 .logout-btn {
   background-color: #d4af37;
   color: black;
