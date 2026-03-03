@@ -1,75 +1,113 @@
 <template>
-  <div class="questions">
-    <h2>Preferencias para {{ category }}</h2>
+  <div class="questions-layout">
 
-    <form @submit.prevent="submit">
+    <!-- IZQUIERDA (Visual) -->
+    <div class="left-side">
+      <div class="overlay"></div>
 
-      <!-- 🔵 HOTELES -->
-      <div v-if="category === 'Hoteles'">
-        <h3>Estrellas</h3>
-        <label v-for="star in ['3 estrellas', '4 estrellas', '5 estrellas']" :key="star">
-          <input type="checkbox" :value="star" v-model="form.estrellas" />
-          {{ star }}
-        </label>
-
-        <h3>Servicios</h3>
-        <label v-for="serv in ['Spa', 'Piscina', 'Gimnasio', 'Parking privado', 'Restaurante', 'Room Service', 'Vista al mar']" :key="serv">
-          <input type="checkbox" :value="serv" v-model="form.servicios" />
-          {{ serv }}
-        </label>
-
-        <h3>Ubicación</h3>
-        <label v-for="loc in ['Centro ciudad', 'Playa', 'Montaña', 'Zona rural']" :key="loc">
-          <input type="checkbox" :value="loc" v-model="form.ubicacion" />
-          {{ loc }}
-        </label>
+      <div class="left-content">
+        <div class="logo">RS</div>
+        <span class="label">Deja tu búsqueda a nosotros</span>
+        <h1>Cuéntanos qué<br>es lo que buscas...</h1>
       </div>
+    </div>
 
-      <!-- 🔵 PARKING -->
-      <div v-if="category === 'Parking'">
-        <h3>Tipo</h3>
-        <label v-for="tipo in ['Subterráneo', 'Exterior', 'Privado', 'Público']" :key="tipo">
-          <input type="checkbox" :value="tipo" v-model="form.tipo" />
-          {{ tipo }}
-        </label>
+    <!-- DERECHA (Tu formulario real) -->
+    <div class="right-side">
+      <form @submit.prevent="submit">
 
-        <h3>Características</h3>
-        <label v-for="car in ['Vigilancia 24h', 'Acceso automático', 'Cámaras de seguridad', 'Carga eléctrica']" :key="car">
-          <input type="checkbox" :value="car" v-model="form.caracteristicas" />
-          {{ car }}
-        </label>
+        <h2 class="form-title">
+          Tus Preferencias para {{ category }}
+        </h2>
 
-        <h3>Ubicación</h3>
-        <label v-for="zona in ['Centro', 'Residencial', 'Comercial']" :key="zona">
-          <input type="checkbox" :value="zona" v-model="form.zona" />
-          {{ zona }}
-        </label>
-      </div>
+        <!-- 🔵 HOTELES -->
+        <div v-if="category === 'Hoteles'" class="section">
+          <h3>Estrellas</h3>
+          <div class="options">
+            <label v-for="star in ['3 estrellas','4 estrellas','5 estrellas']" :key="star">
+              <input type="checkbox" :value="star" v-model="form.estrellas" />
+              {{ star }}
+            </label>
+          </div>
 
-      <!-- 🔵 EDIFICIOS -->
-      <div v-if="category === 'Edificios'">
-        <h3>Uso</h3>
-        <label v-for="uso in ['Residencial', 'Oficinas', 'Comercial', 'Industrial']" :key="uso">
-          <input type="checkbox" :value="uso" v-model="form.uso" />
-          {{ uso }}
-        </label>
+          <h3>Servicios</h3>
+          <div class="options">
+            <label v-for="serv in ['Spa','Piscina','Gimnasio','Parking privado','Restaurante','Room Service','Vista al mar']" :key="serv">
+              <input type="checkbox" :value="serv" v-model="form.servicios" />
+              {{ serv }}
+            </label>
+          </div>
 
-        <h3>Características</h3>
-        <label v-for="car in ['Ascensor', 'Garaje', 'Terraza', 'Reformado', 'Nuevo']" :key="car">
-          <input type="checkbox" :value="car" v-model="form.caracteristicas" />
-          {{ car }}
-        </label>
+          <h3>Ubicación</h3>
+          <div class="options">
+            <label v-for="loc in ['Centro ciudad','Playa','Montaña','Zona rural']" :key="loc">
+              <input type="checkbox" :value="loc" v-model="form.ubicacion" />
+              {{ loc }}
+            </label>
+          </div>
+        </div>
 
-        <h3>Zona</h3>
-        <label v-for="zona in ['Centro', 'Periferia', 'Zona financiera']" :key="zona">
-          <input type="checkbox" :value="zona" v-model="form.zona" />
-          {{ zona }}
-        </label>
-      </div>
+        <!-- 🔵 PARKING -->
+        <div v-if="category === 'Parking'" class="section">
+          <h3>Tipo</h3>
+          <div class="options">
+            <label v-for="tipo in ['Subterráneo','Exterior','Privado','Público']" :key="tipo">
+              <input type="checkbox" :value="tipo" v-model="form.tipo" />
+              {{ tipo }}
+            </label>
+          </div>
 
-      <button type="submit">Guardar preferencias</button>
+          <h3>Características</h3>
+          <div class="options">
+            <label v-for="car in ['Vigilancia 24h','Acceso automático','Cámaras de seguridad','Carga eléctrica']" :key="car">
+              <input type="checkbox" :value="car" v-model="form.caracteristicas" />
+              {{ car }}
+            </label>
+          </div>
 
-    </form>
+          <h3>Ubicación</h3>
+          <div class="options">
+            <label v-for="zona in ['Centro','Residencial','Comercial']" :key="zona">
+              <input type="checkbox" :value="zona" v-model="form.zona" />
+              {{ zona }}
+            </label>
+          </div>
+        </div>
+
+        <!-- 🔵 EDIFICIOS -->
+        <div v-if="category === 'Edificios'" class="section">
+          <h3>Uso</h3>
+          <div class="options">
+            <label v-for="uso in ['Residencial','Oficinas','Comercial','Industrial']" :key="uso">
+              <input type="checkbox" :value="uso" v-model="form.uso" />
+              {{ uso }}
+            </label>
+          </div>
+
+          <h3>Características</h3>
+          <div class="options">
+            <label v-for="car in ['Ascensor','Garaje','Terraza','Reformado','Nuevo']" :key="car">
+              <input type="checkbox" :value="car" v-model="form.caracteristicas" />
+              {{ car }}
+            </label>
+          </div>
+
+          <h3>Zona</h3>
+          <div class="options">
+            <label v-for="zona in ['Centro','Periferia','Zona financiera']" :key="zona">
+              <input type="checkbox" :value="zona" v-model="form.zona" />
+              {{ zona }}
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          Guardar preferencias
+        </button>
+
+      </form>
+    </div>
+
   </div>
 </template>
 
@@ -133,39 +171,115 @@ export default {
 </script>
 
 <style scoped>
-.questions {
-  min-height: 100vh;
-  padding-top: 120px;
+.questions-layout {
   display: flex;
-  flex-direction: column;
+  min-height: 100vh;
+  background-image: url('@/assets/contact_img.jpg');
+}
+
+/* IZQUIERDA */
+.left-side {
+  flex: 1;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  display: flex;
   align-items: center;
+  padding: 80px;
+  color: white;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.498);
+}
+
+.left-content {
+  position: relative;
+  z-index: 1;
+}
+
+.logo {
+  font-size: 3rem;
+  font-weight: 600;
+}
+
+.label {
+  color: #d4af37;
+  font-size: 2.5rem;
+}
+
+.left-content h1 {
+  font-size: 4rem;
+  font-weight: 300;
+  margin: 20px 0;
+  line-height: 1.2;
+}
+
+.contact-info {
+  margin-top: 40px;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* DERECHA */
+.right-side {
+  width: 48.75%;
+  background: #f5f5f531;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 450px;
-  margin-top: 30px;
+  background: white;
+  padding: 50px;
+  border-radius: 30px;
+  width: 100%;
+  max-width: 650px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+  max-height: 85vh;
+  overflow-y: auto;
 }
 
-h3 {
-  margin-top: 20px;
+.form-title {
+  margin-bottom: 25px;
+}
+
+.section {
+  margin-bottom: 25px;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 25px;
 }
 
 label {
   display: flex;
   gap: 8px;
   align-items: center;
+  font-size: 0.95rem;
 }
 
-button {
-  margin-top: 25px;
-  padding: 12px;
-  border-radius: 6px;
+.submit-btn {
+  margin-top: 30px;
+  width: 60%;
+  align-self: center;
+  padding: 15px;
+  border-radius: 30px;
   border: none;
-  background-color: var(--azul-principal);
+  background-color: #24386b;
   color: white;
+  font-size: 1.1rem;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: var(--azul-secundario);
 }
 </style>

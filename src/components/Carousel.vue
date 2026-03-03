@@ -201,11 +201,13 @@ export default {
   box-shadow: 0 15px 30px rgba(0,0,0,0.15);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
   transform: scale(0.95);
+  cursor: default;
 }
 
 .center {
   transform: scale(1.12) translateY(-20px);
   box-shadow: 0 25px 45px rgba(0,0,0,0.25);
+  cursor: pointer;
 }
 
 /* Animación de movimiento */
