@@ -1,11 +1,11 @@
 <template>
   <div class="carousel">
 
-    <!-- Títulos dinámicos -->
+    <!-- Títulos -->
     <div class="categories">
       <span
-        v-for="(item, index) in items"
-        :key="index"
+        v-for="(item, index) in visibleItems"
+        :key="item.title"
         :class="{ active: index === 1 }"
       >
         {{ item.title }}
@@ -16,16 +16,18 @@
 
       <button class="arrow" @click="prev">❮</button>
 
-      <transition-group name="slide" tag="div" class="cards">
+      <div class="cards">
+
         <div
-          v-for="(item, index) in items"
+          v-for="(item, index) in visibleItems"
           :key="item.title"
           class="card"
-          :class="{ center: index === 1 && !isAnimating }"
+          :class="cardClass(index)"
           :style="{ backgroundImage: `url(${item.image})` }"
           @click="selectCategory(index)"
         ></div>
-</transition-group>
+
+      </div>
 
       <button class="arrow" @click="next">❯</button>
 
@@ -37,7 +39,6 @@
 <script>
 import { useRouter } from "vue-router";
 import { useUserStore } from "../stores/user";
-import { onMounted } from "vue";
 
 export default {
   name: "Carousel",
@@ -45,7 +46,6 @@ export default {
   setup() {
     const router = useRouter();
     const userStore = useUserStore();
-
     return { router, userStore };
   },
 
@@ -53,26 +53,26 @@ export default {
     return {
       isAnimating: false,
       items: [
-        { title: "Edificios", image: new URL('@/assets/img_Home.png', import.meta.url).href },
+        { title: "Edificios", image: new URL('@/assets/edificios.png', import.meta.url).href },
         { title: "Hoteles", image: new URL('@/assets/hotel.png', import.meta.url).href },
-        { title: "Parking", image: new URL('@/assets/parking.png', import.meta.url).href }
+        { title: "Parking", image: new URL('@/assets/parking.png', import.meta.url).href },
+        { title: "Activos", image: new URL('@/assets/activos.png', import.meta.url).href },
+        { title: "Fincas", image: new URL('@/assets/finca.png', import.meta.url).href }
       ]
     };
   },
 
-  mounted() {
-    // 🔥 Auto posicionar según categoría guardada
-    const savedCategory = this.userStore.selectedCategory;
+  computed: {
+    visibleItems() {
+      // Solo mostramos los 3 primeros
+      return this.items.slice(0, 3);
+    }
+  },
 
+  mounted() {
+    const savedCategory = this.userStore.selectedCategory;
     if (!savedCategory) return;
 
-    const index = this.items.findIndex(
-      item => item.title === savedCategory
-    );
-
-    if (index === -1) return;
-
-    // mover esa categoría al centro (posición 1)
     while (this.items[1].title !== savedCategory) {
       const first = this.items.shift();
       this.items.push(first);
@@ -80,14 +80,19 @@ export default {
   },
 
   methods: {
+
+    cardClass(index) {
+      if (index === 1) return "center";
+      if (index === 0) return "left";
+      if (index === 2) return "right";
+    },
+
     next() {
       if (this.isAnimating) return;
       this.isAnimating = true;
 
-      setTimeout(() => {
-        const first = this.items.shift();
-        this.items.push(first);
-      }, 200);
+      const first = this.items.shift();
+      this.items.push(first);
 
       setTimeout(() => {
         this.isAnimating = false;
@@ -98,10 +103,8 @@ export default {
       if (this.isAnimating) return;
       this.isAnimating = true;
 
-      setTimeout(() => {
-        const last = this.items.pop();
-        this.items.unshift(last);
-      }, 200);
+      const last = this.items.pop();
+      this.items.unshift(last);
 
       setTimeout(() => {
         this.isAnimating = false;
@@ -111,12 +114,10 @@ export default {
     async selectCategory(index) {
       if (index !== 1) return;
 
-      const selected = this.items[1].title;
+      const selected = this.visibleItems[1].title;
 
-      // Guardar en Pinia
       this.userStore.setCategory(selected);
 
-      // 🔥 Actualizar base de datos inmediatamente
       await fetch(
         "http://localhost/inmobiliaria/backend/save_preferences.php",
         {
@@ -135,104 +136,90 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .carousel {
   text-align: center;
-  padding: 60px 0;
+  padding: 80px 0;
 }
 
+/* TITULOS */
 .categories {
   display: flex;
   justify-content: center;
-  gap: 220px; /* más separación */
+  gap: 220px;
   margin-bottom: 60px;
-  font-size: 2rem; /* más grande */
+  font-size: 2rem;
   font-weight: 500;
 }
 
 .categories span {
-  cursor: pointer;
-  transition: 0.3s ease;
   opacity: 0.75;
+  transition: 0.3s;
 }
 
 .categories .active {
-  font-weight: 700;
   opacity: 1;
+  font-weight: 700;
 }
 
-/* Wrapper */
+/* WRAPPER */
 .carousel-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 60px; /* más aire */
+  gap: 50px;
 }
 
-/* Flechas */
+/* FLECHAS */
 .arrow {
   background-color: var(--azul-principal);
   color: white;
   border: none;
   border-radius: 50%;
-  width: 60px;   /* más grande */
-  height: 60px;  /* más grande */
+  width: 60px;
+  height: 60px;
   font-size: 26px;
   cursor: pointer;
-  transition: 0.3s ease;
 }
 
-.arrow:hover {
+.arrow:hover{
   background-color: var(--azul-secundario);
 }
 
+/* CARDS */
 .cards {
   display: flex;
-  gap: 60px; /* más separación */
-  align-items: flex-end;
+  align-items: center;
+  gap: 40px;
 }
 
 .card {
-  width: 300px;   /* antes 220px */
-  height: 400px;  /* antes 300px */
+  width: 280px;
+  height: 380px;
   background-size: cover;
   background-position: center;
-  border-radius: 20px; /* más elegante */
-  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  transform: scale(0.95);
-  cursor: default;
+  border-radius: 20px;
+  transition: 0.4s ease;
 }
 
+/* IZQUIERDA */
+.left {
+  transform: scale(0.95);
+  opacity: 0.6;
+}
+
+/* CENTRO */
 .center {
-  transform: scale(1.12) translateY(-20px);
+  transform: scale(1.15);
+  opacity: 1;
   box-shadow: 0 25px 45px rgba(0,0,0,0.25);
   cursor: pointer;
 }
 
-/* Animación de movimiento */
-.slide-move {
-  transition: transform 0.6s ease, opacity 0.6s ease;
-}
-
-/* Cuando entra */
-.slide-enter-active {
-  transition: all 0.6s ease;
-}
-
-/* Cuando sale */
-.slide-leave-active {
-  transition: all 0.6s ease;
-  position: absolute;
-}
-
-.slide-enter-from {
-  opacity: 0;
-  transform: scale(0.8);
-}
-
-.slide-leave-to {
-  opacity: 0;
-  transform: scale(0.8);
+/* DERECHA */
+.right {
+  transform: scale(0.95);
+  opacity: 0.6;
 }
 </style>
