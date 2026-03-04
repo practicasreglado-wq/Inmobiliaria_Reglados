@@ -1,4 +1,3 @@
-// router.js
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
@@ -12,6 +11,9 @@ import Settings from '../views/Settings.vue';
 import Questions from '../views/Questions.vue';
 import AboutUs from '../views/AboutUs.vue';  
 import Contacto from '../views/Contacto.vue';
+// Agregar las vistas para las nuevas rutas
+import Team from '../views/Team.vue';  // Vista para el equipo
+import Metodologia from '../views/Metodologia.vue';  // Vista para la metodología
 
 const routes = [
   { path: '/', component: Home },
@@ -33,6 +35,9 @@ const routes = [
   { path: '/questions', component: Questions },
   { path: '/about-us', component: AboutUs },
   { path: '/contacto', component: Contacto },
+  // Nuevas rutas
+  { path: '/team', component: Team },  // Ruta para el equipo
+  { path: '/metodologia', component: Metodologia },  // Ruta para la metodología
 ];
 
 const router = createRouter({

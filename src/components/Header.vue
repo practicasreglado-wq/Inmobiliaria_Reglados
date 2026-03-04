@@ -144,10 +144,10 @@ nav a:hover, .catalog-btn:hover {
 }
 
 .catalog-btn {
-  background-color: transparent;
+  background: rgba(255, 255, 255, 0);
+  font-size: 1rem;
   border: none;
   cursor: pointer;
-  font-weight: 600;
   text-decoration: none;
   padding: 10px 22px;
   color: var(--negro);
