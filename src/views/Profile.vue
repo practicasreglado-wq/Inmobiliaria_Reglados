@@ -92,21 +92,23 @@ export default {
 .profile {
   display: flex;
   min-height: 100vh;
-  background-color: #f4f4f4;
+  background-color: #ffffff;
   box-sizing: border-box;
 }
 
 .sidebar {
-  width: 250px; /* Ancho fijo del menú lateral */
-  background-color: #fff;
-  padding: 20px;
+  width: 350px; /* Ancho fijo del menú lateral */
+  background-color: #222f57;
+  padding: 90px 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar h3 {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 20px;
+  padding-left: 10px;
+  color: goldenrod;
 }
 
 .sidebar ul {
@@ -120,14 +122,34 @@ export default {
 
 .sidebar ul li a {
   text-decoration: none;
-  color: #333;
-  font-size: 1.1rem;
+  color: #ffffff;
+  font-size: 1.5rem;
+  display: block;
+  padding: 10px;
+  border-radius: 5px; /* Border radius para que se vean redondeados */
+  transition: all 0.3s ease;
 }
 
+/* Efecto hover */
+.sidebar ul li a:hover {
+  background-color: #f0c14be4; /* Color de fondo en hover (similar a amarillo claro) */
+  color: #fff; /* Color blanco para el texto */
+  cursor: pointer;
+}
+
+/* Estilo para el enlace activo */
+.sidebar ul li a.router-link-exact-active{
+  background-color: #f0c14b;
+  
+  
+}
+
+/* Perfil: contenido principal */
 .profile-content {
   flex-grow: 1;
+  margin-top: 90px;
   padding: 70px;
-  background-color: white;
+  background-color: var(--gris-claro);
   border-radius: 8px;
   margin-left: 1px; /* Ajuste para que el contenido se acomode al lado del menú lateral */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
