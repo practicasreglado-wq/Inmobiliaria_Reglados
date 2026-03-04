@@ -7,10 +7,6 @@ export const useUserStore = defineStore("user", {
     preferences: null
   }),
 
-  getters: {
-    isLoggedIn: (state) => !!state.user
-  },
-
   actions: {
     setUser(userData) {
       this.user = userData;
@@ -24,8 +20,6 @@ export const useUserStore = defineStore("user", {
       localStorage.setItem('selectedCategory', this.selectedCategory);
       localStorage.setItem('preferences', JSON.stringify(this.preferences));
     },
-    
-  },
 
     setCategory(category) {
       this.selectedCategory = category;
@@ -45,4 +39,8 @@ export const useUserStore = defineStore("user", {
       localStorage.removeItem('selectedCategory');
       localStorage.removeItem('preferences');
     }
-  });
+  },
+
+  // Persistir estado en localStorage (opcional)
+  persist: true
+});
