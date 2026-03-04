@@ -1,19 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useUserStore } from '../stores/user';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Dashboard from '../views/Dashboard.vue';
-import UserProfile from '../views/Profile.vue';  // Ruta principal del perfil
-import FavoriteProperties from '../views/FavoriteProperties.vue';
-import Messages from '../views/Messages.vue';
-import PropertiesForSale from '../views/PropertiesForSale.vue';
-import Settings from '../views/Settings.vue';
-import Questions from '../views/Questions.vue';
-import AboutUs from '../views/AboutUs.vue';  
-import Contacto from '../views/Contacto.vue';
-// Agregar las vistas para las nuevas rutas
-import Team from '../views/Team.vue';  // Vista para el equipo
-import Metodologia from '../views/Metodologia.vue';  // Vista para la metodología
+import UserProfile from '../views/Profile.vue';
+import AboutUs from '../views/AboutUs.vue';
+import Contacto from "../views/Contacto.vue";
+import Questions from "../views/Questions.vue";
+import Metodologia from "../views/Metodologia.vue";
+import Team from "../views/Team.vue";
+import GiveInfo from "../views/GiveInfo.vue";
+//Aportar activo
+import ContributeAssets from "../views/ContributeAssets.vue";
 
 const routes = [
   { path: '/', component: Home },
@@ -34,15 +33,33 @@ const routes = [
   },
   { path: '/questions', component: Questions },
   { path: '/about-us', component: AboutUs },
-  { path: '/contacto', component: Contacto },
-  // Nuevas rutas
-  { path: '/team', component: Team },  // Ruta para el equipo
-  { path: '/metodologia', component: Metodologia },  // Ruta para la metodología
+  { path: "/contacto", component: Contacto },
+  { path: "/questions", component: Questions },
+  { path: "/metodologia", component: Metodologia },
+  { path: "/team", component: Team },
+  { path: "/give-info", component: GiveInfo },
+  { path: "/contribute-assets", component: ContributeAssets,
+    meta: { requiresAuth: true } // Etiqueta para proteger la ruta
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
+});
+
+// 3. LA GUARDIA DE NAVEGACIÓN (El "Segurata")
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore();
+  
+  // Si la ruta requiere autenticación y el usuario no está logueado
+  if (to.meta.requiresAuth && !userStore.isLoggedIn) {
+    // Lo mandamos a la página informativa en lugar de al login directo
+    // para que entienda por qué tiene que registrarse
+    next('/give-info');
+  } else {
+    next(); // En cualquier otro caso, adelante
+  }
 });
 
 export default router;

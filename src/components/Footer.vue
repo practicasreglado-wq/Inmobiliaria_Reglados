@@ -43,7 +43,11 @@
           <li>Panel Privado</li>
           <li>Deja tu búsqueda</li>
           <li>Solicitar NDA</li>
-          <li>Aportar activo</li>
+          <li>
+            <a href="#" @click.prevent="irAAportar" class="footer-link highlight">
+            Aportar activo
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -55,6 +59,21 @@
   </footer>
 </template>
 
+<script setup>
+import { useUserStore } from "@/stores/user";
+import { useRouter } from "vue-router";
+
+const userStore = useUserStore();
+const router = useRouter();
+
+const irAAportar = () => {
+  if (userStore.isLoggedIn) {
+    router.push('/contribute-assets');
+  } else {
+    router.push('/give-info');
+  }
+};
+</script>
 <style scoped>
 .footer {
   background-color: var(--azul-principal);
