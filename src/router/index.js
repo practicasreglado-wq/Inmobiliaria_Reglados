@@ -11,21 +11,23 @@ import Questions from "../views/Questions.vue";
 import Metodologia from "../views/Metodologia.vue";
 import Team from "../views/Team.vue";
 import GiveInfo from "../views/GiveInfo.vue";
-//Aportar activo
 import ContributeAssets from "../views/ContributeAssets.vue";
+import FavoriteProperties from "../views/FavoriteProperties.vue";
+import Messages from "../views/Messages.vue";
+import PropertiesForSale from "../views/PropertiesForSale.vue";
+import Settings from "../views/Settings.vue";
 
 const routes = [
   { path: '/', component: Home },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/dashboard', component: Dashboard },
-  // Ruta principal para el perfil del usuario
   { 
     path: '/profile', 
     component: UserProfile, 
     children: [
       { path: '', redirect: '/profile/properties-for-sale' }, // Redirigir a las propiedades en venta por defecto
-      { path: 'favorite-properties', component: FavoriteProperties },
+      { path: 'favorite-properties', component: FavoriteProperties }, // Ahora debería funcionar
       { path: 'messages', component: Messages },
       { path: 'properties-for-sale', component: PropertiesForSale },
       { path: 'settings', component: Settings },
@@ -34,7 +36,6 @@ const routes = [
   { path: '/questions', component: Questions },
   { path: '/about-us', component: AboutUs },
   { path: "/contacto", component: Contacto },
-  { path: "/questions", component: Questions },
   { path: "/metodologia", component: Metodologia },
   { path: "/team", component: Team },
   { path: "/give-info", component: GiveInfo },
@@ -48,14 +49,12 @@ const router = createRouter({
   routes
 });
 
-// 3. LA GUARDIA DE NAVEGACIÓN (El "Segurata")
+// Guardia de navegación
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
   
   // Si la ruta requiere autenticación y el usuario no está logueado
   if (to.meta.requiresAuth && !userStore.isLoggedIn) {
-    // Lo mandamos a la página informativa en lugar de al login directo
-    // para que entienda por qué tiene que registrarse
     next('/give-info');
   } else {
     next(); // En cualquier otro caso, adelante
