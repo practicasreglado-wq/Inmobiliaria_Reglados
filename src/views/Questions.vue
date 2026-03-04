@@ -101,6 +101,60 @@
           </div>
         </div>
 
+        <!-- 🔵 FINCAS -->
+        <div v-if="category === 'Fincas'" class="section">
+          <h3>Tipo</h3>
+          <div class="options">
+            <label v-for="tipo in ['Rural', 'Agrícola', 'Forestal']" :key="tipo">
+              <input type="checkbox" :value="tipo" v-model="form.tipo" />
+              {{ tipo }}
+            </label>
+          </div>
+
+          <h3>Características</h3>
+          <div class="options">
+            <label v-for="car in ['Agua potable', 'Acceso por carretera', 'Parcela vallada']" :key="car">
+              <input type="checkbox" :value="car" v-model="form.caracteristicas" />
+              {{ car }}
+            </label>
+          </div>
+
+          <h3>Ubicación</h3>
+          <div class="options">
+            <label v-for="zona in ['Zona rural', 'Cerca de río', 'Montaña']" :key="zona">
+              <input type="checkbox" :value="zona" v-model="form.zona" />
+              {{ zona }}
+            </label>
+          </div>
+        </div>
+
+        <!-- 🔵 ACTIVOS -->
+        <div v-if="category === 'Activos'" class="section">
+          <h3>Tipo de activo</h3>
+          <div class="options">
+            <label v-for="tipo in ['Comercial', 'Industrial', 'Residencial']" :key="tipo">
+              <input type="checkbox" :value="tipo" v-model="form.tipo" />
+              {{ tipo }}
+            </label>
+          </div>
+
+          <h3>Características</h3>
+          <div class="options">
+            <label v-for="car in ['Fachada renovada', 'Cercano a transporte público', 'Espacios adaptados']" :key="car">
+              <input type="checkbox" :value="car" v-model="form.caracteristicas" />
+              {{ car }}
+            </label>
+          </div>
+
+          <h3>Ubicación</h3>
+          <div class="options">
+            <label v-for="zona in ['Centro de la ciudad', 'Zona industrial']" :key="zona">
+              <input type="checkbox" :value="zona" v-model="form.zona" />
+              {{ zona }}
+            </label>
+          </div>
+        </div>
+
         <button type="submit" class="submit-btn">
           Guardar preferencias
         </button>
@@ -114,7 +168,7 @@
 <script>
 import { useUserStore } from "../stores/user";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 export default {
   name: "Questions",
@@ -123,8 +177,10 @@ export default {
     const userStore = useUserStore();
     const router = useRouter();
 
-    const category = userStore.selectedCategory;
+    // Cargar categoría desde localStorage o userStore
+    const category = ref(userStore.selectedCategory || localStorage.getItem('selectedCategory') || 'Hoteles');
 
+    // Inicializamos el formulario vacío
     const form = ref({
       estrellas: [],
       servicios: [],
@@ -135,35 +191,43 @@ export default {
       uso: []
     });
 
+    // Guardar categoría y preferencias en localStorage al montar
+    onMounted(() => {
+      localStorage.setItem('selectedCategory', category.value);
+      localStorage.removeItem('preferences');  // Limpiar preferencias previas
+    });
+
     const submit = async () => {
-        try {
-            const response = await fetch(
-            "http://localhost/inmobiliaria/backend/save_preferences.php",
-            {
-                method: "POST",
-                credentials: "include",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                categoria: category,
-                preferencias: form.value
-                })
-            }
-            );
+      try {
+        const response = await fetch(
+          "http://localhost/inmobiliaria/backend/save_preferences.php",
+          {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              categoria: category.value,  // Usar category.value
+              preferencias: form.value
+            })
+          }
+        );
 
-            const data = await response.json();
+        const data = await response.json();
 
-            if (data.success) {
+        if (data.success) {
+          // Guardar las preferencias en localStorage (sin acumular preferencias previas)
+          localStorage.setItem('preferences', JSON.stringify(form.value));
 
-            // 🔥 IMPORTANTE: actualizar store DESPUÉS de guardar
-            userStore.setPreferences({ ...form.value });
+          // Actualizar el store
+          userStore.setPreferences({ ...form.value });
 
-            router.push("/profile");
-            }
-
-        } catch (err) {
-            console.error("Error conexión:", err);
+          // Redirigir al perfil
+          router.push("/profile");
         }
-        };
+      } catch (err) {
+        console.error("Error conexión:", err);
+      }
+    };
 
     return { category, form, submit };
   }
@@ -173,8 +237,11 @@ export default {
 <style scoped>
 .questions-layout {
   display: flex;
-  min-height: 100vh;
-  background-image: url('@/assets/contact_img.jpg');
+  min-height: calc(100vh - 90px);
+  margin-top: 90px;
+  background-image: url('@/assets/fondito.png');
+  background-size: cover;
+  background-position: center;
 }
 
 /* IZQUIERDA */
@@ -225,8 +292,8 @@ export default {
 
 /* DERECHA */
 .right-side {
-  width: 48.75%;
-  background: #f5f5f531;
+  width: 60%;
+  background: #75727250;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -234,7 +301,7 @@ export default {
 }
 
 form {
-  background: white;
+   background: rgba(255, 255, 255, 0.95);
   padding: 50px;
   border-radius: 30px;
   width: 100%;

@@ -9,13 +9,15 @@ import FavoriteProperties from '../views/FavoriteProperties.vue';
 import Messages from '../views/Messages.vue';
 import PropertiesForSale from '../views/PropertiesForSale.vue';
 import Settings from '../views/Settings.vue';
+import Questions from '../views/Questions.vue';
+import AboutUs from '../views/AboutUs.vue';  
+import Contacto from '../views/Contacto.vue';
 
 const routes = [
   { path: '/', component: Home },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/dashboard', component: Dashboard },
-  
   // Ruta principal para el perfil del usuario
   { 
     path: '/profile', 
@@ -28,6 +30,9 @@ const routes = [
       { path: 'settings', component: Settings },
     ]
   },
+  { path: '/questions', component: Questions },
+  { path: '/about-us', component: AboutUs },
+  { path: '/contacto', component: Contacto },
 ];
 
 const router = createRouter({

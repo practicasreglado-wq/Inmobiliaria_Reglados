@@ -58,8 +58,7 @@ export default {
 
   computed: {
     visibleItems() {
-      // Solo mostramos los 3 primeros
-      return this.items.slice(0, 3);
+      return this.items.slice(0, 3); // Solo mostramos los primeros 3 elementos
     }
   },
 
@@ -74,61 +73,66 @@ export default {
   },
 
   methods: {
-    cardClass(index) {
-      if (index === 1) return "center";
-      if (index === 0) return "left";
-      if (index === 2) return "right";
-    },
+  cardClass(index) {
+    if (index === 1) return "center";
+    if (index === 0) return "left";
+    if (index === 2) return "right";
+  },
 
-    next() {
-      if (this.isAnimating) return;
-      this.isAnimating = true;
+  next() {
+    if (this.isAnimating) return;
+    this.isAnimating = true;
 
-      const first = this.items.shift();
-      this.items.push(first);
+    const first = this.items.shift();
+    this.items.push(first);
 
-      setTimeout(() => {
-        this.isAnimating = false;
-      }, 400);
-    },
+    setTimeout(() => {
+      this.isAnimating = false;
+    }, 400);
+  },
 
-    prev() {
-      if (this.isAnimating) return;
-      this.isAnimating = true;
+  prev() {
+    if (this.isAnimating) return;
+    this.isAnimating = true;
 
-      const last = this.items.pop();
-      this.items.unshift(last);
+    const last = this.items.pop();
+    this.items.unshift(last);
 
-      setTimeout(() => {
-        this.isAnimating = false;
-      }, 400);
-    },
+    setTimeout(() => {
+      this.isAnimating = false;
+    }, 400);
+  },
 
-    async selectCategory(index) {
-      if (index !== 1) return;
+  // Método para seleccionar la categoría y redirigir a las preguntas
+  async selectCategory(index) {
+    if (index !== 1) return;  // Solo permitir la selección del elemento central
 
-      const selected = this.visibleItems[1].title;
+    const selected = this.visibleItems[1].title;
 
-      this.userStore.setCategory(selected);
+    // Actualizamos el store con la categoría seleccionada
+    this.userStore.setCategory(selected);
 
-      // Guardar la categoría seleccionada y las preferencias
-      await fetch(
-        "http://localhost/inmobiliaria/backend/save_preferences.php",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            categoria: selected,
-            preferencias: this.userStore.preferences
-          })
-        }
-      );
+    // Guardar la categoría seleccionada y las preferencias
+    await fetch(
+      "http://localhost/inmobiliaria/backend/save_preferences.php",
+      {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          categoria: selected,
+          preferencias: this.userStore.preferences
+        })
+      }
+    );
 
-      // Redirigir al formulario de preguntas para que el usuario seleccione sus preferencias
-      this.router.push("/questions");
-    }
+    // Guardamos la categoría seleccionada en localStorage
+    localStorage.setItem('selectedCategory', selected);
+
+    // Redirigimos a la página de preguntas
+    this.router.push("/questions");
   }
+}
 };
 </script>
 
