@@ -45,7 +45,7 @@
 import { useUserStore } from "../stores/user";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 
 export default {
   name: "Profile",
@@ -55,14 +55,28 @@ export default {
     const router = useRouter();
 
     const { user, selectedCategory: category, preferences } = storeToRefs(userStore);
+
+    // Recuperar categoría y preferencias desde localStorage
+    onMounted(() => {
+      const savedCategory = localStorage.getItem('selectedCategory');
+      if (savedCategory && !userStore.selectedCategory) {
+        userStore.setCategory(savedCategory);  // Cargar la categoría desde localStorage
+      }
+
+      const savedPreferences = localStorage.getItem('preferences');
+      if (savedPreferences) {
+        userStore.setPreferences(JSON.parse(savedPreferences));  // Cargar las preferencias
+      }
+    });
+
     const changeCategory = () => {
       userStore.setCategory(null);
+      localStorage.removeItem('selectedCategory'); // Eliminar categoría de localStorage si se cambia
       router.push("/dashboard");
     };
 
     const hasPreferences = computed(() => {
       if (!preferences.value) return false;
-
       return Object.values(preferences.value).some(
         arr => Array.isArray(arr) && arr.length > 0
       );
@@ -92,7 +106,6 @@ export default {
     };
   }
 };
-
 </script>
 <style scoped>
   .profile {

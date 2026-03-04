@@ -1,19 +1,13 @@
 <template>
   <section class="dashboard">
     <div class="dashboard-container">
-
-      <!-- Solo mostramos carrusel si no hay categoría -->
-      <Carousel v-if="!category" />
-
+      <!-- Siempre mostramos el carrusel, sin importar si hay categoría seleccionada o no -->
+      <Carousel />
     </div>
   </section>
 </template>
 
 <script>
-import { useUserStore } from "../stores/user";
-import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
-import { onMounted } from "vue";
 import Carousel from "../components/Carousel.vue";
 
 export default {
@@ -21,21 +15,7 @@ export default {
   components: { Carousel },
 
   setup() {
-    const userStore = useUserStore();
-    const router = useRouter();
-
-    const { selectedCategory: category } = storeToRefs(userStore);
-
-    onMounted(() => {
-      // 🔥 Si ya tiene categoría → ir directamente al perfil
-      if (category.value) {
-        router.push("/profile");
-      }
-    });
-
-    return {
-      category
-    };
+    return {};
   }
 };
 </script>

@@ -110,11 +110,10 @@
 
   </div>
 </template>
-
 <script>
 import { useUserStore } from "../stores/user";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 export default {
   name: "Questions",
@@ -123,8 +122,10 @@ export default {
     const userStore = useUserStore();
     const router = useRouter();
 
-    const category = userStore.selectedCategory;
+    // Cargar categoría desde localStorage o userStore
+    const category = ref(userStore.selectedCategory || localStorage.getItem('selectedCategory') || 'Hoteles');  
 
+    // Inicializamos el formulario vacío
     const form = ref({
       estrellas: [],
       servicios: [],
@@ -135,41 +136,48 @@ export default {
       uso: []
     });
 
+    // Guardar categoría y preferencias en localStorage al montar
+    onMounted(() => {
+      localStorage.setItem('selectedCategory', category.value);
+      localStorage.removeItem('preferences');  // Limpiar preferencias previas
+    });
+
     const submit = async () => {
-        try {
-            const response = await fetch(
-            "http://localhost/inmobiliaria/backend/save_preferences.php",
-            {
-                method: "POST",
-                credentials: "include",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                categoria: category,
-                preferencias: form.value
-                })
-            }
-            );
+      try {
+        const response = await fetch(
+          "http://localhost/inmobiliaria/backend/save_preferences.php",
+          {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              categoria: category.value,  // Usar category.value
+              preferencias: form.value
+            })
+          }
+        );
 
-            const data = await response.json();
+        const data = await response.json();
 
-            if (data.success) {
+        if (data.success) {
+          // Guardar las preferencias en localStorage (sin acumular preferencias previas)
+          localStorage.setItem('preferences', JSON.stringify(form.value));
 
-            // 🔥 IMPORTANTE: actualizar store DESPUÉS de guardar
-            userStore.setPreferences({ ...form.value });
+          // Actualizar el store
+          userStore.setPreferences({ ...form.value });
 
-            router.push("/profile");
-            }
-
-        } catch (err) {
-            console.error("Error conexión:", err);
+          // Redirigir al perfil
+          router.push("/profile");
         }
-        };
+      } catch (err) {
+        console.error("Error conexión:", err);
+      }
+    };
 
     return { category, form, submit };
   }
 };
 </script>
-
 <style scoped>
 .questions-layout {
   display: flex;

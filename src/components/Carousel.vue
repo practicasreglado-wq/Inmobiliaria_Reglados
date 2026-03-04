@@ -64,23 +64,11 @@ export default {
 
   computed: {
     visibleItems() {
-      // Solo mostramos los 3 primeros
       return this.items.slice(0, 3);
     }
   },
 
-  mounted() {
-    const savedCategory = this.userStore.selectedCategory;
-    if (!savedCategory) return;
-
-    while (this.items[1].title !== savedCategory) {
-      const first = this.items.shift();
-      this.items.push(first);
-    }
-  },
-
   methods: {
-
     cardClass(index) {
       if (index === 1) return "center";
       if (index === 0) return "left";
@@ -111,26 +99,19 @@ export default {
       }, 400);
     },
 
+    // Método para seleccionar la categoría y redirigir solo a preguntas
     async selectCategory(index) {
-      if (index !== 1) return;
+      if (index !== 1) return;  // Solo permitir la selección del elemento central
 
       const selected = this.visibleItems[1].title;
 
+      // Actualizamos el store con la categoría seleccionada
       this.userStore.setCategory(selected);
 
-      await fetch(
-        "http://localhost/inmobiliaria/backend/save_preferences.php",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            categoria: selected,
-            preferencias: this.userStore.preferences
-          })
-        }
-      );
+      // Guardamos la categoría seleccionada en localStorage
+      localStorage.setItem('selectedCategory', selected);
 
+      // Redirigimos a la página de preguntas
       this.router.push("/questions");
     }
   }
