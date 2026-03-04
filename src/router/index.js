@@ -19,7 +19,19 @@ const routes = [
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/dashboard', component: Dashboard },
-  { path: '/profile', component: UserProfile },
+  // Ruta principal para el perfil del usuario
+  { 
+    path: '/profile', 
+    component: UserProfile, 
+    children: [
+      { path: '', redirect: '/profile/properties-for-sale' }, // Redirigir a las propiedades en venta por defecto
+      { path: 'favorite-properties', component: FavoriteProperties },
+      { path: 'messages', component: Messages },
+      { path: 'properties-for-sale', component: PropertiesForSale },
+      { path: 'settings', component: Settings },
+    ]
+  },
+  { path: '/questions', component: Questions },
   { path: '/about-us', component: AboutUs },
   { path: "/contacto", component: Contacto },
   { path: "/questions", component: Questions },
