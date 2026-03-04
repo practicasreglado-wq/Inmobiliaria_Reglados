@@ -1,54 +1,193 @@
 <template>
   <div class="login">
-    <h2>Iniciar Sesión</h2>
+    <div class="overlay"></div>
+    <div class="vent-login">
+      <h2>Bienvenido</h2>
 
-    <form @submit.prevent="login">
-      <input type="email" v-model="email" placeholder="Email" required />
-      <input type="password" v-model="password" placeholder="Contraseña" required />
-      <button type="submit">Entrar</button>
-    </form>
+      <form @submit.prevent="login">
+        <input
+          type="text"
+          v-model="identifier"
+          placeholder="Email o usuario"
+          required
+        />
 
-    <p v-if="error" style="color:red">{{ error }}</p>
+        <input
+          type="password"
+          v-model="password"
+          placeholder="Contraseña"
+          required
+        />
+
+        <button type="submit" class="login-btn">
+          Iniciar Sesión
+        </button>
+
+        <button
+          type="button"
+          class="register-btn"
+          @click="$router.push('/register')"
+        >
+          Registrarme
+        </button>
+      </form>
+
+      <p v-if="error" class="error">{{ error }}</p>
+    </div>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
+import { useUserStore } from "../stores/user";
+import { useRouter } from "vue-router";
+
 export default {
   name: "Login",
 
-  data() {
-    return {
-      email: "",
-      password: "",
-      error: ""
-    };
-  },
+  setup() {
+    const identifier = ref("");
+    const password = ref("");
+    const error = ref("");
 
-  methods: {
-    async login() {
+    const userStore = useUserStore();
+    const router = useRouter();
 
-      this.error = "";
+    const login = async () => {
+      error.value = "";
 
-      const response = await fetch("http://localhost/backend/login.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email: this.email,
-          password: this.password
-        })
-      });
+      try {
+        const response = await fetch(
+          "http://localhost/inmobiliaria/backend/login.php",
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              identifier: identifier.value,
+              password: password.value
+            })
+          }
+        );
 
-      const data = await response.json();
+        if (!response.ok) {
+          error.value = "Error servidor";
+          return;
+        }
 
-      if (data.success) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-        this.$router.push("/dashboard");
+        const data = await response.json();
+        console.log("Respuesta backend:", data);
+
+        if (data.success) {
+        userStore.setUser(data.user);
+        router.push("/profile");
       } else {
-        this.error = data.message;
+          error.value = data.message;
+        }
+
+      } catch (err) {
+        console.error("Error real:", err);
+        error.value = "Error de conexión con el servidor";
       }
-    }
+    };
+
+    return {
+      identifier,
+      password,
+      error,
+      login
+    };
   }
 };
 </script>
+<style scoped>
+.login {
+  position: relative;
+  min-height: 100vh;
+
+  background-image: url('@/assets/fondito.png'); /* cambia la imagen */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.363);
+  z-index: 0;
+}
+
+.login h2 {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.vent-login {
+  background-color: white;
+  padding: 0 40px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+/* Tarjeta opcional más elegante */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 340px;
+  padding: 30px;
+}
+
+input {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--azul-principal);
+}
+
+/* Botón principal */
+.login-btn {
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: var(--azul-principal);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: var(--azul-secundario);
+}
+
+/* Botón secundario (Registrarme) */
+.register-btn {
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: var(--azul-principal);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.register-btn:hover {
+  background-color: var(--azul-secundario);
+}
+</style>

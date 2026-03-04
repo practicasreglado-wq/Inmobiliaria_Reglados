@@ -1,6 +1,8 @@
 <?php
+require_once "config/session.php";
 
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -9,40 +11,48 @@ require_once "config/db.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-$email = trim($data["email"] ?? "");
+$identifier = trim($data["identifier"] ?? "");
 $password = trim($data["password"] ?? "");
 
-if (!$email || !$password) {
+if (!$identifier || !$password) {
     echo json_encode(["success" => false, "message" => "Campos obligatorios"]);
     exit;
 }
 
-try {
+$stmt = $pdo->prepare("
+    SELECT id, nombre, email, nombre_usuario, password,
+           categoria_seleccionada, preferencias
+    FROM usuarios
+    WHERE email = :identifier OR nombre_usuario = :identifier
+    LIMIT 1
+");
 
-    $stmt = $pdo->prepare("SELECT id, nombre, email, password FROM usuarios WHERE email = :email");
-    $stmt->execute(["email" => $email]);
+$stmt->execute(["identifier" => $identifier]);
 
-    $usuario = $stmt->fetch();
+$usuario = $stmt->fetch();
 
-    if (!$usuario) {
-        echo json_encode(["success" => false, "message" => "Usuario no existe"]);
-        exit;
-    }
-
-    if (!password_verify($password, $usuario["password"])) {
-        echo json_encode(["success" => false, "message" => "Contraseña incorrecta"]);
-        exit;
-    }
-
-    echo json_encode([
-        "success" => true,
-        "user" => [
-            "id" => $usuario["id"],
-            "nombre" => $usuario["nombre"],
-            "email" => $usuario["email"]
-        ]
-    ]);
-
-} catch (PDOException $e) {
-    echo json_encode(["success" => false, "message" => "Error servidor"]);
+if (!$usuario || !password_verify($password, $usuario["password"])) {
+    echo json_encode(["success" => false, "message" => "Credenciales incorrectas"]);
+    exit;
 }
+
+$_SESSION["user"] = [
+    "id" => $usuario["id"],
+    "nombre" => $usuario["nombre"],
+    "email" => $usuario["email"],
+    "nombre_usuario" => $usuario["nombre_usuario"]
+];
+
+echo json_encode([
+    "success" => true,
+    "user" => [
+        "id" => $usuario["id"],
+        "nombre" => $usuario["nombre"],
+        "email" => $usuario["email"],
+        "nombre_usuario" => $usuario["nombre_usuario"],
+        "categoria" => $usuario["categoria_seleccionada"],
+        "preferencias" => $usuario["preferencias"]
+            ? json_decode($usuario["preferencias"], true)
+            : null
+    ]
+]);

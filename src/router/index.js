@@ -1,25 +1,64 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useUserStore } from '../stores/user';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Dashboard from '../views/Dashboard.vue';
-import UserProfile from '../views/UserProfile.vue';
-import AboutUs from '../views/AboutUs.vue';  // Importa la nueva vista
+import UserProfile from '../views/Profile.vue';
+import AboutUs from '../views/AboutUs.vue';
 import Contacto from "../views/Contacto.vue";
+import Questions from "../views/Questions.vue";
+import Metodologia from "../views/Metodologia.vue";
+import Team from "../views/Team.vue";
+import GiveInfo from "../views/GiveInfo.vue";
+import ContributeAssets from "../views/ContributeAssets.vue";
+import FavoriteProperties from "../views/FavoriteProperties.vue";
+import Messages from "../views/Messages.vue";
+import PropertiesForSale from "../views/PropertiesForSale.vue";
+import Settings from "../views/Settings.vue";
 
 const routes = [
   { path: '/', component: Home },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/dashboard', component: Dashboard },
-  { path: '/profile', component: UserProfile },
-  { path: '/about-us', component: AboutUs },  // Nueva ruta
-  { path: "/contacto", component: Contacto }
+  { 
+    path: '/profile', 
+    component: UserProfile, 
+    children: [
+      { path: '', redirect: '/profile/properties-for-sale' }, // Redirigir a las propiedades en venta por defecto
+      { path: 'favorite-properties', component: FavoriteProperties }, // Ahora debería funcionar
+      { path: 'messages', component: Messages },
+      { path: 'properties-for-sale', component: PropertiesForSale },
+      { path: 'settings', component: Settings },
+    ]
+  },
+  { path: '/questions', component: Questions },
+  { path: '/about-us', component: AboutUs },
+  { path: "/contacto", component: Contacto },
+  { path: "/metodologia", component: Metodologia },
+  { path: "/team", component: Team },
+  { path: "/give-info", component: GiveInfo },
+  { path: "/contribute-assets", component: ContributeAssets,
+    meta: { requiresAuth: true } // Etiqueta para proteger la ruta
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
+});
+
+// Guardia de navegación
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore();
+  
+  // Si la ruta requiere autenticación y el usuario no está logueado
+  if (to.meta.requiresAuth && !userStore.isLoggedIn) {
+    next('/give-info');
+  } else {
+    next(); // En cualquier otro caso, adelante
+  }
 });
 
 export default router;

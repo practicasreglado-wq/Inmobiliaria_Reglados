@@ -1,31 +1,178 @@
 <template>
-  <div>
-    <Header />
-    <form @submit.prevent="register">
-      <input type="text" v-model="username" placeholder="Nombre de usuario" required />
-      <input type="email" v-model="email" placeholder="Correo electrónico" required />
-      <input type="password" v-model="password" placeholder="Contraseña" required />
-      <button type="submit">Registrarse</button>
-    </form>
-    <Footer />
+  <div class="register">
+    <div class="overlay"></div>
+    <div class="vent-register">
+      <h2>Bienvenido</h2>
+
+      <form @submit.prevent="register">
+        <div class="grid">
+          <input type="text" v-model="nombre" placeholder="Nombre" required />
+          <input type="text" v-model="apellido" placeholder="Apellido" required />
+          <input type="email" v-model="email" placeholder="Correo electrónico" required />
+          <input type="text" v-model="telefono" placeholder="Teléfono" required />
+          <input type="text" v-model="username" placeholder="Nombre de usuario" required />
+          <input type="password" v-model="password" placeholder="Contraseña" required />
+        </div>
+
+        <button type="submit" class="register-btn">
+          Registrarse
+        </button>
+      </form>
+
+      <p v-if="error" class="error">{{ error }}</p>
+    </div>
   </div>
 </template>
 
 <script>
+import { useUserStore } from "../stores/user";
+
 export default {
   name: "Register",
+
   data() {
     return {
-      username: '',
-      email: '',
-      password: ''
+      nombre: "",
+      apellido: "",
+      email: "",
+      telefono: "",
+      username: "",
+      password: "",
+      error: ""
     };
   },
+
   methods: {
-    register() {
-      // Lógica de registro
-      console.log(this.username, this.email, this.password);
+    async register() {
+      this.error = "";
+
+      const userStore = useUserStore(); // ✅ esto sí funciona aquí
+
+      try {
+        const response = await fetch(
+          "http://localhost/inmobiliaria/backend/register.php",
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              nombre: this.nombre,
+              apellido: this.apellido,
+              email: this.email,
+              telefono: this.telefono,
+              username: this.username,
+              password: this.password
+            })
+          }
+        );
+
+        const text = await response.text();
+        console.log("RESPUESTA CRUDA:", text);
+
+        const data = JSON.parse(text);
+
+        if (data.success) {
+
+          // 🔥 Guardar usuario en Pinia
+          userStore.setUser(data.user);
+
+          // 🔥 Redirigir correctamente
+          this.$router.push("/dashboard");
+
+        } else {
+          this.error = data.message;
+        }
+
+      } catch (err) {
+        console.error("Error real:", err);
+        this.error = "Error de conexión con el servidor";
+      }
     }
   }
 };
 </script>
+<style scoped>
+.register {
+  position: relative;
+  min-height: 100vh;
+
+  background-image: url('@/assets/fondito.png'); /* cambia la imagen */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.363);
+  z-index: 0;
+}
+
+.register h2 {
+  font-size: 3.5rem;
+  text-align: center;
+}
+
+.vent-register {
+  background-color: white;
+  padding: 0 40px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+/* Tarjeta */
+form {
+  border-radius: 14px;
+  width: 700px;
+}
+
+/* Grid 2 columnas */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+input {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--azul-principal);
+}
+
+/* Botón abajo */
+.register-btn {
+  display: block;          /* necesario para centrar */
+  width: 250px;
+  margin: 0 auto;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--azul-principal);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.register-btn:hover {
+  background-color: var(--azul-secundario);
+}
+
+</style>

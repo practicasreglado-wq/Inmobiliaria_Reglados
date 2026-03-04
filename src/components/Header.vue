@@ -9,23 +9,35 @@
         <li>
           <router-link to="/">Inicio</router-link>
         </li>
-
+        <li>
+          <router-link to="/about-us">Sobre Nosotros</router-link>
+        </li>
         <li>
           <router-link to="/contacto">Contacto</router-link>
         </li>
 
         <!-- Si NO está logueado -->
         <li v-if="!user">
-          <router-link to="/login">Login</router-link>
+          <router-link to="/login" class="btn-login">Login</router-link>
         </li>
 
         <!-- Si está logueado -->
         <li v-if="user">
-          <router-link to="/dashboard">Dashboard</router-link>
+          <button class="catalog-btn" @click="goToCatalog">
+            Búsqueda por catálogo
+          </button>
         </li>
 
-        <li v-if="user" class="bienvenido">
-          Bienvenido {{ user.nombre }}
+        <!-- Bienvenida con foto o iniciales -->
+        <li v-if="user">
+          <router-link to="/profile" class="bienvenido">
+            <div class="user-avatar">
+              <!-- Mostrar la foto si está disponible -->
+              <img v-if="user?.photo" :src="user.photo" alt="Avatar" class="avatar-img" />
+              <!-- Si no hay foto, mostrar las iniciales -->
+              <span v-else>{{ getInitials(user.nombre, user.apellidos) }}</span>
+            </div>
+          </router-link>
         </li>
 
         <li v-if="user">
@@ -39,29 +51,47 @@
 </template>
 
 <script>
+import { useUserStore } from "../stores/user";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+
 export default {
   name: "Header",
 
-  data() {
-    return {
-      user: null
+  setup() {
+    const userStore = useUserStore();
+    const router = useRouter();
+
+    const { user } = storeToRefs(userStore);
+
+    const logout = async () => {
+      await fetch("http://localhost/inmobiliaria/backend/logout.php", {
+        credentials: "include"
+      });
+
+      userStore.logout();
+      router.push("/");
     };
-  },
 
-  mounted() {
-    const userData = localStorage.getItem("user");
+    const goToCatalog = () => {
+      // Limpiar categoría para que vuelva a mostrarse el carrusel
+      userStore.setCategory(null);
+      router.push("/dashboard");
+    };
 
-    if (userData) {
-      this.user = JSON.parse(userData);
-    }
-  },
+    // Función para obtener las iniciales del nombre y apellido
+    const getInitials = (firstName, lastName) => {
+      const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : '';
+      const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
+      return firstInitial + lastInitial;
+    };
 
-  methods: {
-    logout() {
-      localStorage.removeItem("user");
-      this.user = null;
-      this.$router.push("/");
-    }
+    return {
+      user,
+      logout,
+      goToCatalog,
+      getInitials
+    };
   }
 };
 </script>
@@ -72,16 +102,14 @@ header {
   top: 0;
   left: 0;
   width: 100%;
+  height: 90px;
   z-index: 1000;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 60px;
-
-  /* ✨ Cristal real */
-  background: rgba(255, 255, 255, 0);   /* más visible */
-  backdrop-filter: blur(18px);             /* más desenfoque */
+  padding: 0 60px;
+  background: rgba(255, 255, 255, 0.447);
+  backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   box-sizing: border-box;
 }
@@ -94,60 +122,89 @@ header .logo h1 {
   letter-spacing: 2px;
 }
 
-/* Nav horizontal */
-nav {
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 35px;
 }
 
-/* Links normales */
-nav a {
+nav a, .catalog-btn {
   text-decoration: none;
   color: var(--negro);
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.1rem;
+  font-weight: 600;
   transition: 0.3s ease;
 }
 
-nav a:hover {
+nav a:hover, .catalog-btn:hover {
   color: var(--azul-secundario);
 }
 
-/* 👇 Login como botón */
-nav a:last-child {
-  background-color: rgb(39, 56, 103);
-  color: var(--blanco);
+.catalog-btn {
+  background: rgba(255, 255, 255, 0);
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
   padding: 10px 22px;
-  border-radius: 8px;
-  font-weight: 600;
-}
-
-nav a:last-child:hover {
-  background-color: rgb(69, 129, 198);
-  color: var(--blanco);
+  color: var(--negro);
 }
 
 .bienvenido {
   color: #d4af37;
   font-weight: bold;
-  display: flex;
-  align-items: center;
+  font-size: 1.1rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.bienvenido:hover {
+  color: var(--azul-secundario);
+}
+
+.user-avatar {
+  display: inline-block;
+  width: 50px; /* Tamaño más grande */
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--azul-principal);
+  text-align: center;
+  color: white;
+  line-height: 50px;
+  font-weight: bold;
+  margin-right: 10px;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .logout-btn {
-  background-color: #d4af37;
-  color: black;
+  font-size: 1rem;
+  background-color: rgb(39, 56, 103);
+  color: white;
   border: none;
   padding: 8px 15px;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   transition: 0.3s;
 }
 
 .logout-btn:hover {
-  background-color: white;
-  color: black;
+  background-color: var(--azul-secundario);
+}
+
+nav a.router-link-exact-active:not(.btn-login) {
+  color: var(--azul-secundario);
 }
 </style>
