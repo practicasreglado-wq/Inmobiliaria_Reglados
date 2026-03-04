@@ -4,9 +4,10 @@
     <div class="sidebar">
       <h3>Menú de perfil</h3>
       <ul>
+        <li><router-link to="/profile/properties-for-sale">Inicio</router-link></li>
         <li><router-link to="/profile/favorite-properties">Mis propiedades favoritas</router-link></li>
         <li><router-link to="/profile/messages">Mensajes</router-link></li>
-        <li><router-link to="/profile/properties-for-sale">Mis propiedades en venta</router-link></li>
+        <li><router-link to="/profile/my-properties-for-sale">Mis propiedades en venta</router-link></li>
         <li><router-link to="/profile/settings">Ajustes</router-link></li>
       </ul>
     </div>

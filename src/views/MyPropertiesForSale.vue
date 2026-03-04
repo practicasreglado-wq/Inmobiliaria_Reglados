@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2>Propiedades en vennta</h2>
-    <p>Aquí podrás ver y gestionar las propiedades con las que haces match.</p>
+    <h2>Mis propiedades en venta</h2>
+    <p>Aquí podrás ver y gestionar las propiedades que tienes a la venta.</p>
   </div>
 </template>
 

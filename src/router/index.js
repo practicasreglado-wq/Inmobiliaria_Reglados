@@ -16,6 +16,8 @@ import FavoriteProperties from "../views/FavoriteProperties.vue";
 import Messages from "../views/Messages.vue";
 import PropertiesForSale from "../views/PropertiesForSale.vue";
 import Settings from "../views/Settings.vue";
+import MyPropertiesForSale from "../views/MyPropertiesForSale.vue";
+
 
 const routes = [
   { path: '/', component: Home },
@@ -31,6 +33,8 @@ const routes = [
       { path: 'messages', component: Messages },
       { path: 'properties-for-sale', component: PropertiesForSale },
       { path: 'settings', component: Settings },
+      { path: 'my-properties-for-sale', component: MyPropertiesForSale },
+
     ]
   },
   { path: '/questions', component: Questions },
