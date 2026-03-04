@@ -1,6 +1,5 @@
 <template>
   <div class="carousel">
-
     <!-- Títulos -->
     <div class="categories">
       <span
@@ -13,11 +12,9 @@
     </div>
 
     <div class="carousel-wrapper">
-
       <button class="arrow" @click="prev">❮</button>
 
       <div class="cards">
-
         <div
           v-for="(item, index) in visibleItems"
           :key="item.title"
@@ -26,13 +23,10 @@
           :style="{ backgroundImage: `url(${item.image})` }"
           @click="selectCategory(index)"
         ></div>
-
       </div>
 
       <button class="arrow" @click="next">❯</button>
-
     </div>
-
   </div>
 </template>
 
@@ -80,7 +74,6 @@ export default {
   },
 
   methods: {
-
     cardClass(index) {
       if (index === 1) return "center";
       if (index === 0) return "left";
@@ -118,6 +111,7 @@ export default {
 
       this.userStore.setCategory(selected);
 
+      // Guardar la categoría seleccionada y las preferencias
       await fetch(
         "http://localhost/inmobiliaria/backend/save_preferences.php",
         {
@@ -131,6 +125,7 @@ export default {
         }
       );
 
+      // Redirigir al formulario de preguntas para que el usuario seleccione sus preferencias
       this.router.push("/questions");
     }
   }
@@ -138,12 +133,12 @@ export default {
 </script>
 
 <style scoped>
+/* Estilos para el carrusel */
 .carousel {
   text-align: center;
   padding: 80px 0;
 }
 
-/* TITULOS */
 .categories {
   display: flex;
   justify-content: center;
@@ -163,7 +158,6 @@ export default {
   font-weight: 700;
 }
 
-/* WRAPPER */
 .carousel-wrapper {
   display: flex;
   align-items: center;
@@ -171,7 +165,6 @@ export default {
   gap: 50px;
 }
 
-/* FLECHAS */
 .arrow {
   background-color: var(--azul-principal);
   color: white;
@@ -183,11 +176,10 @@ export default {
   cursor: pointer;
 }
 
-.arrow:hover{
+.arrow:hover {
   background-color: var(--azul-secundario);
 }
 
-/* CARDS */
 .cards {
   display: flex;
   align-items: center;
@@ -203,13 +195,11 @@ export default {
   transition: 0.4s ease;
 }
 
-/* IZQUIERDA */
 .left {
   transform: scale(0.95);
   opacity: 0.6;
 }
 
-/* CENTRO */
 .center {
   transform: scale(1.15);
   opacity: 1;
@@ -217,7 +207,6 @@ export default {
   cursor: pointer;
 }
 
-/* DERECHA */
 .right {
   transform: scale(0.95);
   opacity: 0.6;
