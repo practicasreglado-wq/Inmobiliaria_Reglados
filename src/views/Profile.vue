@@ -91,7 +91,8 @@ export default {
 /* Estilo para el perfil con el menú lateral fijo y contenido dinámico */
 .profile {
   display: flex;
-  min-height: 100vh;
+  min-height: calc(100vh - 90px);
+  margin-top: 90px;
   background-color: #ffffff;
   box-sizing: border-box;
 }
@@ -99,7 +100,7 @@ export default {
 .sidebar {
   width: 350px; /* Ancho fijo del menú lateral */
   background-color: #222f57;
-  padding: 90px 20px;
+  padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -147,7 +148,6 @@ export default {
 /* Perfil: contenido principal */
 .profile-content {
   flex-grow: 1;
-  margin-top: 90px;
   padding: 70px;
   background-color: var(--gris-claro);
   border-radius: 8px;
