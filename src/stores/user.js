@@ -7,6 +7,10 @@ export const useUserStore = defineStore("user", {
     preferences: null
   }),
 
+  getters: {
+    isLoggedIn: (state) => !!state.user
+  },
+
   actions: {
     setUser(userData) {
       this.user = userData;
@@ -15,6 +19,8 @@ export const useUserStore = defineStore("user", {
       this.selectedCategory = userData.categoria || null;
       this.preferences = userData.preferencias || null;
     },
+    
+  },
 
     setCategory(category) {
       this.selectedCategory = category;
@@ -29,5 +35,4 @@ export const useUserStore = defineStore("user", {
       this.selectedCategory = null;
       this.preferences = null;
     }
-  }
-});
+  });

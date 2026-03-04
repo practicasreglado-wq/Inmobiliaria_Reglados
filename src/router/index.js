@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useUserStore } from '../stores/user';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
@@ -9,6 +10,9 @@ import Contacto from "../views/Contacto.vue";
 import Questions from "../views/Questions.vue";
 import Metodologia from "../views/Metodologia.vue";
 import Team from "../views/Team.vue";
+import GiveInfo from "../views/GiveInfo.vue";
+//Aportar activo
+import ContributeAssets from "../views/ContributeAssets.vue";
 
 const routes = [
   { path: '/', component: Home },
@@ -20,12 +24,30 @@ const routes = [
   { path: "/contacto", component: Contacto },
   { path: "/questions", component: Questions },
   { path: "/metodologia", component: Metodologia },
-  { path: "/team", component: Team }
+  { path: "/team", component: Team },
+  { path: "/give-info", component: GiveInfo },
+  { path: "/contribute-assets", component: ContributeAssets,
+    meta: { requiresAuth: true } // Etiqueta para proteger la ruta
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
+});
+
+// 3. LA GUARDIA DE NAVEGACIÓN (El "Segurata")
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore();
+  
+  // Si la ruta requiere autenticación y el usuario no está logueado
+  if (to.meta.requiresAuth && !userStore.isLoggedIn) {
+    // Lo mandamos a la página informativa en lugar de al login directo
+    // para que entienda por qué tiene que registrarse
+    next('/give-info');
+  } else {
+    next(); // En cualquier otro caso, adelante
+  }
 });
 
 export default router;
