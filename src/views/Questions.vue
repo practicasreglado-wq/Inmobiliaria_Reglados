@@ -173,8 +173,11 @@ export default {
 <style scoped>
 .questions-layout {
   display: flex;
-  min-height: 100vh;
-  background-image: url('@/assets/contact_img.jpg');
+  min-height: calc(100vh - 90px);
+  margin-top: 90px;
+  background-image: url('@/assets/fondito.png');
+  background-size: cover;
+  background-position: center;
 }
 
 /* IZQUIERDA */
@@ -225,8 +228,8 @@ export default {
 
 /* DERECHA */
 .right-side {
-  width: 48.75%;
-  background: #f5f5f531;
+  width: 60%;
+  background: #75727250;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -234,7 +237,7 @@ export default {
 }
 
 form {
-  background: white;
+   background: rgba(255, 255, 255, 0.95);
   padding: 50px;
   border-radius: 30px;
   width: 100%;
