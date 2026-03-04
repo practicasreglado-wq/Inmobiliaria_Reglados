@@ -2,31 +2,31 @@
   <div class="contacto">
     <div class="overlay"></div>
     <!-- Lado izquierdo -->
-<div class="contacto-texto">
+    <div class="contacto-texto">
 
-  <!-- Si NO está logeado -->
-  <template v-if="!user">
-    <h1>
-      <span class="highlight">Crea tu cuenta</span>
-    </h1>
+      <!-- Si NO está logueado -->
+      <template v-if="!user || Object.keys(user).length === 0">
+        <h1>
+          <span class="highlight">Crea tu cuenta</span>
+        </h1>
 
-    <p>
-      Obtén acceso a listados premium y recomendaciones personalizadas.
-    </p>
-  </template>
+        <p>
+          Obtén acceso a listados premium y recomendaciones personalizadas.
+        </p>
+      </template>
 
-  <!-- Si está logeado -->
-  <template v-else>
-    <h1>
-      <span class="highlight">Bienvenido {{ user.nombre }}</span>
-    </h1>
+      <!-- Si está logeado -->
+      <template v-else>
+        <h1>
+          <span class="highlight">Bienvenido {{ user.nombre }}</span>
+        </h1>
 
-    <p>
-      Estamos encantados de tenerte de nuevo. Nuestro equipo responderá tu consulta lo antes posible.
-    </p>
-  </template>
+        <p>
+          Estamos encantados de tenerte de nuevo. Nuestro equipo responderá tu consulta lo antes posible.
+        </p>
+      </template>
 
-</div>
+    </div>
 
     <!-- Tarjeta derecha -->
     <div class="contacto-card">
@@ -55,12 +55,11 @@
         </div>
       </div>
     </div>
-    <div class="login-link" v-if="!user">
+    <div class="login-link" v-if="!user || Object.keys(user).length === 0">
         ¿Ya tienes una cuenta?
         <span @click="$router.push('/login')">Login</span>
       </div>
   </div>
-    
 </template>
 
 <script>
@@ -70,12 +69,11 @@ export default {
   name: "Contacto",
 
   setup() {
-    const userStore = useUserStore();
-
-    return {
-      user: userStore.user
-    };
-  }
+  const userStore = useUserStore();
+  return {
+    user: userStore.user
+  };
+}
 };
 </script>
 
