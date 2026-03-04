@@ -24,7 +24,9 @@
       <div class="footer-col">
         <h3>EMPRESA</h3>
         <ul>
-          <li>Quiénes somos</li>
+          <li>
+            <router-link to="/about-us" class="footer-link">Quiénes somos</router-link>
+          </li>
           <li>
             <router-link to="/metodologia" class="footer-link">Metodología</router-link>
           </li>
