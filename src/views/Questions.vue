@@ -101,6 +101,60 @@
           </div>
         </div>
 
+        <!-- 🔵 FINCAS -->
+        <div v-if="category === 'Fincas'" class="section">
+          <h3>Tipo</h3>
+          <div class="options">
+            <label v-for="tipo in ['Rural', 'Agrícola', 'Forestal']" :key="tipo">
+              <input type="checkbox" :value="tipo" v-model="form.tipo" />
+              {{ tipo }}
+            </label>
+          </div>
+
+          <h3>Características</h3>
+          <div class="options">
+            <label v-for="car in ['Agua potable', 'Acceso por carretera', 'Parcela vallada']" :key="car">
+              <input type="checkbox" :value="car" v-model="form.caracteristicas" />
+              {{ car }}
+            </label>
+          </div>
+
+          <h3>Ubicación</h3>
+          <div class="options">
+            <label v-for="zona in ['Zona rural', 'Cerca de río', 'Montaña']" :key="zona">
+              <input type="checkbox" :value="zona" v-model="form.zona" />
+              {{ zona }}
+            </label>
+          </div>
+        </div>
+
+        <!-- 🔵 ACTIVOS -->
+        <div v-if="category === 'Activos'" class="section">
+          <h3>Tipo de activo</h3>
+          <div class="options">
+            <label v-for="tipo in ['Comercial', 'Industrial', 'Residencial']" :key="tipo">
+              <input type="checkbox" :value="tipo" v-model="form.tipo" />
+              {{ tipo }}
+            </label>
+          </div>
+
+          <h3>Características</h3>
+          <div class="options">
+            <label v-for="car in ['Fachada renovada', 'Cercano a transporte público', 'Espacios adaptados']" :key="car">
+              <input type="checkbox" :value="car" v-model="form.caracteristicas" />
+              {{ car }}
+            </label>
+          </div>
+
+          <h3>Ubicación</h3>
+          <div class="options">
+            <label v-for="zona in ['Centro de la ciudad', 'Zona industrial']" :key="zona">
+              <input type="checkbox" :value="zona" v-model="form.zona" />
+              {{ zona }}
+            </label>
+          </div>
+        </div>
+
         <button type="submit" class="submit-btn">
           Guardar preferencias
         </button>
@@ -110,6 +164,7 @@
 
   </div>
 </template>
+
 <script>
 import { useUserStore } from "../stores/user";
 import { useRouter } from "vue-router";
@@ -123,7 +178,7 @@ export default {
     const router = useRouter();
 
     // Cargar categoría desde localStorage o userStore
-    const category = ref(userStore.selectedCategory || localStorage.getItem('selectedCategory') || 'Hoteles');  
+    const category = ref(userStore.selectedCategory || localStorage.getItem('selectedCategory') || 'Hoteles');
 
     // Inicializamos el formulario vacío
     const form = ref({
@@ -178,6 +233,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .questions-layout {
   display: flex;

@@ -28,9 +28,15 @@
           </button>
         </li>
 
+        <!-- Bienvenida con foto o iniciales -->
         <li v-if="user">
           <router-link to="/profile" class="bienvenido">
-            Bienvenido/a {{ user.nombre }}
+            <div class="user-avatar">
+              <!-- Mostrar la foto si está disponible -->
+              <img v-if="user?.photo" :src="user.photo" alt="Avatar" class="avatar-img" />
+              <!-- Si no hay foto, mostrar las iniciales -->
+              <span v-else>{{ getInitials(user.nombre, user.apellidos) }}</span>
+            </div>
           </router-link>
         </li>
 
@@ -68,15 +74,23 @@ export default {
     };
 
     const goToCatalog = () => {
-      // 🔥 Limpiar categoría para que vuelva a mostrarse el carrusel
+      // Limpiar categoría para que vuelva a mostrarse el carrusel
       userStore.setCategory(null);
       router.push("/dashboard");
+    };
+
+    // Función para obtener las iniciales del nombre y apellido
+    const getInitials = (firstName, lastName) => {
+      const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : '';
+      const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
+      return firstInitial + lastInitial;
     };
 
     return {
       user,
       logout,
-      goToCatalog
+      goToCatalog,
+      getInitials
     };
   }
 };
@@ -117,7 +131,7 @@ nav ul {
   gap: 35px;
 }
 
-nav a {
+nav a, .catalog-btn {
   text-decoration: none;
   color: var(--negro);
   font-size: 1.1rem;
@@ -125,25 +139,21 @@ nav a {
   transition: 0.3s ease;
 }
 
-nav a:hover {
+nav a:hover, .catalog-btn:hover {
   color: var(--azul-secundario);
 }
 
 .catalog-btn {
-  background-color: var(--azul-principal);
-  color: white;
+  background-color: transparent;
   border: none;
-  padding: 10px 22px;
-  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
+  text-decoration: none;
+  padding: 10px 22px;
+  color: var(--negro);
 }
 
-.catalog-btn:hover {
-  background-color: var(--azul-secundario);
-}
-
-nav a.bienvenido {
+.bienvenido {
   color: #d4af37;
   font-weight: bold;
   font-size: 1.1rem;
@@ -152,20 +162,30 @@ nav a.bienvenido {
   transition: 0.3s;
 }
 
-nav a.bienvenido:hover {
+.bienvenido:hover {
   color: var(--azul-secundario);
 }
 
-.btn-login {
-  background-color: rgb(39, 56, 103);
-  color: var(--blanco);
-  padding: 10px 22px;
-  border-radius: 8px;
+.user-avatar {
+  display: inline-block;
+  width: 50px; /* Tamaño más grande */
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--azul-principal);
+  text-align: center;
+  color: white;
+  line-height: 50px;
+  font-weight: bold;
+  margin-right: 10px;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
 }
 
-.btn-login:hover {
-  background-color: rgb(69, 129, 198);
-  color: var(--blanco);
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .logout-btn {

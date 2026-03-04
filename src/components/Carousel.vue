@@ -1,6 +1,5 @@
 <template>
   <div class="carousel">
-
     <!-- Títulos -->
     <div class="categories">
       <span
@@ -13,11 +12,9 @@
     </div>
 
     <div class="carousel-wrapper">
-
       <button class="arrow" @click="prev">❮</button>
 
       <div class="cards">
-
         <div
           v-for="(item, index) in visibleItems"
           :key="item.title"
@@ -26,13 +23,10 @@
           :style="{ backgroundImage: `url(${item.image})` }"
           @click="selectCategory(index)"
         ></div>
-
       </div>
 
       <button class="arrow" @click="next">❯</button>
-
     </div>
-
   </div>
 </template>
 
@@ -64,67 +58,91 @@ export default {
 
   computed: {
     visibleItems() {
-      return this.items.slice(0, 3);
+      return this.items.slice(0, 3); // Solo mostramos los primeros 3 elementos
+    }
+  },
+
+  mounted() {
+    const savedCategory = this.userStore.selectedCategory;
+    if (!savedCategory) return;
+
+    while (this.items[1].title !== savedCategory) {
+      const first = this.items.shift();
+      this.items.push(first);
     }
   },
 
   methods: {
-    cardClass(index) {
-      if (index === 1) return "center";
-      if (index === 0) return "left";
-      if (index === 2) return "right";
-    },
+  cardClass(index) {
+    if (index === 1) return "center";
+    if (index === 0) return "left";
+    if (index === 2) return "right";
+  },
 
-    next() {
-      if (this.isAnimating) return;
-      this.isAnimating = true;
+  next() {
+    if (this.isAnimating) return;
+    this.isAnimating = true;
 
-      const first = this.items.shift();
-      this.items.push(first);
+    const first = this.items.shift();
+    this.items.push(first);
 
-      setTimeout(() => {
-        this.isAnimating = false;
-      }, 400);
-    },
+    setTimeout(() => {
+      this.isAnimating = false;
+    }, 400);
+  },
 
-    prev() {
-      if (this.isAnimating) return;
-      this.isAnimating = true;
+  prev() {
+    if (this.isAnimating) return;
+    this.isAnimating = true;
 
-      const last = this.items.pop();
-      this.items.unshift(last);
+    const last = this.items.pop();
+    this.items.unshift(last);
 
-      setTimeout(() => {
-        this.isAnimating = false;
-      }, 400);
-    },
+    setTimeout(() => {
+      this.isAnimating = false;
+    }, 400);
+  },
 
-    // Método para seleccionar la categoría y redirigir solo a preguntas
-    async selectCategory(index) {
-      if (index !== 1) return;  // Solo permitir la selección del elemento central
+  // Método para seleccionar la categoría y redirigir a las preguntas
+  async selectCategory(index) {
+    if (index !== 1) return;  // Solo permitir la selección del elemento central
 
-      const selected = this.visibleItems[1].title;
+    const selected = this.visibleItems[1].title;
 
-      // Actualizamos el store con la categoría seleccionada
-      this.userStore.setCategory(selected);
+    // Actualizamos el store con la categoría seleccionada
+    this.userStore.setCategory(selected);
 
-      // Guardamos la categoría seleccionada en localStorage
-      localStorage.setItem('selectedCategory', selected);
+    // Guardar la categoría seleccionada y las preferencias
+    await fetch(
+      "http://localhost/inmobiliaria/backend/save_preferences.php",
+      {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          categoria: selected,
+          preferencias: this.userStore.preferences
+        })
+      }
+    );
 
-      // Redirigimos a la página de preguntas
-      this.router.push("/questions");
-    }
+    // Guardamos la categoría seleccionada en localStorage
+    localStorage.setItem('selectedCategory', selected);
+
+    // Redirigimos a la página de preguntas
+    this.router.push("/questions");
   }
+}
 };
 </script>
 
 <style scoped>
+/* Estilos para el carrusel */
 .carousel {
   text-align: center;
   padding: 80px 0;
 }
 
-/* TITULOS */
 .categories {
   display: flex;
   justify-content: center;
@@ -144,7 +162,6 @@ export default {
   font-weight: 700;
 }
 
-/* WRAPPER */
 .carousel-wrapper {
   display: flex;
   align-items: center;
@@ -152,7 +169,6 @@ export default {
   gap: 50px;
 }
 
-/* FLECHAS */
 .arrow {
   background-color: var(--azul-principal);
   color: white;
@@ -164,11 +180,10 @@ export default {
   cursor: pointer;
 }
 
-.arrow:hover{
+.arrow:hover {
   background-color: var(--azul-secundario);
 }
 
-/* CARDS */
 .cards {
   display: flex;
   align-items: center;
@@ -184,13 +199,11 @@ export default {
   transition: 0.4s ease;
 }
 
-/* IZQUIERDA */
 .left {
   transform: scale(0.95);
   opacity: 0.6;
 }
 
-/* CENTRO */
 .center {
   transform: scale(1.15);
   opacity: 1;
@@ -198,7 +211,6 @@ export default {
   cursor: pointer;
 }
 
-/* DERECHA */
 .right {
   transform: scale(0.95);
   opacity: 0.6;

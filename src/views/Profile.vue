@@ -1,27 +1,29 @@
 <template>
   <section class="profile">
-    <div class="profile-container">
+    <!-- Menú lateral -->
+    <div class="sidebar">
+      <h3>Menú de perfil</h3>
+      <ul>
+        <li><router-link to="/profile/favorite-properties">Mis propiedades favoritas</router-link></li>
+        <li><router-link to="/profile/messages">Mensajes</router-link></li>
+        <li><router-link to="/profile/properties-for-sale">Mis propiedades en venta</router-link></li>
+        <li><router-link to="/profile/settings">Ajustes</router-link></li>
+      </ul>
+    </div>
 
-      <div v-if="!user">
-        <h2>Cargando perfil...</h2>
-      </div>
+    <!-- Contenido principal -->
+    <div class="profile-content">
+      <!-- Datos del usuario -->
+      <div v-if="user">
+        <h2>Bienvenido/a {{ user.nombre_usuario }}</h2>
+        <p><strong>Categoría seleccionada:</strong> {{ category }}</p>
 
-      <div v-else>
-        <h2>Perfil de {{ user.nombre }}</h2>
-
-        <h3>Categoría seleccionada:</h3>
-        <p class="category">{{ category }}</p>
-
+        <!-- Preferencias del usuario -->
         <div v-if="preferences && hasPreferences">
           <h3>Preferencias:</h3>
-
           <template v-for="(group, key) in preferences" :key="key">
-            <div
-              v-if="Array.isArray(group) && group.length"
-              class="pref-group"
-            >
+            <div v-if="Array.isArray(group) && group.length" class="pref-group">
               <h4>{{ formatLabel(key) }}</h4>
-
               <ul>
                 <li v-for="(item, index) in group" :key="index">
                   {{ item }}
@@ -34,9 +36,10 @@
         <div v-else>
           <p>No tienes preferencias guardadas.</p>
         </div>
-
       </div>
 
+      <!-- El contenido de las vistas cambia aquí -->
+      <router-view></router-view>
     </div>
   </section>
 </template>
@@ -44,36 +47,14 @@
 <script>
 import { useUserStore } from "../stores/user";
 import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 
 export default {
   name: "Profile",
 
   setup() {
     const userStore = useUserStore();
-    const router = useRouter();
-
     const { user, selectedCategory: category, preferences } = storeToRefs(userStore);
-
-    // Recuperar categoría y preferencias desde localStorage
-    onMounted(() => {
-      const savedCategory = localStorage.getItem('selectedCategory');
-      if (savedCategory && !userStore.selectedCategory) {
-        userStore.setCategory(savedCategory);  // Cargar la categoría desde localStorage
-      }
-
-      const savedPreferences = localStorage.getItem('preferences');
-      if (savedPreferences) {
-        userStore.setPreferences(JSON.parse(savedPreferences));  // Cargar las preferencias
-      }
-    });
-
-    const changeCategory = () => {
-      userStore.setCategory(null);
-      localStorage.removeItem('selectedCategory'); // Eliminar categoría de localStorage si se cambia
-      router.push("/dashboard");
-    };
 
     const hasPreferences = computed(() => {
       if (!preferences.value) return false;
@@ -92,7 +73,6 @@ export default {
         zona: "Zona",
         uso: "Uso"
       };
-
       return labels[key] || key;
     };
 
@@ -100,60 +80,56 @@ export default {
       user,
       category,
       preferences,
-      changeCategory,
-      formatLabel,
-      hasPreferences
+      hasPreferences,
+      formatLabel
     };
   }
 };
 </script>
+
 <style scoped>
-  .profile {
-  min-height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
-  display: flex; /* Flexbox para centrar contenido */
-  justify-content: center; /* Centra horizontalmente */
-  align-items: center; /* Centra verticalmente */
-  background-color: var(--gris-claro); /* Color de fondo */
+/* Estilo para el perfil con el menú lateral fijo y contenido dinámico */
+.profile {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+  box-sizing: border-box;
 }
 
-.profile-container {
-  text-align: center; /* Alinea el texto al centro */
-  padding: 20px; /* Añadir algo de relleno */
-  background-color: white; /* Fondo blanco para el contenedor */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
-  width: 100%; /* Para que el contenedor ocupe todo el espacio disponible */
-  max-width: 600px; /* Limitar el ancho máximo */
+.sidebar {
+  width: 250px; /* Ancho fijo del menú lateral */
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.category {
+.sidebar h3 {
+  font-size: 1.5rem;
   font-weight: bold;
-  font-size: 1.3rem;
-}
-
-.pref-group {
   margin-bottom: 20px;
 }
 
-ul {
+.sidebar ul {
   list-style: none;
   padding: 0;
 }
 
-li {
-  background-color: #f3f3f3;
-  margin: 5px 0;
-  padding: 6px 10px;
-  border-radius: 6px;
+.sidebar ul li {
+  margin: 10px 0;
 }
 
-button {
-  margin-top: 25px;
-  padding: 12px;
-  border-radius: 6px;
-  border: none;
-  background-color: var(--azul-principal);
-  color: white;
-  cursor: pointer;
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.profile-content {
+  flex-grow: 1;
+  padding: 70px;
+  background-color: white;
+  border-radius: 8px;
+  margin-left: 1px; /* Ajuste para que el contenido se acomode al lado del menú lateral */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 </style>
