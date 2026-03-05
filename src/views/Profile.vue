@@ -20,7 +20,7 @@
   <!-- CONTENIDO -->
   <div class="profile-content">
 
-    <div v-if="user">
+    <div v-if="user && isProfileHome">
 
       <h2>Bienvenido/a: {{ user.nombre_usuario }}</h2>
 
@@ -76,13 +76,14 @@
 import { useUserStore } from "../stores/user";
 import { storeToRefs } from "pinia";
 import { computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 export default {
 
   setup() {
     const userStore = useUserStore();
     const router = useRouter();
+    const route = useRoute();
     const { user, selectedCategory: category, preferences } = storeToRefs(userStore);
 
     // Sincronizar selectedCategory con localStorage al montar el componente
@@ -114,6 +115,10 @@ export default {
 
     })
 
+    const isProfileHome = computed(() => {
+      return route.path === "/profile/properties-for-sale";
+    });
+
 
     const formatLabel = (key)=>{
 
@@ -131,13 +136,14 @@ export default {
     }
 
 
-    return{
-      user,
-      category,
-      preferences,
-      hasPreferences,
-      formatLabel,
-      logout
+   return{
+    user,
+    category,
+    preferences,
+    hasPreferences,
+    formatLabel,
+    logout,
+    isProfileHome
     };
   }
 
