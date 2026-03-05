@@ -22,8 +22,7 @@
       <!-- Datos del usuario -->
       <div v-if="user">
         <h2>Bienvenido/a {{ user.nombre_usuario }}</h2>
-        <p><strong>Categoría seleccionada:</strong> {{ category }}</p>
-
+        <p><strong>Categoría seleccionada: {{ category }}</strong></p>
         <!-- Preferencias del usuario -->
         <div v-if="preferences && hasPreferences">
           <h3>Preferencias:</h3>
@@ -126,10 +125,10 @@ export default {
 }
 
 .sidebar {
-  width: 350px; /* Ancho fijo del menú lateral */
-  background-color: #222f57;
+  width: 350px;
+  background: linear-gradient(to bottom, #101d41, #2c4692);
   padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
 }
 
 .sidebar h3 {
@@ -168,19 +167,80 @@ export default {
 
 /* Estilo para el enlace activo */
 .sidebar ul li a.router-link-exact-active{
-  background-color: #f0c14b;
-  
-  
+  background-color: #d6ab3e;
+  font-weight: 700; 
 }
 
 /* Perfil: contenido principal */
 .profile-content {
   flex-grow: 1;
-  padding: 70px;
+  padding: 30px 90px;
   background-color: var(--gris-claro);
   border-radius: 8px;
   margin-left: 1px; /* Ajuste para que el contenido se acomode al lado del menú lateral */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-content h2 {
+  font-size: 3.5rem;
+}
+.profile-content h3 {
+  font-size: 2rem;
+  background: linear-gradient(135deg, #101d41, #2c4692);
+  color: white;
+  padding: 8px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.profile-content p {
+  background: linear-gradient(135deg, #846604, #e1bc35);
+  color: white;
+  padding: 8px 18px;
+  border-radius: 12px;
+  font-size: 2.75rem;
+  display: inline-block;
+  margin: 0;
+}
+
+.pref-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* título en cuadro */
+.pref-group h4 {
+  margin: 0;
+  padding: 6px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  color: white;
+  background: linear-gradient(135deg, #172a5d, #3654ae);
+  font-size: 1.3rem;
+}
+
+/* lista horizontal */
+.pref-group ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* cuadritos de cada preferencia */
+.pref-group li {
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 6px 14px;
+  background: linear-gradient(135deg, #d2b454d4, #e1bc35);
+  font-size: 1.1rem;
+  font-weight: 550;
 }
 
 /* ===== CERRAR SESIÓN ===== */
@@ -208,8 +268,8 @@ export default {
 }
 
 .logout-btn:hover {
-  background-color: rgba(239, 68, 68, 0.25);
+  background-color: rgba(239, 68, 68, 0.37);
   border-color: #ef4444;
-  color: #ff8080;
+  color: #f88080;
 }
 </style>

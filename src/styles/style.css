@@ -5,7 +5,7 @@
   --azul-principal: #1a2545;
   --azul-secundario: #4a72c6;
   --blanco: #ffffff;
-  --gris-claro: #f1f5f9;
+  --gris-claro: rgb(230, 249, 249);
 }
 
 * {
