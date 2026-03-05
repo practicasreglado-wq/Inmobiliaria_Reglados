@@ -190,7 +190,9 @@ export default {
   border: 1.5px solid rgba(255, 255, 255, 0.2);
   border-radius: 5px;
   color: #ffffff;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  font-family: inherit;  /* ← añade esto */
+  font-weight: normal;
   cursor: pointer;
   transition: all 0.3s ease;
 }
