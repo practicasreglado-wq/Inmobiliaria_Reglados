@@ -1,44 +1,21 @@
 <template>
-<section class="profile">
-
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-
-    <h3>Menú de perfil</h3>
-
-    <ul>
-      <li>
-        <router-link to="/profile/properties-for-sale">Inicio</router-link>
-      </li>
-
-      <li>
-        <router-link to="/profile/favorite-properties">
-          Mis propiedades favoritas
-        </router-link>
-      </li>
-
-      <li>
-        <router-link to="/profile/messages">
-          Mensajes
-        </router-link>
-      </li>
-
-      <li>
-        <router-link to="/profile/my-properties-for-sale">
-          Mis propiedades en venta
-        </router-link>
-      </li>
-
-      <li>
-        <router-link to="/profile/settings">
-          Ajustes
-        </router-link>
-      </li>
-
-    </ul>
-
-  </div>
-
+  <section class="profile">
+    <!-- Menú lateral -->
+    <div class="sidebar">
+      <h3>Menú de perfil</h3>
+      <ul>
+        <li><router-link to="/profile/properties-for-sale">Inicio</router-link></li>
+        <li><router-link to="/profile/favorite-properties">Mis propiedades favoritas</router-link></li>
+        <li><router-link to="/profile/messages">Mensajes</router-link></li>
+        <li><router-link to="/profile/my-properties-for-sale">Mis propiedades en venta</router-link></li>
+        <li><router-link to="/profile/settings">Ajustes</router-link></li>
+        <li v-if="user" class="logout-item">
+          <button class="logout-btn" @click="logout">
+            Cerrar sesión
+          </button>
+        </li>
+      </ul>
+    </div>
 
   <!-- CONTENIDO -->
   <div class="profile-content">
@@ -95,32 +72,42 @@
 
 </section>
 </template>
-
 <script>
-
-import { useUserStore } from "../stores/user"
-import { storeToRefs } from "pinia"
-import { computed } from "vue"
+import { useUserStore } from "../stores/user";
+import { storeToRefs } from "pinia";
+import { computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
 
-  name:"Profile",
+  setup() {
+    const userStore = useUserStore();
+    const router = useRouter();
+    const { user, selectedCategory: category, preferences } = storeToRefs(userStore);
 
-  setup(){
+    // Sincronizar selectedCategory con localStorage al montar el componente
+    onMounted(() => {
+      const savedCategory = localStorage.getItem('selectedCategory');
+      console.log('Saved Category from LocalStorage:', savedCategory); // Verifica si se recupera correctamente
 
-    const userStore = useUserStore()
+      if (savedCategory && userStore.selectedCategory !== savedCategory) {
+        // Si no está sincronizado, actualizar el store con la categoría de localStorage
+        userStore.setCategory(savedCategory);
+      }
+    });
 
-    const {
-      user,
-      selectedCategory:category,
-      preferences
-    } = storeToRefs(userStore)
+    // Verificar si hay preferencias
+    const logout = async () => {
+      await fetch("http://localhost/inmobiliaria/backend/logout.php", {
+        credentials: "include"
+      });
 
+      userStore.logout();
+      router.push("/");
+    };
 
-    const hasPreferences = computed(()=>{
-
-      if(!preferences.value) return false
-
+    const hasPreferences = computed(() => {
+      if (!preferences.value) return false;
       return Object.values(preferences.value).some(
         arr => Array.isArray(arr) && arr.length
       )
@@ -149,15 +136,14 @@ export default {
       category,
       preferences,
       hasPreferences,
-      formatLabel
-    }
-
+      formatLabel,
+      logout
+    };
   }
 
 }
 
 </script>
-
 <style scoped>
 
 .profile{
@@ -210,4 +196,33 @@ padding:70px;
 background:var(--gris-claro);
 }
 
+/* ===== CERRAR SESIÓN ===== */
+.logout-item {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-family: inherit;  /* ← añade esto */
+  font-weight: normal;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: rgba(239, 68, 68, 0.25);
+  border-color: #ef4444;
+  color: #ff8080;
+}
 </style>

@@ -7,6 +7,10 @@ export const useUserStore = defineStore("user", {
     preferences: null
   }),
 
+  getters: {
+    isLoggedIn: (state) => !!state.user,
+  },
+
   actions: {
     setUser(userData) {
       this.user = userData;
