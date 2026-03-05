@@ -9,6 +9,11 @@
         <li><router-link to="/profile/messages">Mensajes</router-link></li>
         <li><router-link to="/profile/my-properties-for-sale">Mis propiedades en venta</router-link></li>
         <li><router-link to="/profile/settings">Ajustes</router-link></li>
+        <li v-if="user" class="logout-item">
+          <button class="logout-btn" @click="logout">
+            Cerrar sesión
+          </button>
+        </li>
       </ul>
     </div>
 
@@ -49,13 +54,24 @@
 import { useUserStore } from "../stores/user";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   name: "Profile",
 
   setup() {
     const userStore = useUserStore();
+    const router = useRouter();
     const { user, selectedCategory: category, preferences } = storeToRefs(userStore);
+
+    const logout = async () => {
+      await fetch("http://localhost/inmobiliaria/backend/logout.php", {
+        credentials: "include"
+      });
+
+      userStore.logout();
+      router.push("/");
+    };
 
     const hasPreferences = computed(() => {
       if (!preferences.value) return false;
@@ -82,7 +98,8 @@ export default {
       category,
       preferences,
       hasPreferences,
-      formatLabel
+      formatLabel,
+      logout
     };
   }
 };
@@ -154,5 +171,33 @@ export default {
   border-radius: 8px;
   margin-left: 1px; /* Ajuste para que el contenido se acomode al lado del menú lateral */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== CERRAR SESIÓN ===== */
+.logout-item {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: rgba(239, 68, 68, 0.25);
+  border-color: #ef4444;
+  color: #ff8080;
 }
 </style>

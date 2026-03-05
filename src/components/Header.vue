@@ -39,12 +39,7 @@
             </div>
           </router-link>
         </li>
-
-        <li v-if="user">
-          <button class="logout-btn" @click="logout">
-            Cerrar sesión
-          </button>
-        </li>
+        
       </ul>
     </nav>
   </header>
@@ -61,17 +56,9 @@ export default {
   setup() {
     const userStore = useUserStore();
     const router = useRouter();
-
     const { user } = storeToRefs(userStore);
 
-    const logout = async () => {
-      await fetch("http://localhost/inmobiliaria/backend/logout.php", {
-        credentials: "include"
-      });
-
-      userStore.logout();
-      router.push("/");
-    };
+    
 
     const goToCatalog = () => {
       // Limpiar categoría para que vuelva a mostrarse el carrusel
@@ -88,7 +75,6 @@ export default {
 
     return {
       user,
-      logout,
       goToCatalog,
       getInitials
     };
