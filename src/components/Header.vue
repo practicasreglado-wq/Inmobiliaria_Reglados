@@ -39,11 +39,6 @@
             </div>
           </router-link>
         </li>
-        <li v-if="user">
-          <button class="logout-btn" @click="logout">
-            Cerrar sesión
-          </button>
-        </li>
       </ul>
     </nav>
   </header>
