@@ -99,7 +99,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 0 60px;
-  background: rgba(255, 255, 255, 0.447);
+  background: rgba(255, 255, 255, 0.639);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   box-sizing: border-box;

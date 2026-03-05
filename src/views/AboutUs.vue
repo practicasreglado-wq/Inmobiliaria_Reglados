@@ -39,8 +39,7 @@ export default {
 
 <style scoped>
 .about {
-  min-height: calc(100vh - 90px);
-  margin-top: 90px;
+  min-height:100vh;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -29,8 +29,7 @@ export default {
 <style scoped>
 .hero {
   position: relative;
-  min-height: calc(100vh - 90px);
-  margin-top: 90px;
+  min-height:100vh;
   background-image: url('/src/assets/img_Home.png');
   background-size: cover;
   background-position: center;
@@ -64,7 +63,7 @@ export default {
 }
 
 .highlight {
-  color: rgb(220, 185, 97);
+  color: #eabe2f;
 }
 
 .description {

@@ -80,8 +80,7 @@ export default {
 <style scoped>
 .contacto {
   position: relative;
-  min-height: calc(100vh - 90px);
-  margin-top: 90px;
+  min-height:100vh;
   background-color: var(--gris-claro);
   background-image: url('@/assets/fondito.png');
   background-size: cover;
@@ -121,7 +120,7 @@ export default {
 }
 
 .highlight {
-  color: #d4af37;
+  color: #eabe2f;
 }
 
 .contacto-texto p {
@@ -141,7 +140,7 @@ export default {
 }
 
 .login-link span {
-  color: #d4af37;
+  color: #eabe2f;
   cursor: pointer;
   font-weight: bold;
   margin-left: 5px;

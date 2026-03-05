@@ -190,7 +190,7 @@ border-radius:6px;
 }
 
 .sidebar a:hover{
-background:#f0c14b;
+background:#f0c14bc9;
 }
 
 /* Estilo para el enlace activo */
