@@ -14,12 +14,9 @@ export const useUserStore = defineStore("user", {
   actions: {
     setUser(userData) {
       this.user = userData;
-
-      // 🔥 MUY IMPORTANTE
       this.selectedCategory = userData.categoria || null;
       this.preferences = userData.preferencias || null;
 
-      // Guardar en localStorage
       localStorage.setItem('user', JSON.stringify(userData));
       localStorage.setItem('selectedCategory', this.selectedCategory);
       localStorage.setItem('preferences', JSON.stringify(this.preferences));
@@ -27,12 +24,12 @@ export const useUserStore = defineStore("user", {
 
     setCategory(category) {
       this.selectedCategory = category;
-      localStorage.setItem('selectedCategory', category); // Guardar categoría en localStorage
+      localStorage.setItem('selectedCategory', category);
     },
 
     setPreferences(preferences) {
       this.preferences = preferences;
-      localStorage.setItem('preferences', JSON.stringify(preferences)); // Guardar preferencias en localStorage
+      localStorage.setItem('preferences', JSON.stringify(preferences));
     },
 
     logout() {
@@ -45,6 +42,5 @@ export const useUserStore = defineStore("user", {
     }
   },
 
-  // Persistir estado en localStorage (opcional)
   persist: true
 });
