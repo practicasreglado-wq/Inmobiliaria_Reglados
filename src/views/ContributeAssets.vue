@@ -35,7 +35,14 @@
         <div class="grid-row">
           <div class="form-group">
             <label>Precio (€)</label>
-            <input type="number" v-model="form.precio" placeholder="Ej: 2500000" required />
+              <input 
+                type="text"
+                :value="precioFormateado"
+                @input="handlePrecio"
+                placeholder="Ej: 2.500.000"
+                maxlength="11"
+                required 
+              />
           </div>
           <div class="form-group">
             <label>Superficie Total (m²)</label>
@@ -63,12 +70,158 @@
       </div>
 
       <div class="form-section">
-        <h3><span class="step">3</span> Detalles Técnicos</h3>
-        <div class="form-group">
-          <label>Descripción corta para inversores</label>
-          <textarea v-model="form.descripcion" rows="4" placeholder="Resumen de la oportunidad..."></textarea>
-        </div>
-        </div>
+  <h3><span class="step">3</span> Detalles Técnicos</h3>
+  
+  <div class="form-group">
+    <label>Descripción corta para inversores</label>
+    <textarea v-model="form.descripcion" rows="4" placeholder="Resumen de la oportunidad..."></textarea>
+  </div>
+
+  <!-- ===== EDIFICIOS ===== -->
+  <template v-if="form.tipo_activo === 'Edificios'">
+    <div class="detail-group">
+      <label>Uso</label>
+      <div class="chips">
+        <label v-for="op in ['Residencial','Oficinas','Comercial','Industrial']" :key="op" class="chip">
+          <input type="radio" v-model="form.extras.uso" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+    <div class="detail-group">
+      <label>Características</label>
+      <div class="chips">
+        <label v-for="op in ['Ascensor','Garaje','Terraza','Reformado','Nuevo']" :key="op" class="chip">
+          <input type="checkbox" v-model="form.extras.caracteristicas" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+    <div class="detail-group">
+      <label>Zona</label>
+      <div class="chips">
+        <label v-for="op in ['Centro','Periferia','Zona financiera']" :key="op" class="chip">
+          <input type="radio" v-model="form.extras.zona" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+  </template>
+
+  <!-- ===== HOTELES ===== -->
+  <template v-if="form.tipo_activo === 'Hoteles'">
+    <div class="detail-group">
+      <label>Estrellas</label>
+      <div class="chips">
+        <label v-for="op in ['3 estrellas','4 estrellas','5 estrellas']" :key="op" class="chip gold">
+          <input type="radio" v-model="form.extras.estrellas" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+    <div class="detail-group">
+      <label>Servicios</label>
+      <div class="chips">
+        <label v-for="op in ['Spa','Piscina','Gimnasio','Parking privado','Restaurante','Room Service','Vista al mar']" :key="op" class="chip">
+          <input type="checkbox" v-model="form.extras.caracteristicas" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+    <div class="detail-group">
+      <label>Ubicación</label>
+      <div class="chips">
+        <label v-for="op in ['Centro ciudad','Playa','Montaña','Zona rural']" :key="op" class="chip">
+          <input type="radio" v-model="form.extras.ubicacion_tipo" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+  </template>
+
+  <!-- ===== PARKING ===== -->
+  <template v-if="form.tipo_activo === 'Parking'">
+    <div class="detail-group">
+      <label>Tipo</label>
+      <div class="chips">
+        <label v-for="op in ['Subterráneo','Exterior','Privado','Público']" :key="op" class="chip">
+          <input type="radio" v-model="form.extras.tipo_parking" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+    <div class="detail-group">
+      <label>Características</label>
+      <div class="chips">
+        <label v-for="op in ['Vigilancia 24h','Acceso automático','Cámaras de seguridad','Carga eléctrica']" :key="op" class="chip">
+          <input type="checkbox" v-model="form.extras.caracteristicas" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+    <div class="detail-group">
+      <label>Ubicación</label>
+      <div class="chips">
+        <label v-for="op in ['Centro','Residencial','Comercial']" :key="op" class="chip">
+          <input type="radio" v-model="form.extras.ubicacion_tipo" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+  </template>
+
+  <!-- ===== ACTIVOS SINGULARES ===== -->
+  <template v-if="form.tipo_activo === 'Activos Singulares'">
+    <div class="detail-group">
+      <label>Tipo de activo</label>
+      <div class="chips">
+        <label v-for="op in ['Comercial','Industrial','Residencial']" :key="op" class="chip">
+          <input type="radio" v-model="form.extras.tipo_singular" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+    <div class="detail-group">
+      <label>Características</label>
+      <div class="chips">
+        <label v-for="op in ['Fachada renovada','Cercano a transporte público','Espacios adaptados']" :key="op" class="chip">
+          <input type="checkbox" v-model="form.extras.caracteristicas" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+    <div class="detail-group">
+      <label>Ubicación</label>
+      <div class="chips">
+        <label v-for="op in ['Centro de la ciudad','Zona industrial']" :key="op" class="chip">
+          <input type="radio" v-model="form.extras.ubicacion_tipo" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+  </template>
+
+  <!-- ===== FINCAS ===== -->
+  <template v-if="form.tipo_activo === 'Fincas'">
+    <div class="detail-group">
+      <label>Tipo</label>
+      <div class="chips">
+        <label v-for="op in ['Rural','Agrícola','Forestal','Cinegéticas']" :key="op" class="chip">
+          <input type="radio" v-model="form.extras.tipo_finca" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+    <div class="detail-group">
+      <label>Características</label>
+      <div class="chips">
+        <label v-for="op in ['Agua potable','Acceso por carretera','Parcela vallada']" :key="op" class="chip">
+          <input type="checkbox" v-model="form.extras.caracteristicas" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+    <div class="detail-group">
+      <label>Hectáreas</label>
+      <input type="number" v-model="form.extras.hectareas" placeholder="Ej: 15" class="input-hectareas" />
+    </div>
+    <div class="detail-group">
+      <label>Ubicación</label>
+      <div class="chips">
+        <label v-for="op in ['Zona rural','Cerca de río','Montaña']" :key="op" class="chip">
+          <input type="radio" v-model="form.extras.ubicacion_tipo" :value="op" /> {{ op }}
+        </label>
+      </div>
+    </div>
+  </template>
+
+</div>
 
       <div class="form-actions">
         <button type="submit" :disabled="loading" class="submit-btn">
@@ -80,7 +233,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
 
@@ -96,7 +249,13 @@ const form = ref({
   ubicacion: "",
   es_confidencial: false,
   descripcion: "",
-  id_aportador: userStore.user?.id // Asociamos el activo al usuario logueado
+  id_aportador: userStore.user?.id,
+  extras: { caracteristicas: [] }  // ← añade esto
+});
+
+// ← añade este watch
+watch(() => form.value.tipo_activo, () => {
+  form.value.extras = { caracteristicas: [] };
 });
 
 const handleSubmit = async () => {
@@ -122,6 +281,18 @@ const handleSubmit = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+// Valor visual formateado
+const precioFormateado = computed(() => {
+  if (!form.value.precio) return '';
+  return Number(form.value.precio).toLocaleString('es-ES');
+});
+
+// Al escribir, limpia puntos y guarda solo el número
+const handlePrecio = (e) => {
+  const soloNumeros = e.target.value.replace(/\D/g, '').slice(0, 8);;
+  form.value.precio = soloNumeros ? Number(soloNumeros) : null;
 };
 </script>
 
@@ -245,5 +416,89 @@ input, select, textarea {
 
 .submit-btn:disabled {
   background: #ccc;
+}
+
+/* ===== CAMPOS DINÁMICOS POR CATEGORÍA ===== */
+.detail-group {
+  margin-top: 22px;
+}
+
+.detail-group > label:first-child {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px; /* igual que tus inputs */
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: white;
+  color: #333;
+  user-select: none;
+}
+
+.chip:hover {
+  border-color: #24386b;
+  color: #24386b;
+}
+
+/* Seleccionado — usa el azul de tu .submit-btn */
+.chip:has(input:checked) {
+  border-color: #24386b;
+  background-color: #24386b;
+  color: white;
+}
+
+/* Para los radio de estrellas usa el dorado de .step */
+.chip.gold:has(input:checked) {
+  border-color: #d4af37;
+  background-color: #d4af37;
+  color: white;
+}
+
+.chip input {
+  display: none;
+}
+
+/* Input de hectáreas — igual que tus demás inputs */
+.input-hectareas {
+  width: 200px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s;
+}
+
+.input-hectareas:focus {
+  outline: none;
+  border-color: #24386b;
+}
+
+/* Separador visual entre el textarea y los campos dinámicos */
+.detail-group:first-of-type {
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  margin-top: 25px;
 }
 </style>
