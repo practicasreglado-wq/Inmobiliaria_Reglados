@@ -4,7 +4,7 @@
     <div class="categories">
       <span
         v-for="(item, index) in visibleItems"
-        :key="item.title"
+        :key="item.value"
         :class="{ active: index === 1 }"
       >
         {{ item.title }}
@@ -17,7 +17,7 @@
       <div class="cards">
         <div
           v-for="(item, index) in visibleItems"
-          :key="item.title"
+          :key="item.value"
           class="card"
           :class="cardClass(index)"
           :style="{ backgroundImage: `url(${item.image})` }"
@@ -47,18 +47,18 @@ export default {
     return {
       isAnimating: false,
       items: [
-        { title: "Edificios", image: new URL('@/assets/edificios.png', import.meta.url).href },
-        { title: "Hoteles", image: new URL('@/assets/hotel.png', import.meta.url).href },
-        { title: "Parking", image: new URL('@/assets/parking.png', import.meta.url).href },
-        { title: "Activos", image: new URL('@/assets/activos.png', import.meta.url).href },
-        { title: "Fincas", image: new URL('@/assets/finca.png', import.meta.url).href }
+        { title: "Edificios", value: "Edificios", image: new URL('@/assets/edificios.png', import.meta.url).href },
+        { title: "Hoteles", value: "Hoteles", image: new URL('@/assets/hotel.png', import.meta.url).href },
+        { title: "Parking", value: "Parking", image: new URL('@/assets/parking.png', import.meta.url).href },
+        { title: "Activos", value: "Activos", image: new URL('@/assets/activos.png', import.meta.url).href },
+        { title: "Fincas", value: "Fincas", image: new URL('@/assets/finca.png', import.meta.url).href }
       ]
     };
   },
 
   computed: {
     visibleItems() {
-      return this.items.slice(0, 3); // Solo mostramos los primeros 3 elementos
+      return this.items.slice(0, 3);
     }
   },
 
@@ -66,73 +66,55 @@ export default {
     const savedCategory = this.userStore.selectedCategory;
     if (!savedCategory) return;
 
-    while (this.items[1].title !== savedCategory) {
+    while (this.items[1].value !== savedCategory) {
       const first = this.items.shift();
       this.items.push(first);
     }
   },
 
   methods: {
-  cardClass(index) {
-    if (index === 1) return "center";
-    if (index === 0) return "left";
-    if (index === 2) return "right";
-  },
+    cardClass(index) {
+      if (index === 1) return "center";
+      if (index === 0) return "left";
+      if (index === 2) return "right";
+    },
 
-  next() {
-    if (this.isAnimating) return;
-    this.isAnimating = true;
+    next() {
+      if (this.isAnimating) return;
+      this.isAnimating = true;
 
-    const first = this.items.shift();
-    this.items.push(first);
+      const first = this.items.shift();
+      this.items.push(first);
 
-    setTimeout(() => {
-      this.isAnimating = false;
-    }, 400);
-  },
+      setTimeout(() => {
+        this.isAnimating = false;
+      }, 400);
+    },
 
-  prev() {
-    if (this.isAnimating) return;
-    this.isAnimating = true;
+    prev() {
+      if (this.isAnimating) return;
+      this.isAnimating = true;
 
-    const last = this.items.pop();
-    this.items.unshift(last);
+      const last = this.items.pop();
+      this.items.unshift(last);
 
-    setTimeout(() => {
-      this.isAnimating = false;
-    }, 400);
-  },
+      setTimeout(() => {
+        this.isAnimating = false;
+      }, 400);
+    },
 
-  // Método para seleccionar la categoría y redirigir a las preguntas
-  async selectCategory(index) {
-    if (index !== 1) return;  // Solo permitir la selección del elemento central
+    // Seleccionar categoría y enviar a questions
+    selectCategory(index) {
+      if (index !== 1) return;
 
-    const selected = this.visibleItems[1].title;
+      const selected = this.visibleItems[1].value;
 
-    // Actualizamos el store con la categoría seleccionada
-    this.userStore.setCategory(selected);
-
-    // Guardar la categoría seleccionada y las preferencias
-    await fetch(
-      "http://localhost/inmobiliaria/backend/save_preferences.php",
-      {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          categoria: selected,
-          preferencias: this.userStore.preferences
-        })
-      }
-    );
-
-    // Guardamos la categoría seleccionada en localStorage
-    localStorage.setItem('selectedCategory', selected);
-
-    // Redirigimos a la página de preguntas
-    this.router.push("/questions");
+      this.router.push({
+        path: "/questions",
+        query: { category: selected }
+      });
+    }
   }
-}
 };
 </script>
 

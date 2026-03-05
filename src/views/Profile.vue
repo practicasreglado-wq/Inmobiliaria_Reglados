@@ -44,11 +44,10 @@
     </div>
   </section>
 </template>
-
 <script>
 import { useUserStore } from "../stores/user";
 import { storeToRefs } from "pinia";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 
 export default {
   name: "Profile",
@@ -57,6 +56,18 @@ export default {
     const userStore = useUserStore();
     const { user, selectedCategory: category, preferences } = storeToRefs(userStore);
 
+    // Sincronizar selectedCategory con localStorage al montar el componente
+    onMounted(() => {
+      const savedCategory = localStorage.getItem('selectedCategory');
+      console.log('Saved Category from LocalStorage:', savedCategory); // Verifica si se recupera correctamente
+
+      if (savedCategory && userStore.selectedCategory !== savedCategory) {
+        // Si no está sincronizado, actualizar el store con la categoría de localStorage
+        userStore.setCategory(savedCategory);
+      }
+    });
+
+    // Verificar si hay preferencias
     const hasPreferences = computed(() => {
       if (!preferences.value) return false;
       return Object.values(preferences.value).some(
@@ -87,7 +98,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 /* Estilo para el perfil con el menú lateral fijo y contenido dinámico */
 .profile {

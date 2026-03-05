@@ -74,8 +74,6 @@ export default {
     };
 
     const goToCatalog = () => {
-      // Limpiar categoría para que vuelva a mostrarse el carrusel
-      userStore.setCategory(null);
       router.push("/dashboard");
     };
 
@@ -151,6 +149,21 @@ nav a:hover, .catalog-btn:hover {
   text-decoration: none;
   padding: 10px 22px;
   color: var(--negro);
+}
+
+.btn-login{
+  font-size: 1em;
+  background-color: var(--azul-principal);
+  color: white;
+  padding: 8px 25px;
+  border: none;
+  border-radius: 6px;
+  transition: 0.3s ease;
+}
+
+.btn-login:hover{
+  background-color: var(--azul-secundario);
+  color: white;
 }
 
 .bienvenido {
