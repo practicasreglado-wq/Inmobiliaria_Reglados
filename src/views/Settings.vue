@@ -5,7 +5,7 @@
     <div class="profile-picture">
       <img v-if="user.profile_picture" :src="user.profile_picture" alt="Foto de perfil" />
       <div v-else class="profile-initial">
-        {{ user.nombre ? user.nombre.charAt(0).toUpperCase() : 'A' }}
+        {{ userInitials }}
       </div>
       <input type="file" @change="handleFileChange" />
     </div>
@@ -48,7 +48,7 @@
 
 <script>
 import { useUserStore } from "../stores/user";
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 import { storeToRefs } from "pinia";
 
 export default {
@@ -56,7 +56,15 @@ export default {
   setup() {
     const userStore = useUserStore();
     const { user } = storeToRefs(userStore);  // Sincronizamos los datos del store con las referencias
+    const userInitials = computed(() => {
+  if (!user.value) return "U";
 
+  const nombre = user.value.nombre
+    ? user.value.nombre.charAt(0).toUpperCase()
+    : "";
+
+  return nombre || "U";
+});
     // Cargar datos del usuario cuando el componente se monta
     onMounted(async () => {
   await loadUserData();
@@ -82,9 +90,6 @@ export default {
         alert("Error de conexión.");
       }
     };
-
-    // Función para manejar el cambio de imagen de perfil
-    
 
     // Función para actualizar el perfil
     let selectedFile = null;
@@ -124,10 +129,11 @@ const updateProfile = async () => {
     alert("Perfil actualizado correctamente."); } else { alert("Hubo un problema al actualizar el perfil."); }
   };
     return {
-      user,
-      handleFileChange,
-      updateProfile,
-    };
+  user,
+  handleFileChange,
+  updateProfile,
+  userInitials
+  };
   },
 };
 </script>

@@ -13,8 +13,8 @@
       <div class="footer-col">
         <h3>ACTIVOS</h3>
         <ul>
-          <li>Edificios</li>
           <li>Hoteles</li>
+          <li>Edificios</li>
           <li>Parking</li>
           <li>Activos Singulares</li>
           <li>Fincas</li>
@@ -25,13 +25,7 @@
         <h3>EMPRESA</h3>
         <ul>
           <li>
-            <router-link to="/about-us" class="footer-link">Quiénes somos</router-link>
-          </li>
-          <li>
-            <router-link to="/metodologia" class="footer-link">Metodología</router-link>
-          </li>
-          <li>
-            <router-link to="/team" class="footer-link">Equipo</router-link>
+            <router-link to="/#about-us" class="footer-link">Quiénes somos</router-link>
           </li>
           <li>
             <router-link to="/contacto" class="footer-link">Contacto</router-link>
