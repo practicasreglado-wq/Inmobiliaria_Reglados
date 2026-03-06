@@ -23,7 +23,6 @@ export default {
 <style scoped>
 .dashboard {
   min-height: 100vh;
-  padding-top: 120px;
   display: flex;
   justify-content: center;
   align-items: center;

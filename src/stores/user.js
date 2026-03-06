@@ -2,10 +2,10 @@ import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    user: null,
-    selectedCategory: null,
-    preferences: null
-  }),
+  user: JSON.parse(localStorage.getItem("user")) || null,
+  selectedCategory: localStorage.getItem("selectedCategory") || null,
+  preferences: JSON.parse(localStorage.getItem("preferences")) || null
+}),
 
   getters: {
     isLoggedIn: (state) => !!state.user,
@@ -13,14 +13,26 @@ export const useUserStore = defineStore("user", {
 
   actions: {
     setUser(userData) {
-      this.user = userData;
-      this.selectedCategory = userData.categoria || null;
-      this.preferences = userData.preferencias || null;
 
-      localStorage.setItem('user', JSON.stringify(userData));
-      localStorage.setItem('selectedCategory', this.selectedCategory);
-      localStorage.setItem('preferences', JSON.stringify(this.preferences));
-    },
+  this.user = {
+    ...userData,
+    apellidos: userData.apellidos || ""
+  };
+
+  localStorage.setItem("user", JSON.stringify(this.user));
+
+  if (userData.categoria !== undefined) {
+    this.selectedCategory = userData.categoria;
+    localStorage.setItem("selectedCategory", this.selectedCategory);
+  }
+
+  if (userData.preferencias !== undefined) {
+    this.preferences = userData.preferencias;
+    localStorage.setItem("preferences", JSON.stringify(this.preferences));
+  }
+
+  localStorage.setItem("user", JSON.stringify(userData));
+},
 
     setCategory(category) {
       this.selectedCategory = category;

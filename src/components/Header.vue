@@ -1,24 +1,15 @@
 <template>
   <header>
     <div class="logo">
-      <h1>RS</h1>
+      <router-link to="/" class="logo-text">
+        <h1>RS</h1>
+      </router-link>
     </div>
 
     <nav>
       <ul>
-        <li>
-          <router-link to="/">Inicio</router-link>
-        </li>
-        <li>
-          <router-link to="/about-us">Sobre Nosotros</router-link>
-        </li>
-        <li>
-          <router-link to="/contacto">Contacto</router-link>
-        </li>
-
         <!-- Si NO está logueado -->
         <li v-if="!user">
-          <router-link to="/login" class="btn-login">Login</router-link>
         </li>
 
         <!-- Si está logueado -->
@@ -32,11 +23,17 @@
         <li v-if="user">
           <router-link to="/profile" class="bienvenido">
             <div class="user-avatar">
-              <!-- Mostrar la foto si está disponible -->
-              <img v-if="user?.photo" :src="user.photo" alt="Avatar" class="avatar-img" />
-              <!-- Si no hay foto, mostrar las iniciales -->
-              <span v-else>{{ getInitials(user.nombre, user.apellidos) }}</span>
-            </div>
+            <!-- Mostrar foto -->
+            <img
+              v-if="user?.profile_picture"
+              :src="'http://localhost/inmobiliaria/backend/' + user.profile_picture"
+              alt="Avatar"
+              class="avatar-img"
+            />
+
+            <!-- Si no hay foto -->
+            <span v-else>{{ getInitials() }}</span>
+          </div>
           </router-link>
         </li>
       </ul>
@@ -57,6 +54,8 @@ export default {
     const router = useRouter();
     const { user } = storeToRefs(userStore);
 
+    console.log(user.value)
+
     const logout = async () => {
       await fetch("http://localhost/inmobiliaria/backend/logout.php", {
         credentials: "include"
@@ -70,11 +69,13 @@ export default {
       router.push("/dashboard");
     };
 
-    // Función para obtener las iniciales del nombre y apellido
-    const getInitials = (firstName, lastName) => {
-      const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : '';
-      const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
-      return firstInitial + lastInitial;
+    // Función para obtener las iniciales del nombre
+    const getInitials = () => {
+      if (!user.value) return "U";
+
+      const first = user.value.nombre?.charAt(0).toUpperCase() || "";
+
+      return first || "U";
     };
 
     return {
@@ -109,8 +110,17 @@ header .logo h1 {
   font-size: 2.8rem;
   font-weight: 700;
   margin: 0;
-  color: var(--negro);
   letter-spacing: 2px;
+  color: #eabe2f;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+.logo-text {
+  text-decoration: none;
+  color: inherit; /* mantiene el color del h1 */
+}
+
+.logo-text:hover {
+  text-decoration: none;
 }
 
 nav ul {
@@ -142,21 +152,6 @@ nav a:hover, .catalog-btn:hover {
   text-decoration: none;
   padding: 10px 22px;
   color: var(--negro);
-}
-
-.btn-login{
-  font-size: 1em;
-  background-color: var(--azul-principal);
-  color: white;
-  padding: 8px 25px;
-  border: none;
-  border-radius: 6px;
-  transition: 0.3s ease;
-}
-
-.btn-login:hover{
-  background-color: var(--azul-secundario);
-  color: white;
 }
 
 .bienvenido {
@@ -210,7 +205,7 @@ nav a:hover, .catalog-btn:hover {
   background-color: var(--azul-secundario);
 }
 
-nav a.router-link-exact-active:not(.btn-login) {
+nav a.router-link-exact-active{
   color: var(--azul-secundario);
 }
 </style>

@@ -13,7 +13,8 @@ if (!isset($_SESSION["user"])) {
 }
 
 $stmt = $pdo->prepare("
-    SELECT id, nombre, email, nombre_usuario,
+    SELECT id, nombre, apellidos, email, telefono, nombre_usuario,
+           profile_picture,
            categoria_seleccionada, preferencias
     FROM usuarios
     WHERE id = :id
@@ -27,8 +28,11 @@ echo json_encode([
     "user" => [
         "id" => $usuario["id"],
         "nombre" => $usuario["nombre"],
+        "apellidos" => $usuario["apellidos"],
         "email" => $usuario["email"],
+        "telefono" => $usuario["telefono"],
         "nombre_usuario" => $usuario["nombre_usuario"],
+        "profile_picture" => $usuario["profile_picture"],
         "categoria" => $usuario["categoria_seleccionada"],
         "preferencias" => $usuario["preferencias"]
             ? json_decode($usuario["preferencias"], true)

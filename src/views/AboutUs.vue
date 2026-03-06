@@ -39,13 +39,12 @@ export default {
 
 <style scoped>
 .about {
-  min-height:100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 80px;
-  padding: 0 80px 0 100px;
-  background-color: var(--gris-claro);
+  gap: 60px;
+  min-height: 100vh;
+  background: rgba(0, 0, 0, 0.263);
 }
 
 /* ----- IMÁGENES (simuladas) ----- */
@@ -55,6 +54,7 @@ export default {
   display: flex;
   align-items: flex-start;
   gap: 30px;
+  
 }
 
 /* Imagen izquierda (más ancha) */
@@ -63,6 +63,7 @@ export default {
   height: 420px;
   overflow: hidden;
   margin-top: 120px; /* baja la imagen */
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.733) ;
 }
 
 /* Imagen derecha (más alta y estilizada) */
@@ -70,6 +71,7 @@ export default {
   width: 270px;
   height: 460px;
   overflow: hidden;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.733) ;
 }
 
 .about-images img {
@@ -86,15 +88,17 @@ export default {
 }
 
 .about-content h2 {
-  font-size: 3.5rem;
+  font-size: 5rem;
   margin-bottom: 25px;
-  color: var(--negro);
+  color: #eabe2f;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.619);
 }
 
 .about-content p {
-  font-size: 1.3rem;
+  font-size: 1.75rem;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.605);
   line-height: 1.7;
   margin-bottom: 20px;
-  color: #333;
+  color: #ffffff;
 }
 </style>

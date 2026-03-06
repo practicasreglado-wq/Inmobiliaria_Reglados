@@ -3,14 +3,36 @@
     <h2>Ajustes de Usuario</h2>
 
     <div class="profile-picture">
-      <img v-if="user.profile_picture" :src="user.profile_picture" alt="Foto de perfil" />
+
+      <!-- FOTO PERFIL -->
+      <img
+        v-if="preview || user.profile_picture"
+        :src="preview ? preview : 'http://localhost/inmobiliaria/backend/' + user.profile_picture"
+        alt="Foto de perfil"
+      />
+
+      <!-- INICIAL SI NO HAY FOTO -->
       <div v-else class="profile-initial">
-        {{ user.nombre ? user.nombre.charAt(0).toUpperCase() : 'A' }}
+        {{ userInitials }}
       </div>
+
+      <!-- SUBIR FOTO -->
       <input type="file" @change="handleFileChange" />
+      <br>
+      <button type="button" @click="updateProfile">
+        Guardar foto
+      </button>
+      <br>
+
+      <!-- BORRAR FOTO -->
+      <button v-if="user.profile_picture" @click="deletePhoto">
+        Eliminar foto
+      </button>
+
     </div>
-    
+
     <form @submit.prevent="updateProfile">
+
       <div class="form-group">
         <label for="nombre">Nombre</label>
         <input type="text" v-model="user.nombre" id="nombre" required />
@@ -48,96 +70,192 @@
 
       <div class="form-group">
         <label for="password">Contraseña</label>
-        <input type="password" v-model="user.password" id="password" required />
+        <input
+          type="password"
+          v-model="password"
+          placeholder="Nueva contraseña (opcional)"
+        >
       </div>
 
       <button type="submit">Guardar cambios</button>
+
     </form>
   </div>
 </template>
 
 <script>
 import { useUserStore } from "../stores/user";
-import { onMounted } from "vue";
+import { onMounted, computed, ref } from "vue";
 import { storeToRefs } from "pinia";
 
 export default {
   name: "Settings",
+
   setup() {
+
+    const preview = ref(null);
+    const selectedFile = ref(null);
+    const password = ref(""); // 🔥 contraseña separada
+
     const userStore = useUserStore();
-    const { user } = storeToRefs(userStore);  // Sincronizamos los datos del store con las referencias
+    const { user } = storeToRefs(userStore);
 
-    // Cargar datos del usuario cuando el componente se monta
-    onMounted(async () => {
-  await loadUserData();
-});
+    const userInitials = computed(() => {
 
-    // Función para cargar los datos del usuario desde el backend
+      if (!user.value) return "U";
+
+      const nombre = user.value.nombre
+        ? user.value.nombre.charAt(0).toUpperCase()
+        : "";
+
+      return nombre || "U";
+
+    });
+
+    onMounted(() => {
+
+      if (!user.value) {
+        loadUserData();
+      }
+
+    });
+
     const loadUserData = async () => {
+
       try {
-        const response = await fetch("http://localhost/inmobiliaria/backend/get_user_data.php", {
-          method: "GET",
-          credentials: "include",
-        });
+
+        const response = await fetch(
+          "http://localhost/inmobiliaria/backend/get_user_data.php",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+
         const data = await response.json();
 
         if (data.success) {
-          // Aseguramos que se actualice el estado del usuario en el store
+
           userStore.setUser(data.user);
+
         } else {
+
           alert("No se pudo cargar los datos del usuario.");
+
         }
+
       } catch (err) {
-        console.error("Error:", err);
-        alert("Error de conexión.");
+
+        console.error(err);
+        alert("Error de conexión");
+
       }
+
     };
 
-    // Función para manejar el cambio de imagen de perfil
-    
+    const handleFileChange = (event) => {
 
-    // Función para actualizar el perfil
-    let selectedFile = null;
+      const file = event.target.files[0];
 
-const handleFileChange = (event) => {
-  selectedFile = event.target.files[0];
-};
+      if (!file) return;
 
-const updateProfile = async () => {
+      selectedFile.value = file;
 
-  const formData = new FormData();
+      preview.value = URL.createObjectURL(file);
 
-  formData.append("nombre", user.value.nombre);
-  formData.append("apellidos", user.value.apellidos);
-  formData.append("email", user.value.email);
-  formData.append("telefono", user.value.telefono);
-  formData.append("nombre_usuario", user.value.nombre_usuario);
-  formData.append("password", user.value.password);
+    };
 
-  if (selectedFile) {
-    formData.append("profile_picture", selectedFile);
+    const updateProfile = async () => {
+
+  try {
+
+    const formData = new FormData();
+
+    formData.append("nombre", user.value.nombre);
+    formData.append("apellidos", user.value.apellidos);
+    formData.append("email", user.value.email);
+    formData.append("telefono", user.value.telefono);
+    formData.append("nombre_usuario", user.value.nombre_usuario);
+
+    if (password.value && password.value.trim() !== "") {
+      formData.append("password", password.value);
+    }
+
+    if (selectedFile.value) {
+      formData.append("profile_picture", selectedFile.value);
+    }
+
+    const response = await fetch(
+      "http://localhost/inmobiliaria/backend/update_profile.php",
+      {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.success) {
+
+        alert("Perfil actualizado correctamente");
+
+        password.value = "";
+        preview.value = null;
+        selectedFile.value = null;
+
+        await loadUserData();
+
+    } else {
+        alert(data.message || "Error al actualizar");
+
+      }
+
+  } catch (error) {
+
+    console.error("Error:", error);
+
   }
 
-  const response = await fetch(
-    "http://localhost/inmobiliaria/backend/update_profile.php",
-    {
-      method: "POST",
-      body: formData,
-      credentials: "include",
+};
+
+    const deletePhoto = async () => {
+
+  try {
+
+    const response = await fetch(
+      "http://localhost/inmobiliaria/backend/delete_profile_picture.php",
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.success) {
+      await loadUserData();
+      preview.value = null;
     }
-  );
 
-  const data = await response.json();
-  console.log(data);
+  } catch(err) {
 
-  if (data.success) { 
-    alert("Perfil actualizado correctamente."); } else { alert("Hubo un problema al actualizar el perfil."); }
-  };
+    console.error(err)
+
+  }
+
+};
+
     return {
       user,
       handleFileChange,
       updateProfile,
+      userInitials,
+      deletePhoto,
+      preview,
+      password
     };
+
   },
 };
 </script>

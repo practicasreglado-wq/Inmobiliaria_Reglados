@@ -58,15 +58,25 @@ export default {
 
   computed: {
     visibleItems() {
-      return this.items.slice(0, 3);
+      return this.items.slice(0, 3) || [];
     }
   },
 
   mounted() {
     const savedCategory = this.userStore.selectedCategory;
+
     if (!savedCategory) return;
 
-    while (this.items[1].value !== savedCategory) {
+    const index = this.items.findIndex(
+      item => item.value.toLowerCase() === savedCategory.toLowerCase()
+    );
+
+    if (index === -1) return;
+
+    // mover la categoría al centro
+    const rotations = (index - 1 + this.items.length) % this.items.length;
+
+    for (let i = 0; i < rotations; i++) {
       const first = this.items.shift();
       this.items.push(first);
     }
