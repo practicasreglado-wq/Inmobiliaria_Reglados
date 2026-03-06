@@ -1,18 +1,51 @@
 <template>
   <div class="register">
     <div class="overlay"></div>
+
     <div class="vent-register">
       <h2>Bienvenido</h2>
 
       <form @submit.prevent="register">
         <div class="grid">
+          
           <input type="text" v-model="nombre" placeholder="Nombre" required />
           <input type="text" v-model="apellido" placeholder="Apellido" required />
+
           <input type="email" v-model="email" placeholder="Correo electrónico" required />
           <input type="text" v-model="telefono" placeholder="Teléfono" required />
+
           <input type="text" v-model="username" placeholder="Nombre de usuario" required />
-          <input type="password" v-model="password" placeholder="Contraseña" required />
+
+<div class="fecha-nacimiento">
+  <label>Fecha de nacimiento (debes ser mayor de 18 años)</label>
+  <input
+    type="date"
+    v-model="fechaNacimiento"
+    :max="maxDate"
+    required
+    >
+</div>
+
+<input
+  type="password"
+  v-model="password"
+  placeholder="Contraseña"
+  required
+  pattern="^(?=.*[A-Z])(?=.*[0-9]).{8,}$"
+/>
+
+<input
+  type="password"
+  v-model="confirmPassword"
+  placeholder="Confirmar contraseña"
+  required
+/>
+
         </div>
+
+        <p v-if="passwordError" class="rules">
+          La contraseña debe tener mínimo 8 caracteres, una mayúscula y un número
+        </p>
 
         <button type="submit" class="register-btn">
           Registrarse
@@ -20,6 +53,7 @@
       </form>
 
       <p v-if="error" class="error">{{ error }}</p>
+
     </div>
   </div>
 </template>
@@ -28,7 +62,6 @@
 import { useUserStore } from "../stores/user";
 
 export default {
-  name: "Register",
 
   data() {
     return {
@@ -38,17 +71,66 @@ export default {
       telefono: "",
       username: "",
       password: "",
+      confirmPassword: "",
+      fechaNacimiento: "",
       error: ""
     };
   },
 
+  computed: {
+
+    maxDate(){
+    const today = new Date()
+    today.setFullYear(today.getFullYear()-18)
+    return today.toISOString().split("T")[0]
+    },
+
+    passwordError() {
+      const regex = /^(?=.*[A-Z])(?=.*[0-9]).{8,}$/;
+      return this.password && !regex.test(this.password);
+    }
+
+  },
+
   methods: {
+
+    calcularEdad(fecha) {
+      const hoy = new Date();
+      const nacimiento = new Date(fecha);
+
+      let edad = hoy.getFullYear() - nacimiento.getFullYear();
+      const mes = hoy.getMonth() - nacimiento.getMonth();
+
+      if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+        edad--;
+      }
+
+      return edad;
+    },
+
     async register() {
+
       this.error = "";
 
-      const userStore = useUserStore(); // ✅ esto sí funciona aquí
+      if (this.password !== this.confirmPassword) {
+        this.error = "Las contraseñas no coinciden";
+        return;
+      }
+
+      if (this.passwordError) {
+        this.error = "La contraseña no cumple los requisitos";
+        return;
+      }
+
+      if (this.calcularEdad(this.fechaNacimiento) < 18) {
+        this.error = "Debes ser mayor de 18 años";
+        return;
+      }
+
+      const userStore = useUserStore();
 
       try {
+
         const response = await fetch(
           "http://localhost/inmobiliaria/backend/register.php",
           {
@@ -63,48 +145,57 @@ export default {
               email: this.email,
               telefono: this.telefono,
               username: this.username,
-              password: this.password
+              password: this.password,
+              confirmPassword: this.confirmPassword,
+              fechaNacimiento: this.fechaNacimiento
             })
           }
         );
 
-        const text = await response.text();
-        console.log("RESPUESTA CRUDA:", text);
-
-        const data = JSON.parse(text);
+        const data = await response.json();
 
         if (data.success) {
 
-          // 🔥 Guardar usuario en Pinia
           userStore.setUser(data.user);
-
-          // 🔥 Redirigir correctamente
           this.$router.push("/dashboard");
 
         } else {
+
           this.error = data.message;
+
         }
 
-      } catch (err) {
-        console.error("Error real:", err);
+      } catch (error) {
+
         this.error = "Error de conexión con el servidor";
+
       }
+
     }
+
   }
+
 };
 </script>
+
 <style scoped>
+.fecha-nacimiento{
+  display:flex;
+  flex-direction:column;
+}
+
+.fecha-nacimiento label{
+  font-size:13px;
+  color:#555;
+  margin-bottom:4px;
+}
 .register {
   position: relative;
   min-height: 100vh;
-
-  background-image: url('@/assets/fondito.png'); /* cambia la imagen */
+  background-image: url('@/assets/fondito.png');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -112,67 +203,60 @@ export default {
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.363);
-  z-index: 0;
-}
-
-.register h2 {
-  font-size: 3.5rem;
-  text-align: center;
+  background: rgba(0,0,0,0.4);
 }
 
 .vent-register {
-  background-color: white;
-  padding: 0 40px 25px;
+  background: white;
+  padding: 30px 40px;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 1;
 }
 
-/* Tarjeta */
+h2 {
+  text-align: center;
+  font-size: 2.5rem;
+}
+
 form {
-  border-radius: 14px;
   width: 700px;
 }
 
-/* Grid 2 columnas */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin-bottom: 25px;
 }
 
 input {
   padding: 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
-  font-size: 1rem;
 }
 
-input:focus {
-  outline: none;
-  border-color: var(--azul-principal);
+.rules {
+  color: red;
+  margin-top: 10px;
 }
 
-/* Botón abajo */
+.error {
+  color: red;
+  margin-top: 15px;
+}
+
 .register-btn {
-  display: block;          /* necesario para centrar */
+  margin-top: 20px;
   width: 250px;
-  margin: 0 auto;
   padding: 12px;
-  border-radius: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  background: #2c6bed;
   border: none;
-  background-color: var(--azul-principal);
+  border-radius: 8px;
   color: white;
   font-weight: bold;
-  font-size: 1rem;
   cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.register-btn:hover {
-  background-color: var(--azul-secundario);
 }
 
 </style>

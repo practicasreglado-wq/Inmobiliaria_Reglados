@@ -37,6 +37,16 @@
       </div>
 
       <div class="form-group">
+  <label for="fecha_nacimiento">Fecha de nacimiento</label>
+  <input 
+    type="date" 
+    v-model="user.fecha_nacimiento" 
+    id="fecha_nacimiento" 
+    readonly
+  />
+</div>
+
+      <div class="form-group">
         <label for="password">Contraseña</label>
         <input type="password" v-model="user.password" id="password" required />
       </div>

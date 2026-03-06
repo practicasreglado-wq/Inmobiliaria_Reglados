@@ -17,7 +17,7 @@ if (!isset($_SESSION['user']['id'])) {
 $user_id = $_SESSION['user']['id'];
 
 // Obtener los datos del usuario desde la base de datos
-$stmt = $pdo->prepare("SELECT id, nombre, apellidos, email, telefono, nombre_usuario, profile_picture FROM usuarios WHERE id = :id");
+$stmt = $pdo->prepare("SELECT id, nombre, apellidos, email, telefono, nombre_usuario, profile_picture, fecha_nacimiento FROM usuarios WHERE id = :id");
 $stmt->execute([':id' => $user_id]);
 
 $user = $stmt->fetch();
