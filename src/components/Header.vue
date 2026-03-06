@@ -23,11 +23,17 @@
         <li v-if="user">
           <router-link to="/profile" class="bienvenido">
             <div class="user-avatar">
-              <!-- Mostrar la foto si está disponible -->
-              <img v-if="user?.photo" :src="user.photo" alt="Avatar" class="avatar-img" />
-              <!-- Si no hay foto, mostrar las iniciales -->
-              <span v-else>{{ getInitials() }}</span>
-            </div>
+            <!-- Mostrar foto -->
+            <img
+              v-if="user?.profile_picture"
+              :src="'http://localhost/inmobiliaria/backend/' + user.profile_picture"
+              alt="Avatar"
+              class="avatar-img"
+            />
+
+            <!-- Si no hay foto -->
+            <span v-else>{{ getInitials() }}</span>
+          </div>
           </router-link>
         </li>
       </ul>

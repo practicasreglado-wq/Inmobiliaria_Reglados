@@ -21,7 +21,8 @@ if (!$identifier || !$password) {
 
 $stmt = $pdo->prepare("
     SELECT id, nombre, email, nombre_usuario, password,
-           categoria_seleccionada, preferencias
+       profile_picture,
+       categoria_seleccionada, preferencias
     FROM usuarios
     WHERE email = :identifier OR nombre_usuario = :identifier
     LIMIT 1
@@ -40,19 +41,17 @@ $_SESSION["user"] = [
     "id" => $usuario["id"],
     "nombre" => $usuario["nombre"],
     "email" => $usuario["email"],
-    "nombre_usuario" => $usuario["nombre_usuario"]
+    "nombre_usuario" => $usuario["nombre_usuario"],
+    "profile_picture" => $usuario["profile_picture"]
 ];
 
 echo json_encode([
     "success" => true,
     "user" => [
-        "id" => $usuario["id"],
-        "nombre" => $usuario["nombre"],
-        "email" => $usuario["email"],
-        "nombre_usuario" => $usuario["nombre_usuario"],
-        "categoria" => $usuario["categoria_seleccionada"],
-        "preferencias" => $usuario["preferencias"]
-            ? json_decode($usuario["preferencias"], true)
-            : null
+    "id" => $usuario["id"],
+    "nombre" => $usuario["nombre"],
+    "email" => $usuario["email"],
+    "nombre_usuario" => $usuario["nombre_usuario"],
+    "profile_picture" => $usuario["profile_picture"],
     ]
 ]);
