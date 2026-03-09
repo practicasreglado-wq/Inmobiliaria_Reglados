@@ -2,6 +2,8 @@
 
 <div class="reset-container">
 
+<div class="overlay"></div>
+
 <div class="reset">
 
 <h2>Cambiar contraseña</h2>
@@ -137,79 +139,150 @@ changePassword
 <style scoped>
 
 .reset-container{
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:80vh;
-margin-top:100px;
+  min-height: 100vh;
+  background-image: url('@/assets/fondito.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.363);
+  z-index:0;
 }
 
 .reset{
-background:white;
-padding:40px;
-border-radius:12px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-width:360px;
-text-align:center;
+  background:white;
+  padding:40px;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+  width:360px;
+  text-align:center;
+  z-index: 1;
 }
 
 .reset h2{
-margin-bottom:25px;
-font-size:1.8rem;
+  margin-bottom:25px;
+  font-size:1.8rem;
 }
 
 .reset input{
-width:100%;
-padding:12px;
-margin-bottom:15px;
-border:1px solid #ddd;
-border-radius:6px;
-font-size:14px;
-transition:0.2s;
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border:1px solid #ddd;
+  border-radius:6px;
+  font-size:14px;
+  transition:0.2s;
 }
 
 .reset input:focus{
-border-color:#2c3e50;
-outline:none;
+  border-color:#2c3e50;
+  outline:none;
 }
 
 .reset button{
-width:100%;
-padding:12px;
-background:#2c3e50;
-color:white;
-border:none;
-border-radius:6px;
-cursor:pointer;
-font-weight:bold;
-transition:0.2s;
+  width:100%;
+  padding:12px;
+  background-color: var(--azul-principal);
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.2s;
 }
 
 .reset button:hover{
-background:#1a252f;
+  background-color: var(--azul-secundario);
 }
 
 .reset button:disabled{
-opacity:0.6;
-cursor:not-allowed;
+  opacity:0.6;
+  cursor:not-allowed;
 }
 
 .rules{
-margin-top:10px;
-font-size:13px;
-color:#e67e22;
+  margin-top:10px;
+  font-size:13px;
+  color:#e67e22;
 }
 
 .success{
-margin-top:20px;
-color:#27ae60;
-font-weight:bold;
+  margin-top:20px;
+  color:#cba21a;
+  font-weight:bold;
 }
 
 .error{
-margin-top:20px;
-color:#e74c3c;
-font-weight:bold;
+  margin-top:20px;
+  color:#e74c3c;
+  font-weight:bold;
+}
+
+/* ----------- 1024px ----------- */
+
+@media (max-width:1024px){
+
+  .reset{
+    width:320px;
+    padding:35px;
+  }
+
+  .reset h2{
+    font-size:1.6rem;
+  }
+
+}
+
+/* ----------- 768px ----------- */
+
+@media (max-width:768px){
+
+  .reset{
+    width:90%;
+    padding:30px;
+  }
+
+  .reset h2{
+    font-size:1.5rem;
+  }
+
+}
+
+/* ----------- 480px ----------- */
+
+@media (max-width:480px){
+
+  .reset{
+    width:100%;
+    padding:25px;
+  }
+
+  .reset h2{
+    font-size:1.2rem;
+  }
+
+  .reset input{
+    padding:10px;
+    font-size:13px;
+  }
+
+  .reset button{
+    padding:10px;
+    font-size:14px;
+  }
+
+  .rules{
+    font-size:12px;
+  }
+
 }
 
 </style>

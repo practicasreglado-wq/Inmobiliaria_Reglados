@@ -1,5 +1,7 @@
 <template>
 <div class="forgot">
+<div class="overlay"></div>
+<div class="vent-forgot">
 
 <h2>Recuperar contraseña</h2>
 
@@ -27,6 +29,7 @@ Enviar correo de recuperación
 
 <p v-if="message">{{message}}</p>
 
+</div> 
 </div>
 </template>
 
@@ -89,26 +92,42 @@ send
 <style scoped>
 
 .forgot{
-  min-height: calc(100vh - 90px);
-  margin-top: 90px;
-
+  min-height: 100vh;
+  background-image: url('@/assets/fondito.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding:5px;
 }
 
-/* caja del formulario */
+.overlay{
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.363);
+  z-index: 0;
+}
+
+.vent-forgot{
+  background: rgba(255,255,255,0.9);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+/* formulario */
 
 form{
   display: flex;
   flex-direction: column;
   gap: 15px;
   width: 320px;
-  background: white;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
 
 input{
@@ -134,6 +153,73 @@ button:hover{
 h2{
   font-size:2.2rem;
   margin-bottom:20px;
+  text-align:center;
 }
 
+/* ---------- 1024px ---------- */
+
+@media (max-width:1024px){
+
+  .vent-forgot{
+    padding:30px;
+  }
+
+  form{
+    width:280px;
+    padding:25px;
+  }
+
+  h2{
+    font-size:2rem;
+  }
+
+}
+
+/* ---------- 768px ---------- */
+
+@media (max-width:768px){
+
+  .vent-forgot{
+    width:90%;
+    padding:25px;
+  }
+
+  form{
+    width:100%;
+    padding:20px;
+  }
+
+  h2{
+    font-size:1.8rem;
+  }
+
+}
+
+/* ---------- 480px ---------- */
+
+@media (max-width:480px){
+
+  .vent-forgot{
+    padding:5px;
+  }
+
+  form{
+    width:100%;
+    padding:15px;
+    gap:12px;
+  }
+
+  input{
+    padding:10px;
+  }
+
+  button{
+    padding:10px;
+  }
+
+  h2{
+    font-size:1.3rem;
+  }
+
+}
 </style>
