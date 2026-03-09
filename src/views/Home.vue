@@ -125,7 +125,7 @@ export default {
 /* BOTÓN */
 
 .btn-login{
-  margin-top: 90px;
+  margin-top: 120px;
   margin-right: 14%;
   font-size: 2.3rem;
   background-color: var(--azul-principal);
@@ -151,7 +151,13 @@ TABLETS
 @media (max-width:1024px){
 
   .hero{
-    padding-right:20%;
+    padding-right:10%;
+    padding-left:10%;
+  }
+
+  .hero-content{
+    align-items:center;
+    text-align:center;
   }
 
   .hero h1{
@@ -168,7 +174,7 @@ TABLETS
 
   .btn-login{
     font-size:1.8rem;
-    margin-top:60px;
+    margin: 0;
   }
 
 }
@@ -182,6 +188,11 @@ TABLETS PEQUEÑAS
   .hero{
     padding-right:10%;
     padding-left:10%;
+  }
+
+  .hero-content{
+    align-items:center;
+    text-align:center;
   }
 
   .hero h1{
@@ -198,8 +209,7 @@ TABLETS PEQUEÑAS
 
   .btn-login{
     font-size:1.6rem;
-    margin-top:50px;
-    margin-right:0;
+    margin: 0;
   }
 
 }
@@ -239,8 +249,8 @@ MOVIL
 
   .btn-login{
     font-size:1.2rem;
-    margin-top:40px;
     padding:10px 25px;
+    margin: 0;
   }
 
 }
