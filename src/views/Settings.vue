@@ -427,6 +427,7 @@ margin-bottom:15px;
 .form-group label{
 display:block;
 font-weight:bold;
+
 }
 
 .form-group input{
@@ -434,21 +435,14 @@ width:100%;
 padding:10px;
 border-radius:5px;
 border:1px solid #ccc;
-}
-
-button{
-padding:10px 20px;
-background:#4caf50;
-color:white;
-border:none;
-border-radius:5px;
-cursor:pointer;
+text-shadow: 0 1px 2px rgba(0, 0, 0, 0.518);
 }
 
 button {
   padding: 10px 20px;
-  background-color: #4caf50;
+  background-color: #d6ab3e;
   color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.605);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -456,7 +450,7 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #f0c14bc9;
 }
 
 @media (max-width:1024px) {

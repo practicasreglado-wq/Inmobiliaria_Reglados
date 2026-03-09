@@ -1,180 +1,300 @@
 <template>
-  <section class="profile">
-    <!-- Menú lateral -->
-    <div class="sidebar">
-      <h3>Menú de perfil</h3>
-      <ul>
-        <li><router-link to="/profile/properties-for-sale">Inicio</router-link></li>
-        <li><router-link to="/profile/favorite-properties">Mis propiedades favoritas</router-link></li>
-        <li><router-link to="/profile/messages">Mensajes</router-link></li>
-        <li><router-link to="/profile/my-properties-for-sale">Mis propiedades en venta</router-link></li>
-        <li><router-link to="/profile/settings">Ajustes</router-link></li>
-      </ul>
-       <!-- CERRAR SESIÓN ABAJO -->
-      <div v-if="user" class="logout-item">
-        <button class="logout-btn" @click="logout">
-          Cerrar sesión
-        </button>
-      </div>
-    </div>
+<section class="profile">
 
-  <!-- CONTENIDO -->
-  <div class="profile-content">
+<button class="menu-toggle" @click="menuOpen = !menuOpen">
+☰
+</button>
 
-    <div v-if="user && isProfileHome">
+<!-- SIDEBAR -->
+<div class="sidebar" :class="{ open: menuOpen }">
 
-      <h2>Bienvenido/a: {{ user.nombre_usuario }}</h2>
+<h3>Menú de perfil</h3>
 
-      <p>
-        <strong>Categoría seleccionada:</strong> {{ category }}
-      </p>
+<ul>
+<li>
+  <router-link to="/profile/properties-for-sale" @click="menuOpen = false">
+    Inicio
+  </router-link>
+</li>
 
+<li>
+  <router-link to="/profile/favorite-properties" @click="menuOpen = false">
+    Mis propiedades favoritas
+  </router-link>
+</li>
 
-      <!-- PREFERENCIAS -->
-      <div v-if="preferences && hasPreferences">
+<li>
+  <router-link to="/profile/messages" @click="menuOpen = false">
+    Mensajes
+  </router-link>
+</li>
 
-        <h3>Preferencias</h3>
+<li>
+  <router-link to="/profile/my-properties-for-sale" @click="menuOpen = false">
+    Mis propiedades
+  </router-link>
+</li>
 
-        <template v-for="(group, key) in preferences" :key="key">
+<li>
+  <router-link to="/profile/settings" @click="menuOpen = false">
+    Ajustes
+  </router-link>
+</li>
+</ul>
 
-          <div
-            v-if="Array.isArray(group) && group.length"
-            class="pref-group"
-          >
+<div v-if="user" class="logout-item">
+<button class="logout-btn" @click="logout">
+Cerrar sesión
+</button>
+</div>
 
-            <h4>{{ formatLabel(key) }}</h4>
-
-            <ul>
-              <li
-                v-for="(item, index) in group"
-                :key="index"
-              >
-                {{ item }}
-              </li>
-            </ul>
-
-          </div>
-
-        </template>
-
-      </div>
-
-      <div v-else>
-        <p>No tienes preferencias guardadas.</p>
-      </div>
-
-    </div>
+</div>
 
 
-    <!-- VISTAS HIJAS -->
-    <router-view></router-view>
+<!-- CONTENIDO -->
+<div class="profile-content">
 
+<div v-if="user && isProfileHome">
+
+<!-- HERO PERFIL -->
+
+<div class="profile-hero">
+
+<div class="hero-left">
+<h2>Hola {{ user.nombre_usuario }}</h2>
+<p>Bienvenido a tu panel de perfil</p>
+</div>
+
+<div class="category-highlight">
+
+  <span class="category-label">Categoria actual:</span>
+
+  <div class="category-badge">
+    {{ category }}
   </div>
+
+</div>
+
+</div>
+
+
+<!-- ACCIONES -->
+
+<div class="dashboard-grid">
+
+<router-link to="/profile/favorite-properties" class="dashboard-card">
+<div class="card-icon">
+<svg viewBox="0 0 24 24" width="28" height="28" fill="none">
+<path d="M12 17.3L5.8 21l1.6-7L2 9.5l7.2-.6L12 2l2.8 6.9 7.2.6-5.4 4.5 1.6 7z"
+stroke="currentColor"
+stroke-width="1.8"
+stroke-linejoin="round"/>
+</svg>
+</div>
+<h4>Favoritos</h4>
+<p>Propiedades que has guardado</p>
+</router-link>
+
+<router-link to="/profile/messages" class="dashboard-card">
+<div class="card-icon">
+<svg viewBox="0 0 24 24" width="28" height="28" fill="none">
+<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+stroke="currentColor"
+stroke-width="1.8"
+stroke-linejoin="round"/>
+</svg>
+</div>
+<h4>Mensajes</h4>
+<p>Contactos con propietarios</p>
+</router-link>
+
+<router-link to="/profile/my-properties-for-sale" class="dashboard-card">
+<div class="card-icon">
+<svg viewBox="0 0 24 24" width="28" height="28" fill="none">
+<path d="M3 11L12 4L21 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+<path d="M5 10V20H19V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+</svg>
+</div>
+<h4>Mis propiedades</h4>
+<p>Gestiona tus anuncios</p>
+</router-link>
+
+</div>
+
+
+<!-- PREFERENCIAS -->
+
+<div v-if="preferences && hasPreferences" class="preferences">
+
+<h3>Tus preferencias</h3>
+
+<template v-for="(group, key) in preferences" :key="key">
+
+<div v-if="Array.isArray(group) && group.length" class="pref-group">
+
+<h4>{{ formatLabel(key) }}</h4>
+
+<ul>
+<li v-for="(item,index) in group" :key="index">
+{{ item }}
+</li>
+</ul>
+
+</div>
+
+</template>
+
+</div>
+
+<div v-else class="no-pref">
+No tienes preferencias guardadas todavía
+</div>
+
+</div>
+
+
+<router-view></router-view>
+
+</div>
 
 </section>
 </template>
+
 <script>
 import { useUserStore } from "../stores/user";
 import { storeToRefs } from "pinia";
-import { computed, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 export default {
 
-  setup() {
-    const userStore = useUserStore();
-    const router = useRouter();
-    const route = useRoute();
-    const { user, selectedCategory: category, preferences } = storeToRefs(userStore);
+setup(){
+const menuOpen = ref(false)
+const userStore = useUserStore()
+const router = useRouter()
+const route = useRoute()
 
-    // Sincronizar selectedCategory con localStorage al montar el componente
-    onMounted(() => {
-      const savedCategory = localStorage.getItem('selectedCategory');
-      console.log('Saved Category from LocalStorage:', savedCategory); // Verifica si se recupera correctamente
-
-      if (savedCategory && userStore.selectedCategory !== savedCategory) {
-        // Si no está sincronizado, actualizar el store con la categoría de localStorage
-        userStore.setCategory(savedCategory);
-      }
-    });
-
-    // Verificar si hay preferencias
-    const logout = async () => {
-      await fetch("http://localhost/inmobiliaria/backend/logout.php", {
-        credentials: "include"
-      });
-
-      userStore.logout();
-      router.push("/");
-    };
-
-    const hasPreferences = computed(() => {
-      if (!preferences.value) return false;
-      return Object.values(preferences.value).some(
-        arr => Array.isArray(arr) && arr.length
-      )
-
-    })
-
-    const isProfileHome = computed(() => {
-      return route.path === "/profile/properties-for-sale";
-    });
+const { user, selectedCategory: category, preferences } = storeToRefs(userStore)
 
 
-    const formatLabel = (key)=>{
+onMounted(()=>{
 
-      const labels={
-        estrellas:"Estrellas",
-        servicios:"Servicios",
-        ubicacion:"Ubicación",
-        tipo:"Tipo",
-        caracteristicas:"Características",
-        zona:"Zona",
-        uso:"Uso"
-      }
+const savedCategory = localStorage.getItem("selectedCategory")
 
-      return labels[key] || key
-    }
+if(savedCategory && userStore.selectedCategory !== savedCategory){
+userStore.setCategory(savedCategory)
+}
+
+})
 
 
-   return{
-    user,
-    category,
-    preferences,
-    hasPreferences,
-    formatLabel,
-    logout,
-    isProfileHome
-    };
-  }
+const logout = async ()=>{
+
+await fetch("http://localhost/inmobiliaria/backend/logout.php",{
+credentials:"include"
+})
+
+userStore.logout()
+router.push("/")
 
 }
 
+
+const hasPreferences = computed(()=>{
+
+if(!preferences.value) return false
+
+return Object.values(preferences.value).some(
+arr => Array.isArray(arr) && arr.length
+)
+
+})
+
+
+const isProfileHome = computed(()=>{
+return route.path === "/profile/properties-for-sale"
+})
+
+
+const formatLabel = (key)=>{
+
+const labels = {
+estrellas:"Estrellas",
+servicios:"Servicios",
+ubicacion:"Ubicación",
+tipo:"Tipo",
+caracteristicas:"Características",
+zona:"Zona",
+uso:"Uso"
+}
+
+return labels[key] || key
+}
+
+
+return{
+user,
+category,
+preferences,
+hasPreferences,
+formatLabel,
+logout,
+isProfileHome,
+menuOpen
+}
+
+}
+
+}
 </script>
+
 <style scoped>
+
+/* LAYOUT GENERAL */
 
 .profile{
 display:flex;
-min-height:calc(100vh - 90px);
-margin-top:90px;
+min-height:100vh;
+background:#d8dbe1;
+}
+.menu-toggle{
+
+display:none;
+
+position:fixed;
+top:70px;
+
+background:#172a5d;
+color:white;
+
+border:none;
+border-radius:8px;
+
+padding:10px 12px;
+font-size:1rem;
+
+cursor:pointer;
+
+z-index:1000;
 }
 
-/* ===== SIDEBAR ===== */
+/* SIDEBAR */
 
-.sidebar {
-  width: 350px;
-  background: linear-gradient(to bottom, #101d41, #2c4692);
-  padding: 20px;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
-  display:flex;
-  flex-direction:column;
+.sidebar{
+margin-top: 90px;
+width:300px;
+background:linear-gradient(to bottom,#101d41,#2c4692);
+padding:25px;
+display:flex;
+flex-direction:column;
+box-shadow:3px 0 10px rgba(0,0,0,0.2);
 }
 
 .sidebar h3{
-font-size:2.3rem;
 color:goldenrod;
-margin-bottom:20px;
+font-size:2rem;
 text-align:center;
+margin-bottom:20px;
 }
 
 .sidebar ul{
@@ -189,266 +309,297 @@ margin:10px 0;
 .sidebar a{
 display:block;
 padding:10px;
-color:white;
-text-decoration:none;
-font-size:1.4rem;
 border-radius:6px;
+text-decoration:none;
+color:white;
+font-size:1.2rem;
 }
 
 .sidebar a:hover{
-background:#f0c14bc9;
+background:#f0c14bd7;
+font-weight:600;
 }
 
-.sidebar ul li a.router-link-exact-active{
-  background-color: #d6ab3e;
-  font-weight:700; 
+.router-link-exact-active{
+background:#d6ab3e;
 }
 
-/* ===== CONTENIDO ===== */
 
-.profile-content {
-  flex-grow: 1;
-  padding: 30px 90px;
-  background-color: var(--gris-claro);
-  border-radius: 8px;
-  margin-left: 1px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.profile-content h2 {
-  font-size: 3.5rem;
-}
-
-.profile-content h3 {
-  font-size: 2rem;
-  background: linear-gradient(135deg, #101d41, #2c4692);
-  color: white;
-  padding: 8px 18px;
-  border-radius: 12px;
-  font-weight: 600;
-  display: inline-block;
-}
-
-.profile-content p {
-  background: linear-gradient(135deg, #846604, #e1bc35);
-  color: white;
-  padding: 8px 18px;
-  border-radius: 12px;
-  font-size: 2.75rem;
-  display: inline-block;
-  margin: 0;
-}
-
-/* ===== PREFERENCIAS ===== */
-
-.pref-group {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.pref-group h4 {
-  margin: 0;
-  padding: 6px 14px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  color: white;
-  background: linear-gradient(135deg, #172a5d, #3654ae);
-  font-size: 1.3rem;
-}
-
-.pref-group ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.pref-group li {
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  padding: 6px 14px;
-  background: linear-gradient(135deg, #d2b454d4, #e1bc35);
-  font-size: 1.1rem;
-  font-weight: 550;
-}
-
-/* ===== LOGOUT ===== */
-
-.logout-item {
-
-  margin-top:auto;   /* empuja al fondo del sidebar */
-
-  padding-top:20px;
-  border-top:1px solid rgba(255,255,255,0.15);
-
-  display:flex;
-  justify-content:center; /* centra el botón */
-}
-
-.logout-btn {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  gap:10px;
-
-  width:80%;
-
-  padding:10px;
-
-  background:transparent;
-  border:1.5px solid rgba(255,255,255,0.2);
-  border-radius:5px;
-
-  color:#ffffff;
-  font-size:1.5rem;
-  font-family:inherit;
-
-  cursor:pointer;
-  transition:all 0.3s ease;
-}
-
-.logout-btn:hover {
-  background-color: rgba(239, 68, 68, 0.37);
-  border-color: #ef4444;
-  color: #f88080;
-}
-
-/* ======================
-TABLET
-====================== */
-
-@media (max-width:1024px){
-
-.profile{
-  flex-direction:row;
-}
-
-.sidebar{
-  width:260px;
-}
-
-.sidebar h3{
-  font-size:2rem;
-}
-
-.sidebar a{
-  font-size:1.2rem;
-}
+/* CONTENIDO */
 
 .profile-content{
-  padding:30px 50px;
+flex:1;
+margin-top: 90px;
+padding:40px;
 }
 
-.profile-content h2{
-  font-size:3rem;
+
+/* HERO PERFIL */
+
+.profile-hero{
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+background:linear-gradient(135deg,#172a5d,#3654ae);
+color:white;
+
+padding:30px;
+border-radius:15px;
+margin-bottom:30px;
 }
 
-.profile-content p{
-  font-size:2.2rem;
+.hero-left h2{
+margin:0;
+font-size:2.3rem;
 }
 
+.hero-left p{
+font-size:1.1rem;
+opacity:0.9;
 }
 
-/* ======================
-TABLET PEQUEÑA
-====================== */
+/* CATEGORY HIGHLIGHT */
 
-@media (max-width:768px){
-
-.profile{
-  flex-direction:column;
+.category-highlight{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
 }
 
-.sidebar{
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+.category-label{
+font-size:1rem;
+opacity:0.8;
+margin-bottom:6px;
 }
 
-.sidebar ul{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:10px;
-}
+.category-badge{
 
-.sidebar li{
-  margin:0;
-}
+background:linear-gradient(135deg,#d2b454,#f0c14b);
+color:#172a5d;
 
-.sidebar a{
-  font-size:1.1rem;
-}
+font-size:1.3rem;
+font-weight:700;
 
-.profile-content{
-  padding:40px 40px;
-}
+padding:10px 25px;
+border-radius:30px;
 
-.profile-content h2{
-  font-size:2.6rem;
-}
-
-.profile-content p{
-  font-size:2rem;
-}
-
-.logout-btn{
-  width:220px;
-}
+box-shadow:0 4px 15px rgba(0,0,0,0.2);
+letter-spacing:0.5px;
 
 }
 
-/* ======================
-MÓVIL
-====================== */
 
-@media (max-width:480px){
+/* DASHBOARD CARDS */
 
-.profile-content{
-  padding:30px 20px;
+.dashboard-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+margin-bottom:40px;
 }
 
-.sidebar h3{
-  font-size:1.8rem;
+.dashboard-card{
+background:white;
+padding:25px;
+border-radius:12px;
+
+box-shadow:0 6px 20px rgba(0,0,0,0.1);
+
+text-decoration:none;
+color:#333;
+
+transition:0.25s;
 }
 
-.sidebar a{
-  font-size:1rem;
-  padding:8px;
+.dashboard-card:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
 }
 
-.profile-content h2{
-  font-size:2.2rem;
+.card-icon{
+display:flex;
+align-items:center;
+justify-content:center;
+
+width:40px;
+height:40px;
+
+margin-bottom:10px;
+
+color:#3654ae;
 }
 
-.profile-content h3{
-  font-size:1.6rem;
+.dashboard-card h4{
+margin:5px 0;
+font-size:1.4rem;
 }
 
-.profile-content p{
-  font-size:1.7rem;
+.dashboard-card p{
+font-size:0.9rem;
+color:#666;
+}
+
+
+/* PREFERENCIAS */
+
+.preferences{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 6px 20px rgba(0,0,0,0.1);
+}
+
+.preferences h3{
+margin-bottom:15px;
+font-size:1.75rem;
+color:#172a5d;
+text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.pref-group{
+margin-bottom:15px;
 }
 
 .pref-group h4{
-  font-size:1rem;
+margin-bottom:8px;
+font-size:1.3rem;
+}
+
+.pref-group ul{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+padding:0;
+list-style:none;
 }
 
 .pref-group li{
-  font-size:0.9rem;
+background:#d6dced;
+border-radius:20px;
+padding:6px 14px;
+font-size:0.9rem;
+}
+
+
+/* LOGOUT */
+
+.logout-item{
+margin-top:80px;
+padding-top:20px;
+border-top:1px solid rgba(255,255,255,0.2);
+display:flex;
+justify-content:center;
 }
 
 .logout-btn{
-  font-size:1.2rem;
-  width:200px;
+width:80%;
+padding:10px;
+border-radius:6px;
+border:1px solid rgba(255,255,255,0.3);
+background:transparent;
+color:white;
+cursor:pointer;
+transition:0.2s;
+}
+
+.logout-btn:hover{
+background:rgba(239, 68, 68, 0.747);
+}
+
+.pref-group li:hover{
+background:#f0c14b;
+color:#172a5d;
+cursor:pointer;
+}
+
+
+/* MENU RESPONSIVE */
+
+@media(max-width:768px){
+
+.menu-toggle{
+display:block;
+}
+
+.sidebar{
+
+position:fixed;
+top:0;
+margin-top: 70px;
+left:-260px;
+
+height:100vh;
+width:260px;
+
+transition:0.3s;
+
+z-index:999;
+}
+
+.sidebar.open{
+left:0;
+}
+
+.profile{
+flex-direction:column;
+}
+
+.profile-content{
+padding-top:80px;
 }
 
 }
 
+/* ===== MOVIL MUY PEQUEÑO ===== */
+
+@media (max-width: 400px){
+
+.profile-content{
+  margin-top: 70px;
+padding:15px;
+}
+
+/* boton menu */
+.menu-toggle{
+  font-size: 1rem;
+  padding: 8px 12px;
+}
+
+/* menu lateral */
+.sidebar{
+  width: 200px;
+  padding: 15px;
+}
+
+/* titulo del menu */
+.sidebar h3{
+  margin-top: 50px;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+/* lista */
+.sidebar ul{
+  gap: 6px;
+}
+/* links */
+.sidebar a{
+  font-size: 0.9rem;
+  padding: 6px;
+}
+
+/* contenido principal */
+.profile-content{
+  padding: 15px;
+}
+
+.profile-hero{
+  flex-direction:column;
+  text-align:center;
+  gap: 15px;
+
+}
+}
 </style>

@@ -115,7 +115,7 @@ header .logo h1 {
   margin: 0;
   letter-spacing: 2px;
   color: #eabe2f;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.906);
 }
 
 .logo-text {
