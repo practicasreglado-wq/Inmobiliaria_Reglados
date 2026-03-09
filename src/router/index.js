@@ -18,12 +18,15 @@ import PropertiesForSale from "../views/PropertiesForSale.vue";
 import Settings from "../views/Settings.vue";
 import MyPropertiesForSale from "../views/MyPropertiesForSale.vue";
 import CreateProperty from "../views/CreateProperty.vue";
-
+import ForgotPassword from "../views/ForgotPassword.vue";
+import ResetPassword from "../views/ResetPassword.vue";
 
 const routes = [
   { path: '/', component: Home },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
+  { path: '/forgot-password', component: ForgotPassword },
+  { path: '/reset-password', component: ResetPassword },
   { path: '/dashboard', component: Dashboard },
   { 
     path: '/profile', 

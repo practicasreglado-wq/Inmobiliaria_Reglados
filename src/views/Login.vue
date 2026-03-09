@@ -31,7 +31,12 @@
           Registrarme
         </button>
       </form>
-
+      <p>
+  ¿Has olvidado tu contraseña? pulsa
+  <router-link to="/forgot-password" class="forgot">
+    aquí
+  </router-link>
+</p>
       <p v-if="error" class="error">{{ error }}</p>
     </div>
   </div>
@@ -103,6 +108,12 @@ export default {
 };
 </script>
 <style scoped>
+.forgot{
+  text-align:center;
+  margin-top:10px;
+  cursor:pointer;
+  color:#0077ff;
+}
 .login {
   position: relative;
   min-height: 100vh;
