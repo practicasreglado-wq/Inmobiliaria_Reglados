@@ -156,8 +156,9 @@ export default {
 
         if (data.success) {
 
-          userStore.setUser(data.user);
-          this.$router.push("/dashboard");
+          alert("Revisa tu correo para activar la cuenta");
+
+          this.$router.push("/login");
 
         } else {
 

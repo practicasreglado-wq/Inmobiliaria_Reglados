@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Propiedades en vennta</h2>
+    <h2>Propiedades en venta</h2>
     <p>Aquí podrás ver y gestionar las propiedades con las que haces match.</p>
   </div>
 </template>

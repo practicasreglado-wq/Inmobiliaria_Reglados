@@ -1,330 +1,332 @@
 <template>
-  <div class="settings">
-    <h2>Ajustes de Usuario</h2>
 
-    <div class="profile-picture">
+<div class="settings">
 
-      <!-- FOTO PERFIL -->
-      <img
-        v-if="preview || user.profile_picture"
-        :src="preview ? preview : 'http://localhost/inmobiliaria/backend/' + user.profile_picture"
-        alt="Foto de perfil"
-      />
+<h2>Ajustes de Usuario</h2>
 
-      <!-- INICIAL SI NO HAY FOTO -->
-      <div v-else class="profile-initial">
-        {{ userInitials }}
-      </div>
-
-      <!-- SUBIR FOTO -->
-      <input type="file" @change="handleFileChange" />
-      <br>
-      <button type="button" @click="updateProfile">
-        Guardar foto
-      </button>
-      <br>
-
-      <!-- BORRAR FOTO -->
-      <button v-if="user.profile_picture" @click="deletePhoto">
-        Eliminar foto
-      </button>
-
-    </div>
-
-    <form @submit.prevent="updateProfile">
-
-      <div class="form-group">
-        <label for="nombre">Nombre</label>
-        <input type="text" v-model="user.nombre" id="nombre" required />
-      </div>
-
-      <div class="form-group">
-        <label for="apellidos">Apellidos</label>
-        <input type="text" v-model="user.apellidos" id="apellidos" required />
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" v-model="user.email" id="email" required />
-      </div>
-
-      <div class="form-group">
-        <label for="telefono">Teléfono</label>
-        <input type="text" v-model="user.telefono" id="telefono" required />
-      </div>
-
-      <div class="form-group">
-        <label for="nombre_usuario">Nombre de Usuario</label>
-        <input type="text" v-model="user.nombre_usuario" id="nombre_usuario" required />
-      </div>
-
-      <div class="form-group">
-  <label for="fecha_nacimiento">Fecha de nacimiento</label>
-  <input 
-    type="date" 
-    v-model="user.fecha_nacimiento" 
-    id="fecha_nacimiento" 
-    readonly
-  />
+<div v-if="!user">
+Cargando usuario...
 </div>
 
-      <div class="form-group">
-        <label for="password">Contraseña</label>
-        <input
-          type="password"
-          v-model="password"
-          placeholder="Nueva contraseña (opcional)"
-        >
-      </div>
+<div v-else>
 
-      <button type="submit">Guardar cambios</button>
+<div class="profile-picture">
 
-    </form>
-  </div>
+<img
+v-if="preview || user.profile_picture"
+:src="preview ? preview : 'http://localhost/inmobiliaria/backend/' + user.profile_picture + '?t=' + Date.now()"
+alt="Foto de perfil"
+/>
+
+<div v-else class="profile-initial">
+{{ userInitials }}
+</div>
+
+<input type="file" accept="image/*" @change="handleFileChange">
+
+<br>
+
+<button type="button" @click="updateProfile">
+Guardar foto
+</button>
+
+<br>
+
+<button v-if="user.profile_picture" @click="deletePhoto">
+Eliminar foto
+</button>
+
+</div>
+
+<form @submit.prevent="updateProfile">
+
+<div class="form-group">
+<label>Nombre</label>
+<input type="text" v-model="user.nombre" required>
+</div>
+
+<div class="form-group">
+<label>Apellidos</label>
+<input type="text" v-model="user.apellidos" required>
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input type="email" v-model="user.email" required>
+</div>
+
+<div class="form-group">
+<label>Teléfono</label>
+<input type="text" v-model="user.telefono" required>
+</div>
+
+<div class="form-group">
+<label>Nombre de Usuario</label>
+<input type="text" v-model="user.nombre_usuario" required>
+</div>
+
+<div class="form-group">
+<label>Fecha de nacimiento</label>
+<input type="date" v-model="user.fecha_nacimiento" readonly>
+</div>
+
+<div class="form-group">
+<label>Contraseña actual</label>
+<input type="password" v-model="currentPassword">
+</div>
+
+<div class="form-group">
+<label>Nueva contraseña</label>
+<input type="password" v-model="newPassword">
+</div>
+
+<button type="submit">
+Guardar cambios
+</button>
+
+</form>
+
+</div>
+
+</div>
+
 </template>
 
 <script>
-import { useUserStore } from "../stores/user";
-import { onMounted, computed, ref } from "vue";
-import { storeToRefs } from "pinia";
+
+import { useUserStore } from "../stores/user"
+import { onMounted, computed, ref } from "vue"
+import { storeToRefs } from "pinia"
 
 export default {
-  name: "Settings",
 
-  setup() {
+setup(){
 
-    const preview = ref(null);
-    const selectedFile = ref(null);
-    const password = ref(""); // 🔥 contraseña separada
+const preview = ref(null)
+const selectedFile = ref(null)
 
-    const userStore = useUserStore();
-    const { user } = storeToRefs(userStore);
+const currentPassword = ref("")
+const newPassword = ref("")
 
-    const userInitials = computed(() => {
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
 
-      if (!user.value) return "U";
+const userInitials = computed(()=>{
 
-      const nombre = user.value.nombre
-        ? user.value.nombre.charAt(0).toUpperCase()
-        : "";
+if(!user.value) return "U"
 
-      return nombre || "U";
+return user.value.nombre
+? user.value.nombre.charAt(0).toUpperCase()
+: "U"
 
-    });
+})
 
-    onMounted(() => {
+onMounted(()=>{
 
-      if (!user.value) {
-        loadUserData();
-      }
+loadUserData()
 
-    });
+})
 
-    const loadUserData = async () => {
+const loadUserData = async ()=>{
 
-      try {
+try{
 
-        const response = await fetch(
-          "http://localhost/inmobiliaria/backend/get_user_data.php",
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
+const response = await fetch(
+"http://localhost/inmobiliaria/backend/get_user_data.php",
+{
+credentials:"include"
+})
 
-        const data = await response.json();
+const data = await response.json()
 
-        if (data.success) {
+if(data.success){
 
-          userStore.setUser(data.user);
+userStore.setUser(data.user)
 
-        } else {
+}else{
 
-          alert("No se pudo cargar los datos del usuario.");
+alert("Error cargando usuario")
 
-        }
+}
 
-      } catch (err) {
+}catch(error){
 
-        console.error(err);
-        alert("Error de conexión");
+console.error(error)
 
-      }
+}
 
-    };
+}
 
-    const handleFileChange = (event) => {
+const handleFileChange = (event)=>{
 
-      const file = event.target.files[0];
+const file = event.target.files[0]
 
-      if (!file) return;
+if(!file) return
 
-      selectedFile.value = file;
+selectedFile.value = file
+preview.value = URL.createObjectURL(file)
 
-      preview.value = URL.createObjectURL(file);
+}
 
-    };
+const updateProfile = async ()=>{
 
-    const updateProfile = async () => {
+// ✅ VALIDACIÓN DE CONTRASEÑA
+if ((currentPassword.value && !newPassword.value) || (!currentPassword.value && newPassword.value)) {
+  alert("Para cambiar la contraseña debes introducir la contraseña actual y la nueva.")
+  return
+}
 
-  try {
+try{
 
-    const formData = new FormData();
+const formData = new FormData()
 
-    formData.append("nombre", user.value.nombre);
-    formData.append("apellidos", user.value.apellidos);
-    formData.append("email", user.value.email);
-    formData.append("telefono", user.value.telefono);
-    formData.append("nombre_usuario", user.value.nombre_usuario);
+formData.append("nombre",user.value.nombre)
+formData.append("apellidos",user.value.apellidos)
+formData.append("email",user.value.email)
+formData.append("telefono",user.value.telefono)
+formData.append("nombre_usuario",user.value.nombre_usuario)
 
-    if (password.value && password.value.trim() !== "") {
-      formData.append("password", password.value);
-    }
+if(currentPassword.value && newPassword.value){
 
-    if (selectedFile.value) {
-      formData.append("profile_picture", selectedFile.value);
-    }
+formData.append("current_password",currentPassword.value)
+formData.append("new_password",newPassword.value)
 
-    const response = await fetch(
-      "http://localhost/inmobiliaria/backend/update_profile.php",
-      {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      }
-    );
+}
 
-    const data = await response.json();
+if(selectedFile.value){
 
-    if (data.success) {
+formData.append("profile_picture",selectedFile.value)
 
-        alert("Perfil actualizado correctamente");
+}
 
-        password.value = "";
-        preview.value = null;
-        selectedFile.value = null;
+const response = await fetch(
+"http://localhost/inmobiliaria/backend/update_profile.php",
+{
+method:"POST",
+body:formData,
+credentials:"include"
+})
 
-        await loadUserData();
+const data = await response.json()
 
-    } else {
-        alert(data.message || "Error al actualizar");
+if(data.success){
 
-      }
+alert("Perfil actualizado")
 
-  } catch (error) {
+currentPassword.value=""
+newPassword.value=""
+preview.value=null
+selectedFile.value=null
 
-    console.error("Error:", error);
+loadUserData()
 
-  }
+}else{
 
-};
+alert(data.message)
 
-    const deletePhoto = async () => {
+}
 
-  try {
+}catch(error){
 
-    const response = await fetch(
-      "http://localhost/inmobiliaria/backend/delete_profile_picture.php",
-      {
-        method: "POST",
-        credentials: "include",
-      }
-    );
+console.error(error)
 
-    const data = await response.json();
+}
 
-    if (data.success) {
-      await loadUserData();
-      preview.value = null;
-    }
+}
 
-  } catch(err) {
+const deletePhoto = async ()=>{
 
-    console.error(err)
+const response = await fetch(
+"http://localhost/inmobiliaria/backend/delete_profile_picture.php",
+{
+method:"POST",
+credentials:"include"
+})
 
-  }
+const data = await response.json()
 
-};
+if(data.success){
 
-    return {
-      user,
-      handleFileChange,
-      updateProfile,
-      userInitials,
-      deletePhoto,
-      preview,
-      password
-    };
+preview.value=null
+loadUserData()
 
-  },
-};
+}
+
+}
+
+return{
+user,
+preview,
+handleFileChange,
+updateProfile,
+deletePhoto,
+userInitials,
+currentPassword,
+newPassword
+}
+
+}
+
+}
+
 </script>
 
 <style scoped>
-.settings {
-  max-width: 600px;
-  margin: 0 auto;
+
+.settings{
+max-width:600px;
+margin:auto;
 }
 
-.profile-picture {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
+.profile-picture{
+display:flex;
+flex-direction:column;
+align-items:center;
+margin-bottom:20px;
 }
 
-.profile-picture img {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
+.profile-picture img{
+width:150px;
+height:150px;
+border-radius:50%;
+object-fit:cover;
 }
 
-.profile-initial {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #ccc;
-  font-size: 2rem;
-  color: white;
-  margin-bottom: 10px;
+.profile-initial{
+width:150px;
+height:150px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#ccc;
+font-size:2rem;
+color:white;
 }
 
-.profile-picture input {
-  margin-top: 10px;
+.form-group{
+margin-bottom:15px;
 }
 
-.form-group {
-  margin-bottom: 15px;
+.form-group label{
+display:block;
+font-weight:bold;
 }
 
-.form-group label {
-  display: block;
-  font-weight: bold;
+.form-group input{
+width:100%;
+padding:10px;
+border-radius:5px;
+border:1px solid #ccc;
 }
 
-.form-group input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+button{
+padding:10px 20px;
+background:#4caf50;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-button:hover {
-  background-color: #45a049;
-}
 </style>

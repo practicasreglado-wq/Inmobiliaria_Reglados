@@ -21,8 +21,9 @@ if (!$identifier || !$password) {
 
 $stmt = $pdo->prepare("
     SELECT id, nombre, email, nombre_usuario, password,
-       profile_picture,
-       categoria_seleccionada, preferencias
+    profile_picture,
+    categoria_seleccionada, preferencias,
+    activado
     FROM usuarios
     WHERE email = :identifier OR nombre_usuario = :identifier
     LIMIT 1
@@ -30,9 +31,22 @@ $stmt = $pdo->prepare("
 
 $stmt->execute(["identifier" => $identifier]);
 
-$usuario = $stmt->fetch();
+$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$usuario || !password_verify($password, $usuario["password"])) {
+if (!$usuario) {
+    echo json_encode(["success" => false, "message" => "Credenciales incorrectas"]);
+    exit;
+}
+
+if(!$usuario["activado"]){
+    echo json_encode([
+        "success"=>false,
+        "message"=>"Debes activar tu cuenta desde el correo"
+    ]);
+    exit;
+}
+
+if (!password_verify($password, $usuario["password"])) {
     echo json_encode(["success" => false, "message" => "Credenciales incorrectas"]);
     exit;
 }
@@ -48,10 +62,10 @@ $_SESSION["user"] = [
 echo json_encode([
     "success" => true,
     "user" => [
-    "id" => $usuario["id"],
-    "nombre" => $usuario["nombre"],
-    "email" => $usuario["email"],
-    "nombre_usuario" => $usuario["nombre_usuario"],
-    "profile_picture" => $usuario["profile_picture"],
+        "id" => $usuario["id"],
+        "nombre" => $usuario["nombre"],
+        "email" => $usuario["email"],
+        "nombre_usuario" => $usuario["nombre_usuario"],
+        "profile_picture" => $usuario["profile_picture"]
     ]
 ]);

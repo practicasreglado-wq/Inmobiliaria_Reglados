@@ -1,14 +1,23 @@
 <?php
 
 require_once "config/session.php";
-
 header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 require_once "config/db.php";
+
+/* PHPMailer */
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../vendor/autoload.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -47,7 +56,7 @@ try {
         exit;
     }
 
-    // validar edad
+    /* validar edad */
     $fecha = new DateTime($fechaNacimiento);
     $hoy = new DateTime();
     $edad = $hoy->diff($fecha)->y;
@@ -60,7 +69,7 @@ try {
         exit;
     }
 
-    // comprobar usuario existente
+    /* comprobar usuario existente */
     $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE email = :email OR nombre_usuario = :username");
 
     $stmt->execute([
@@ -78,11 +87,14 @@ try {
 
     $hash = password_hash($password, PASSWORD_DEFAULT);
 
+    /* token activación */
+    $token = bin2hex(random_bytes(32));
+
     $stmt = $pdo->prepare("
         INSERT INTO usuarios
-        (nombre, apellidos, email, telefono, nombre_usuario, password, fecha_nacimiento)
+        (nombre, apellidos, email, telefono, nombre_usuario, password, fecha_nacimiento, token_activacion)
         VALUES
-        (:nombre, :apellidos, :email, :telefono, :username, :password, :fecha_nacimiento)
+        (:nombre, :apellidos, :email, :telefono, :username, :password, :fecha_nacimiento, :token)
     ");
 
     $stmt->execute([
@@ -92,28 +104,68 @@ try {
         ":telefono"=>$telefono,
         ":username"=>$username,
         ":password"=>$hash,
-        ":fecha_nacimiento"=>$fechaNacimiento
+        ":fecha_nacimiento"=>$fechaNacimiento,
+        ":token"=>$token
     ]);
 
-    $userId = $pdo->lastInsertId();
+    /* enlace activación */
+    $activationLink = "http://localhost/inmobiliaria/backend/activar.php?token=".$token;
 
-    $_SESSION["user"] = [
-        "id"=>$userId,
-        "nombre_usuario"=>$username,
-        "email"=>$email
-    ];
+    /* PHPMailer */
 
-    echo json_encode([
-        "success"=>true,
-        "user"=>$_SESSION["user"]
-    ]);
+    $mail = new PHPMailer(true);
 
-} catch(PDOException $e){
+try{
+
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.hostinger.com';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'info@regladoconsultores.com';
+    $mail->Password   = 'Reglado130891.*';
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port       = 587;
+
+    $mail->setFrom('info@regladoconsultores.com', 'Reglado Real Estate');
+    $mail->addAddress($email, $nombre);
+
+    $mail->isHTML(true);
+    $mail->Subject = 'Activar cuenta';
+
+    $mail->Body = "
+    <h2>Hola $nombre</h2>
+    <p>Gracias por registrarte.</p>
+    <p>Para activar tu cuenta haz click en el siguiente enlace:</p>
+
+    <a href='$activationLink'>Activar cuenta</a>
+
+    <br><br>
+
+    <p>Si no te registraste ignora este mensaje.</p>
+    ";
+
+    $mail->send();
+
+}catch(Exception $e){
 
     echo json_encode([
         "success"=>false,
-        "message"=>"Error en el servidor",
-        "error"=>$e->getMessage()
+        "message"=>"Error enviando email",
+        "error"=>$mail->ErrorInfo
+    ]);
+    exit;
+
+}
+
+    echo json_encode([
+        "success"=>true,
+        "message"=>"Registro correcto. Revisa tu correo para activar la cuenta"
+    ]);
+
+}catch(PDOException $e){
+
+    echo json_encode([
+        "success"=>false,
+        "message"=>"Error en el servidor"
     ]);
 
 }
