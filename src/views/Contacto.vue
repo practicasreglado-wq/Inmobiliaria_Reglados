@@ -78,6 +78,7 @@ export default {
 </script>
 
 <style scoped>
+
 .contacto {
   position: relative;
   min-height:100vh;
@@ -93,6 +94,7 @@ export default {
 }
 
 /* Overlay oscuro */
+
 .overlay {
   position: absolute;
   inset: 0;
@@ -100,13 +102,15 @@ export default {
   z-index: 0;
 }
 
-/* Texto y card por encima del overlay */
+/* Contenido por encima */
+
 .contacto-texto,
 .contacto-card {
   position: relative;
   z-index: 1;
 }
-/* ----------- TEXTO IZQUIERDA ----------- */
+
+/* -------- TEXTO -------- */
 
 .contacto-texto {
   color: white;
@@ -150,7 +154,7 @@ export default {
   text-decoration: underline;
 }
 
-/* ----------- TARJETA DERECHA ----------- */
+/* -------- CARD -------- */
 
 .contacto-card {
   width: 600px;
@@ -166,7 +170,6 @@ h2 {
   color: #111;
 }
 
-/* Inputs en fila */
 .row {
   display: flex;
   gap: 15px;
@@ -187,9 +190,7 @@ textarea {
   margin-bottom: 20px;
 }
 
-/* Botón */
 .enviar-btn {
-  width: 33%;
   font-size: 1em;
   background-color: var(--azul-principal);
   color: white;
@@ -204,7 +205,6 @@ textarea {
   background-color: var(--azul-secundario);
 }
 
-/* Info debajo */
 .info {
   margin-top: 25px;
 }
@@ -223,4 +223,117 @@ textarea {
   background-color: var(--azul-principal);
   border-radius: 50%;
 }
+
+/* ======================
+TABLET
+====================== */
+
+@media (max-width:1024px){
+
+  h2 {
+  font-size: 2.25rem;
+  }
+
+  .contacto{
+    padding:0 60px;
+    gap:40px;
+  }
+
+  .contacto-texto h1{
+    font-size:3rem;
+  }
+
+  .contacto-texto p{
+    font-size:1.5rem;
+  }
+
+  .contacto-card{
+    width:480px;
+    padding:30px;
+  }
+
+  .contacto-texto{
+    width: 400px;
+  }
+
+}
+
+/* ======================
+TABLET PEQUEÑA
+====================== */
+
+@media (max-width:768px){
+
+  h2 {
+  font-size: 2rem;
+  }
+
+  .contacto{
+    flex-direction:column;
+    justify-content:center;
+    text-align:center;
+    padding:80px 40px;
+    gap:60px;
+  }
+
+  .contacto-texto{
+    transform:none;
+  }
+
+  .login-link{
+    position:relative;
+    left:auto;
+    bottom:auto;
+    transform:none;
+    margin-top:20px;
+  }
+
+  .contacto-card{
+    width:100%;
+    max-width:500px;
+  }
+
+}
+
+/* ======================
+MÓVIL
+====================== */
+
+@media (max-width:480px){
+
+  h2 {
+  font-size: 1.5rem;
+  }
+
+  .contacto-texto{
+    width: 100%;
+  }
+
+  .contacto{
+    padding:80px 20px;
+  }
+
+  .contacto-texto h1{
+    font-size:2.3rem;
+  }
+
+  .contacto-texto p{
+    font-size:1.2rem;
+  }
+
+  .row{
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .contacto-card{
+    padding:10px;
+  }
+
+  .enviar-btn{
+    width:100%;
+  }
+
+}
+
 </style>

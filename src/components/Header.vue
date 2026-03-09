@@ -89,6 +89,7 @@ export default {
 </script>
 
 <style scoped>
+
 header {
   position: fixed;
   top: 0;
@@ -106,6 +107,8 @@ header {
   box-sizing: border-box;
 }
 
+/* LOGO */
+
 header .logo h1 {
   font-size: 2.8rem;
   font-weight: 700;
@@ -114,14 +117,17 @@ header .logo h1 {
   color: #eabe2f;
   text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
+
 .logo-text {
   text-decoration: none;
-  color: inherit; /* mantiene el color del h1 */
+  color: inherit;
 }
 
 .logo-text:hover {
   text-decoration: none;
 }
+
+/* NAV */
 
 nav ul {
   list-style: none;
@@ -132,7 +138,8 @@ nav ul {
   gap: 35px;
 }
 
-nav a, .catalog-btn {
+nav a,
+.catalog-btn {
   text-decoration: none;
   color: var(--negro);
   font-size: 1.1rem;
@@ -140,19 +147,23 @@ nav a, .catalog-btn {
   transition: 0.3s ease;
 }
 
-nav a:hover, .catalog-btn:hover {
+nav a:hover,
+.catalog-btn:hover {
   color: var(--azul-secundario);
 }
+
+/* BOTÓN CATÁLOGO */
 
 .catalog-btn {
   background: rgba(255, 255, 255, 0);
   font-size: 1rem;
   border: none;
   cursor: pointer;
-  text-decoration: none;
   padding: 10px 22px;
   color: var(--negro);
 }
+
+/* BIENVENIDA */
 
 .bienvenido {
   color: #d4af37;
@@ -167,9 +178,11 @@ nav a:hover, .catalog-btn:hover {
   color: var(--azul-secundario);
 }
 
+/* AVATAR */
+
 .user-avatar {
   display: inline-block;
-  width: 50px; /* Tamaño más grande */
+  width: 50px;
   height: 50px;
   border-radius: 50%;
   background-color: var(--azul-principal);
@@ -179,7 +192,7 @@ nav a:hover, .catalog-btn:hover {
   font-weight: bold;
   margin-right: 10px;
   font-size: 1.3rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .avatar-img {
@@ -188,6 +201,8 @@ nav a:hover, .catalog-btn:hover {
   border-radius: 50%;
   object-fit: cover;
 }
+
+/* LOGOUT */
 
 .logout-btn {
   font-size: 1rem;
@@ -208,4 +223,85 @@ nav a:hover, .catalog-btn:hover {
 nav a.router-link-exact-active{
   color: var(--azul-secundario);
 }
+
+
+/* =========================
+TABLET
+========================= */
+
+@media (max-width: 768px) {
+
+header {
+  height: 70px;
+  padding: 0 30px;
+}
+
+header .logo h1 {
+  font-size: 2rem;
+}
+
+nav ul {
+  gap: 20px;
+}
+
+.catalog-btn {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+.bienvenido {
+  font-size: 1rem;
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
+  font-size: 1.1rem;
+}
+
+}
+
+
+/* =========================
+MÓVIL
+========================= */
+
+@media (max-width: 480px) {
+
+header {
+  height: 65px;
+  padding: 0 18px;
+}
+
+header .logo h1 {
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+}
+
+nav ul {
+  gap: 12px;
+}
+
+/* ocultamos texto largo */
+
+.catalog-btn {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
+
+.bienvenido {
+  font-size: 0.9rem;
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  font-size: 0.95rem;
+  margin-right: 0;
+}
+
+}
+
 </style>
