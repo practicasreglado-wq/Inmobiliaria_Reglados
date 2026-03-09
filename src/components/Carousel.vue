@@ -297,7 +297,7 @@ export default {
   font-weight:600;
   margin-bottom:10px;
   opacity:0.4;
-  transition:0.3s;
+  transition:0.1s;
 }
 
 /* TITULO ACTIVO EN MOVIL */
@@ -324,7 +324,7 @@ export default {
 
 .categories span{
   opacity:0.5;
-  transition:0.3s;
+  transition:0.1s;
 }
 
 .categories .active{
