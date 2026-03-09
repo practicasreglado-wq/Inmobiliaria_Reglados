@@ -11,18 +11,44 @@ Cargando usuario...
 <div v-else>
 
 <div class="profile-picture">
+  <div class="avatar-wrapper" @click="openFilePicker">
 
 <img
 v-if="preview || user.profile_picture"
 :src="preview ? preview : 'http://localhost/inmobiliaria/backend/' + user.profile_picture + '?t=' + Date.now()"
 alt="Foto de perfil"
+class="avatar"
 />
 
-<div v-else class="profile-initial">
+<div v-else class="profile-initial avatar">
 {{ userInitials }}
 </div>
 
-<input type="file" accept="image/*" @change="handleFileChange">
+<!-- OVERLAY CAMARA -->
+        <div class="avatar-overlay">
+
+  <svg
+    class="camera-icon"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="white"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+
+    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 
+    2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+
+    <circle cx="12" cy="13" r="4"></circle>
+
+  </svg>
+
+</div>
+  </div>
+
+<input type="file" ref="fileInput" class="hidden-input" accept="image/*" @change="handleFileChange">
 
 <br>
 
@@ -100,10 +126,10 @@ import { storeToRefs } from "pinia"
 
 export default {
 
-setup(){
-
-const preview = ref(null)
-const selectedFile = ref(null)
+  setup() {
+    const fileInput = ref(null);
+    const preview = ref(null);
+    const selectedFile = ref(null);
 
 const currentPassword = ref("")
 const newPassword = ref("")
@@ -121,7 +147,11 @@ return user.value.nombre
 
 })
 
-onMounted(()=>{
+    const openFilePicker = () => {
+      fileInput.value.click();
+    };
+
+    onMounted(() => {
 
 loadUserData()
 
@@ -262,7 +292,9 @@ updateProfile,
 deletePhoto,
 userInitials,
 currentPassword,
-newPassword
+newPassword,
+fileInput,
+      openFilePicker
 }
 
 }
@@ -272,17 +304,101 @@ newPassword
 </script>
 
 <style scoped>
+/* contenedor avatar */
 
-.settings{
-max-width:600px;
-margin:auto;
+.avatar-wrapper{
+  position:relative;
+  width:150px;
+  height:150px;
+  cursor:pointer;
 }
 
-.profile-picture{
-display:flex;
-flex-direction:column;
-align-items:center;
-margin-bottom:20px;
+/* avatar */
+
+.avatar{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+/* inicial */
+
+.profile-initial{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ccc;
+  font-size:2rem;
+  color:white;
+}
+
+/* overlay camara */
+
+.avatar-overlay{
+  position:absolute;
+  top:0;
+  left:0;
+
+  width:100%;
+  height:100%;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(0,0,0,0.45);
+
+  font-size:2.2rem;
+  color:white;
+
+  opacity:0;
+  transition:opacity .25s ease;
+}
+
+.camera-icon{
+  width:40px;
+  height:40px;
+  opacity:.65;
+}
+
+/* aparece al hover */
+
+.avatar-wrapper:hover .avatar-overlay{
+  opacity:1;
+}
+
+/* input oculto */
+
+.hidden-input{
+  display:none;
+}
+
+.settings {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hidden-input{
+  display:none;
+}
+
+.clickable-avatar{
+  cursor:pointer;
+  transition:transform .2s;
+}
+
+.clickable-avatar:hover{
+  transform:scale(1.05);
+}
+
+.profile-picture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .profile-picture img{
@@ -329,4 +445,24 @@ border-radius:5px;
 cursor:pointer;
 }
 
+button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+@media (max-width:1024px) {
+  .avatar-overlay{
+    opacity: 1;
+  }
+
+}
 </style>

@@ -9,12 +9,13 @@
         <li><router-link to="/profile/messages">Mensajes</router-link></li>
         <li><router-link to="/profile/my-properties-for-sale">Mis propiedades en venta</router-link></li>
         <li><router-link to="/profile/settings">Ajustes</router-link></li>
-        <li v-if="user" class="logout-item">
-          <button class="logout-btn" @click="logout">
-            Cerrar sesión
-          </button>
-        </li>
       </ul>
+       <!-- CERRAR SESIÓN ABAJO -->
+      <div v-if="user" class="logout-item">
+        <button class="logout-btn" @click="logout">
+          Cerrar sesión
+        </button>
+      </div>
     </div>
 
   <!-- CONTENIDO -->
@@ -158,17 +159,22 @@ min-height:calc(100vh - 90px);
 margin-top:90px;
 }
 
+/* ===== SIDEBAR ===== */
+
 .sidebar {
   width: 350px;
   background: linear-gradient(to bottom, #101d41, #2c4692);
   padding: 20px;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  display:flex;
+  flex-direction:column;
 }
 
 .sidebar h3{
 font-size:2.3rem;
 color:goldenrod;
 margin-bottom:20px;
+text-align:center;
 }
 
 .sidebar ul{
@@ -193,25 +199,26 @@ border-radius:6px;
 background:#f0c14bc9;
 }
 
-/* Estilo para el enlace activo */
 .sidebar ul li a.router-link-exact-active{
   background-color: #d6ab3e;
-  font-weight: 700; 
+  font-weight:700; 
 }
 
-/* Perfil: contenido principal */
+/* ===== CONTENIDO ===== */
+
 .profile-content {
   flex-grow: 1;
   padding: 30px 90px;
   background-color: var(--gris-claro);
   border-radius: 8px;
-  margin-left: 1px; /* Ajuste para que el contenido se acomode al lado del menú lateral */
+  margin-left: 1px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .profile-content h2 {
   font-size: 3.5rem;
 }
+
 .profile-content h3 {
   font-size: 2rem;
   background: linear-gradient(135deg, #101d41, #2c4692);
@@ -232,6 +239,8 @@ background:#f0c14bc9;
   margin: 0;
 }
 
+/* ===== PREFERENCIAS ===== */
+
 .pref-group {
   display: flex;
   align-items: center;
@@ -240,7 +249,6 @@ background:#f0c14bc9;
   margin-bottom: 15px;
 }
 
-/* título en cuadro */
 .pref-group h4 {
   margin: 0;
   padding: 6px 14px;
@@ -251,7 +259,6 @@ background:#f0c14bc9;
   font-size: 1.3rem;
 }
 
-/* lista horizontal */
 .pref-group ul {
   display: flex;
   flex-wrap: wrap;
@@ -261,7 +268,6 @@ background:#f0c14bc9;
   margin: 0;
 }
 
-/* cuadritos de cada preferencia */
 .pref-group li {
   border: 1px solid #ddd;
   border-radius: 20px;
@@ -271,28 +277,40 @@ background:#f0c14bc9;
   font-weight: 550;
 }
 
-/* ===== CERRAR SESIÓN ===== */
+/* ===== LOGOUT ===== */
+
 .logout-item {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+
+  margin-top:auto;   /* empuja al fondo del sidebar */
+
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.15);
+
+  display:flex;
+  justify-content:center; /* centra el botón */
 }
 
 .logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 10px;
-  background: transparent;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
-  color: #ffffff;
-  font-size: 1.5rem;
-  font-family: inherit;  /* ← añade esto */
-  font-weight: normal;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:10px;
+
+  width:80%;
+
+  padding:10px;
+
+  background:transparent;
+  border:1.5px solid rgba(255,255,255,0.2);
+  border-radius:5px;
+
+  color:#ffffff;
+  font-size:1.5rem;
+  font-family:inherit;
+
+  cursor:pointer;
+  transition:all 0.3s ease;
 }
 
 .logout-btn:hover {
@@ -300,4 +318,137 @@ background:#f0c14bc9;
   border-color: #ef4444;
   color: #f88080;
 }
+
+/* ======================
+TABLET
+====================== */
+
+@media (max-width:1024px){
+
+.profile{
+  flex-direction:row;
+}
+
+.sidebar{
+  width:260px;
+}
+
+.sidebar h3{
+  font-size:2rem;
+}
+
+.sidebar a{
+  font-size:1.2rem;
+}
+
+.profile-content{
+  padding:30px 50px;
+}
+
+.profile-content h2{
+  font-size:3rem;
+}
+
+.profile-content p{
+  font-size:2.2rem;
+}
+
+}
+
+/* ======================
+TABLET PEQUEÑA
+====================== */
+
+@media (max-width:768px){
+
+.profile{
+  flex-direction:column;
+}
+
+.sidebar{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.sidebar ul{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+}
+
+.sidebar li{
+  margin:0;
+}
+
+.sidebar a{
+  font-size:1.1rem;
+}
+
+.profile-content{
+  padding:40px 40px;
+}
+
+.profile-content h2{
+  font-size:2.6rem;
+}
+
+.profile-content p{
+  font-size:2rem;
+}
+
+.logout-btn{
+  width:220px;
+}
+
+}
+
+/* ======================
+MÓVIL
+====================== */
+
+@media (max-width:480px){
+
+.profile-content{
+  padding:30px 20px;
+}
+
+.sidebar h3{
+  font-size:1.8rem;
+}
+
+.sidebar a{
+  font-size:1rem;
+  padding:8px;
+}
+
+.profile-content h2{
+  font-size:2.2rem;
+}
+
+.profile-content h3{
+  font-size:1.6rem;
+}
+
+.profile-content p{
+  font-size:1.7rem;
+}
+
+.pref-group h4{
+  font-size:1rem;
+}
+
+.pref-group li{
+  font-size:0.9rem;
+}
+
+.logout-btn{
+  font-size:1.2rem;
+  width:200px;
+}
+
+}
+
 </style>

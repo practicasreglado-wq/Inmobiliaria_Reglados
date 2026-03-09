@@ -14,25 +14,30 @@ export const useUserStore = defineStore("user", {
   actions: {
     setUser(userData) {
 
-  this.user = {
-    ...userData,
-    apellidos: userData.apellidos || ""
-  };
+      this.user = {
+        ...userData,
+        apellidos: userData.apellidos || "",
+        telefono: userData.telefono || ""
+      };
 
-  localStorage.setItem("user", JSON.stringify(this.user));
+      localStorage.setItem("user", JSON.stringify(this.user));
 
-  if (userData.categoria !== undefined) {
-    this.selectedCategory = userData.categoria;
-    localStorage.setItem("selectedCategory", this.selectedCategory);
-  }
+      if (userData.categoria !== undefined) {
+        this.selectedCategory = userData.categoria;
+        localStorage.setItem("selectedCategory", this.selectedCategory);
+      }
 
-  if (userData.preferencias !== undefined) {
-    this.preferences = userData.preferencias;
-    localStorage.setItem("preferences", JSON.stringify(this.preferences));
-  }
+      if (userData.preferencias !== undefined) {
+        this.preferences = userData.preferencias;
+        localStorage.setItem("preferences", JSON.stringify(this.preferences));
+      } else {
+        const savedPreferences = localStorage.getItem("preferences");
+        if (savedPreferences) {
+          this.preferences = JSON.parse(savedPreferences);
+        }
+      }
 
-  localStorage.setItem("user", JSON.stringify(userData));
-},
+    },
 
     setCategory(category) {
       this.selectedCategory = category;
@@ -45,12 +50,11 @@ export const useUserStore = defineStore("user", {
     },
 
     logout() {
-      this.user = null;
-      this.selectedCategory = null;
-      this.preferences = null;
-      localStorage.removeItem('user');
-      localStorage.removeItem('selectedCategory');
-      localStorage.removeItem('preferences');
+
+      this.user = null
+
+      localStorage.removeItem("user")
+
     }
   },
 

@@ -118,11 +118,10 @@ const irAAportar = () => {
   transition: 0.3s ease;
 }
 
-/* ESTILO ESPECÍFICO PARA LOS ENLACES */
 .footer-link {
   text-decoration: none;
-  color: inherit; /* Hereda el color blanco del footer */
-  display: block; /* Para que ocupe el espacio del li */
+  color: inherit;
+  display: block;
 }
 
 .footer-col li:hover {
@@ -136,5 +135,97 @@ const irAAportar = () => {
   padding-top: 20px;
   font-size: 0.9rem;
   opacity: 0.85;
+}
+
+
+/* =========================
+TABLET
+========================= */
+
+@media (max-width: 1024px) {
+
+.footer {
+  padding: 60px 50px 30px 50px;
+}
+
+.footer-container {
+  gap: 40px;
+}
+
+.brand p {
+  max-width: 250px;
+}
+
+}
+
+
+/* =========================
+TABLET PEQUEÑA
+========================= */
+
+@media (max-width: 768px) {
+
+.footer {
+  padding: 60px 40px 30px 40px;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.brand {
+  grid-column: span 2;
+}
+
+.brand p {
+  max-width: 100%;
+}
+
+.footer-bottom {
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+
+}
+
+
+/* =========================
+MOVIL
+========================= */
+
+@media (max-width: 480px) {
+
+.footer {
+  padding: 50px 25px 25px 25px;
+}
+
+.footer-container {
+  grid-template-columns: 1fr;
+  gap: 35px;
+}
+
+.brand {
+  grid-column: span 1;
+}
+
+.brand h2 {
+  font-size: 1.4rem;
+}
+
+.footer-col h3 {
+  font-size: 1rem;
+}
+
+.footer-col li {
+  font-size: 0.95rem;
+}
+
+.footer-bottom {
+  font-size: 0.8rem;
+}
+
 }
 </style>

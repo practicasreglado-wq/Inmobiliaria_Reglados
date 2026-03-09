@@ -38,6 +38,7 @@ export default {
 </script>
 
 <style scoped>
+
 .about {
   display: flex;
   align-items: center;
@@ -45,33 +46,31 @@ export default {
   gap: 60px;
   min-height: 100vh;
   background: rgba(0, 0, 0, 0.263);
+  padding: 60px 40px;
 }
 
-/* ----- IMÁGENES (simuladas) ----- */
+/* ----- IMÁGENES ----- */
 
 .about-images {
   position: relative;
   display: flex;
   align-items: flex-start;
   gap: 30px;
-  
 }
 
-/* Imagen izquierda (más ancha) */
 .img-large {
   width: 380px;
   height: 420px;
   overflow: hidden;
-  margin-top: 120px; /* baja la imagen */
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.733) ;
+  margin-top: 120px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.733);
 }
 
-/* Imagen derecha (más alta y estilizada) */
 .img-small {
   width: 270px;
   height: 460px;
   overflow: hidden;
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.733) ;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.733);
 }
 
 .about-images img {
@@ -101,4 +100,110 @@ export default {
   margin-bottom: 20px;
   color: #ffffff;
 }
+
+/* =========================
+TABLET
+========================= */
+
+@media (max-width:1024px){
+
+  .about{
+    gap:40px;
+  }
+
+  .img-large{
+    width:200px;
+    height:260px;
+    margin-top:60px;
+  }
+
+  .img-small{
+    width:150px;
+    height:280px;
+  }
+
+  .about-content h2{
+    font-size:3.5rem;
+  }
+
+  .about-content p{
+    font-size:1.4rem;
+  }
+
+}
+
+/* =========================
+TABLET PEQUEÑA (CAMBIO DE LAYOUT)
+========================= */
+
+@media (max-width:768px){
+
+  .about{
+    flex-direction:column;
+    text-align:center;
+    gap:50px;
+  }
+
+  .about-images{
+    align-items:center;
+    gap:20px;
+  }
+
+  .img-large{
+    width:200px;
+    height:260px;
+    margin-top:60px;
+  }
+
+  .img-small{
+    width:150px;
+    height:280px;
+  }
+
+  .about-content{
+    max-width:600px;
+  }
+
+  .about-content h2{
+    font-size:2.8rem;
+  }
+
+  .about-content p{
+    font-size:1.25rem;
+  }
+
+}
+
+/* =========================
+MÓVIL
+========================= */
+
+@media (max-width:480px){
+
+  .img-large{
+    width:150px;
+    height:210px;
+    margin-top:60px;
+  }
+
+  .img-small{
+    width:100px;
+    height:230px;
+  }
+
+  .about{
+    padding:60px 20px;
+  }
+
+  .about-content h2{
+    font-size:2.2rem;
+  }
+
+  .about-content p{
+    font-size:1.1rem;
+    line-height:1.6;
+  }
+
+}
+
 </style>

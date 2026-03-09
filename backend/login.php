@@ -15,15 +15,26 @@ $identifier = trim($data["identifier"] ?? "");
 $password = trim($data["password"] ?? "");
 
 if (!$identifier || !$password) {
-    echo json_encode(["success" => false, "message" => "Campos obligatorios"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Campos obligatorios"
+    ]);
     exit;
 }
 
 $stmt = $pdo->prepare("
-    SELECT id, nombre, email, nombre_usuario, password,
-    profile_picture,
-    categoria_seleccionada, preferencias,
-    activado
+    SELECT 
+        id,
+        nombre,
+        apellidos,
+        telefono,
+        email,
+        nombre_usuario,
+        password,
+        profile_picture,
+        categoria_seleccionada,
+        preferencias,
+        activado
     FROM usuarios
     WHERE email = :identifier OR nombre_usuario = :identifier
     LIMIT 1
@@ -54,9 +65,12 @@ if (!password_verify($password, $usuario["password"])) {
 $_SESSION["user"] = [
     "id" => $usuario["id"],
     "nombre" => $usuario["nombre"],
+    "apellidos" => $usuario["apellidos"],
+    "telefono" => $usuario["telefono"],
     "email" => $usuario["email"],
     "nombre_usuario" => $usuario["nombre_usuario"],
-    "profile_picture" => $usuario["profile_picture"]
+    "profile_picture" => $usuario["profile_picture"],
+    "categoria" => $usuario["categoria_seleccionada"]
 ];
 
 echo json_encode([
@@ -64,8 +78,14 @@ echo json_encode([
     "user" => [
         "id" => $usuario["id"],
         "nombre" => $usuario["nombre"],
+        "apellidos" => $usuario["apellidos"],
+        "telefono" => $usuario["telefono"],
         "email" => $usuario["email"],
         "nombre_usuario" => $usuario["nombre_usuario"],
-        "profile_picture" => $usuario["profile_picture"]
+        "profile_picture" => $usuario["profile_picture"],
+        "categoria" => $usuario["categoria_seleccionada"],
+        "preferencias" => $usuario["preferencias"]
+            ? json_decode($usuario["preferencias"], true)
+            : null
     ]
 ]);

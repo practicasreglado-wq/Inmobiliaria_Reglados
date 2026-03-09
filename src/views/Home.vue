@@ -45,6 +45,7 @@ export default {
 </script>
 
 <style scoped>
+
 .hero {
   position: relative;
   min-height:100vh;
@@ -54,10 +55,11 @@ export default {
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
-  justify-content: center; /* 👈 centramos horizontalmente */
-  padding-left: 20px; /* 👈 espacio a la izquierda */;
-  padding-right: 33%; /* 👈 espacio a la derecha */
+  justify-content: center;
+  padding-left: 20px;
+  padding-right: 33%;
 }
+
 .somos{
   min-height:100vh;
   background-image: url('/src/assets/img_Home2.png');
@@ -69,14 +71,16 @@ export default {
   gap: 80px;
 }
 
-/* Overlay oscuro para que el texto se lea bien */
+/* Overlay */
+
 .overlay {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.075);
 }
 
-/* Contenido encima del overlay */
+/* CONTENIDO HERO */
+
 .hero-content {
   position: relative;
   z-index: 2;
@@ -87,7 +91,7 @@ export default {
 
   display: flex;
   flex-direction: column;
-  align-items: end; /* 👈 centra el botón */
+  align-items: end;
 }
 
 .hero-content h1,
@@ -118,8 +122,10 @@ export default {
   opacity: 0.85;
 }
 
+/* BOTÓN */
+
 .btn-login{
-  margin-top: 90px;
+  margin-top: 120px;
   margin-right: 14%;
   font-size: 2.3rem;
   background-color: var(--azul-principal);
@@ -137,4 +143,116 @@ export default {
   background-color: var(--azul-secundario);
   color: white;
 }
+
+/* =========================
+TABLETS
+========================= */
+
+@media (max-width:1024px){
+
+  .hero{
+    padding-right:10%;
+    padding-left:10%;
+  }
+
+  .hero-content{
+    align-items:center;
+    text-align:center;
+  }
+
+  .hero h1{
+    font-size:5rem;
+  }
+
+  .description{
+    font-size:2rem;
+  }
+
+  .subtext{
+    font-size:1.3rem;
+  }
+
+  .btn-login{
+    font-size:1.8rem;
+    margin: 0;
+  }
+
+}
+
+/* =========================
+TABLETS PEQUEÑAS
+========================= */
+
+@media (max-width:768px){
+
+  .hero{
+    padding-right:10%;
+    padding-left:10%;
+  }
+
+  .hero-content{
+    align-items:center;
+    text-align:center;
+  }
+
+  .hero h1{
+    font-size:4rem;
+  }
+
+  .description{
+    font-size:1.7rem;
+  }
+
+  .subtext{
+    font-size:1.2rem;
+  }
+
+  .btn-login{
+    font-size:1.6rem;
+    margin: 0;
+  }
+
+}
+
+/* =========================
+MOVIL
+========================= */
+
+@media (max-width:480px){
+
+  .hero{
+    padding:40px 20px;
+    justify-content:center;
+  }
+
+  .hero-content{
+    align-items:center;
+    text-align:center;
+  }
+
+  .hero-content h1,
+  .hero-content p{
+    align-self:center;
+  }
+
+  .hero h1{
+    font-size:2.7rem;
+  }
+
+  .description{
+    font-size:1.3rem;
+  }
+
+  .subtext{
+    font-size:1rem;
+  }
+
+  .btn-login{
+    font-size:1.2rem;
+    padding:10px 25px;
+    margin: 0;
+  }
+
+}
+
 </style>
