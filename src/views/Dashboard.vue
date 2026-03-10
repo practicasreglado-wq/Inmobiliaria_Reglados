@@ -26,7 +26,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--gris-claro);
+  background-color: #d8dbe1;
 }
 
 .dashboard-container {
