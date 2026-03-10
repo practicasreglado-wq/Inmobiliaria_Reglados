@@ -255,7 +255,11 @@ menuOpen
 .profile{
 display:flex;
 min-height:100vh;
-background:#d8dbe1;
+background: linear-gradient(
+    180deg,
+    #b6c6d6,
+    #eef2f7
+  );
 }
 .menu-toggle{
 
@@ -283,7 +287,7 @@ z-index:1000;
 .sidebar{
 margin-top: 90px;
 width:300px;
-background:linear-gradient(to bottom,#101d41,#2c4692);
+background:linear-gradient(to bottom,#2f3e69,#0a315e);
 padding:25px;
 display:flex;
 flex-direction:column;

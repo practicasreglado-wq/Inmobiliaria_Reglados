@@ -304,16 +304,26 @@ fileInput,
 </script>
 
 <style scoped>
-/* contenedor avatar */
+/* CONTENEDOR PRINCIPAL */
+
+.settings{
+  max-width:650px;
+  margin:0 auto;
+  background:white;
+  padding:35px;
+  border-radius:12px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* AVATAR */
 
 .avatar-wrapper{
   position:relative;
   width:150px;
   height:150px;
   cursor:pointer;
+  margin-bottom:25px;
 }
-
-/* avatar */
 
 .avatar{
   width:150px;
@@ -322,9 +332,12 @@ fileInput,
   object-fit:cover;
 }
 
-/* inicial */
+/* inicial si no hay imagen */
 
 .profile-initial{
+  width:150px;
+  height:150px;
+  border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -339,23 +352,21 @@ fileInput,
   position:absolute;
   top:0;
   left:0;
-
   width:100%;
   height:100%;
-
   border-radius:50%;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   background:rgba(0,0,0,0.45);
-
   font-size:2.2rem;
   color:white;
-
   opacity:0;
   transition:opacity .25s ease;
+}
+
+.avatar-wrapper:hover .avatar-overlay{
+  opacity:1;
 }
 
 .camera-icon{
@@ -364,98 +375,66 @@ fileInput,
   opacity:.65;
 }
 
-/* aparece al hover */
-
-.avatar-wrapper:hover .avatar-overlay{
-  opacity:1;
-}
-
 /* input oculto */
 
 .hidden-input{
   display:none;
 }
 
-.settings {
-  max-width: 600px;
-  margin: 0 auto;
+/* FOTO PERFIL */
+
+.profile-picture{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:30px;
 }
 
-.hidden-input{
-  display:none;
-}
-
-.clickable-avatar{
-  cursor:pointer;
-  transition:transform .2s;
-}
-
-.clickable-avatar:hover{
-  transform:scale(1.05);
-}
-
-.profile-picture {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.profile-picture img{
-width:150px;
-height:150px;
-border-radius:50%;
-object-fit:cover;
-}
-
-.profile-initial{
-width:150px;
-height:150px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-background:#ccc;
-font-size:2rem;
-color:white;
-}
+/* FORMULARIO */
 
 .form-group{
-margin-bottom:15px;
+  margin-bottom:18px;
 }
 
 .form-group label{
-display:block;
-font-weight:bold;
-
+  display:block;
+  font-weight:600;
+  margin-bottom:6px;
 }
 
 .form-group input{
-width:100%;
-padding:10px;
-border-radius:5px;
-border:1px solid #ccc;
-text-shadow: 0 1px 2px rgba(0, 0, 0, 0.518);
+  width:100%;
+  padding:10px;
+  border-radius:6px;
+  border:1px solid #ddd;
+  font-size:14px;
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #d6ab3e;
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.605);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+/* BOTÓN */
+
+button{
+  margin-top:10px;
+  padding:12px;
+  width:100%;
+  background:#d6ab3e;
+  color:white;
+  border:none;
+  border-radius:6px;
+  font-size:15px;
+  cursor:pointer;
+  transition:background .2s;
 }
 
-button:hover {
-  background-color: #f0c14bc9;
+button:hover{
+  background:#f0c14bc9;
 }
 
-@media (max-width:1024px) {
+/* RESPONSIVE */
+
+@media (max-width:1024px){
+
   .avatar-overlay{
-    opacity: 1;
+    opacity:1;
   }
 
 }
